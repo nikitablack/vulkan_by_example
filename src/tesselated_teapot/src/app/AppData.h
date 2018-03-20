@@ -2,8 +2,6 @@
 
 #include "TeapotData.h"
 
-#include <string>
-
 struct GLFWwindow;
 
 namespace app
