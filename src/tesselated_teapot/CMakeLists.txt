@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.9 FATAL_ERROR)
 
+set(GLSL_VALIDATOR "$ENV{VULKAN_SDK}/bin/glslangValidator" CACHE FILEPATH "Path to glslangValidator executable")
+
 find_package(Vulkan REQUIRED)
 
 add_executable(tesselated_teapot "")
@@ -7,7 +9,27 @@ add_executable(tesselated_teapot "")
 target_sources(tesselated_teapot PRIVATE
         src/app/App.h
         src/app/AppData.h
+        src/app/create_instance.cpp
+        src/app/create_logical_device.cpp
+        src/app/create_shader_modules.cpp
+        src/app/create_surface.cpp
         src/app/create_window.cpp
+        src/app/get_physical_device.cpp
+        src/app/get_required_window_extensions.cpp
+
+        src/details/check_device_suitability.cpp
+        src/details/check_required_device_extensions.cpp
+        src/details/Details.h
+        src/details/get_device_graphics_and_present_queue_families.cpp
+        src/details/get_device_surface_format.cpp
+        src/details/get_device_surface_present_mode.cpp
+        src/details/get_surface_extent.cpp
+
+        src/vk_helpers/VkObjectsHelper.cpp
+        src/vk_helpers/VkObjectsHelper.h
+        src/vk_helpers/VkStructHelpers.cpp
+        src/vk_helpers/VkStructHelpers.h
+
         src/Main.cpp
         src/MainApplication.cpp
         src/MainApplication.h
@@ -37,3 +59,24 @@ target_link_libraries(tesselated_teapot PRIVATE
 
 target_include_directories(tesselated_teapot PRIVATE src)
 target_include_directories(tesselated_teapot SYSTEM PRIVATE ${Vulkan_INCLUDE_DIRS})
+
+function(addCompileShaderCommand)
+    cmake_parse_arguments(addCompileShaderCommand "" "SHADER" "" ${ARGN})
+
+    if(NOT addCompileShaderCommand_SHADER)
+        message(FATAL_ERROR "Shader file name should be provided")
+    endif()
+
+    add_custom_command(OUTPUT ${addCompileShaderCommand_SHADER}
+            COMMAND ${GLSL_VALIDATOR} -V ${CMAKE_CURRENT_SOURCE_DIR}/resources/${addCompileShaderCommand_SHADER} -o ${CMAKE_BINARY_DIR}/bin/${addCompileShaderCommand_SHADER}.spv
+            DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/resources/${addCompileShaderCommand_SHADER})
+endfunction()
+
+addCompileShaderCommand(SHADER VertexShader.vert)
+addCompileShaderCommand(SHADER TesselationControlShader.tesc)
+addCompileShaderCommand(SHADER TesselationEvaluationShader.tese)
+addCompileShaderCommand(SHADER FragmentShader.frag)
+
+add_custom_target(shaders
+        DEPENDS VertexShader.vert TesselationControlShader.tesc TesselationEvaluationShader.tese FragmentShader.frag
+        COMMENT "Compiling shaders")
