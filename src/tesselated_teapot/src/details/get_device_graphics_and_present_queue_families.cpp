@@ -64,5 +64,5 @@ namespace details
 			return make_unexpected("failed to find present queue");
 		
 		return make_pair(static_cast<uint32_t>(graphicsQueueIndex), static_cast<uint32_t>(presentQueueIndex));
-}
+	}
 }
