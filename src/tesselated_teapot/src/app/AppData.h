@@ -46,5 +46,9 @@ namespace app
 		VkPipelineLayout pipelineLayout{VK_NULL_HANDLE};
 		VkPipeline graphicsPipelineWireframe{VK_NULL_HANDLE};
 		VkPipeline graphicsPipelineSolid{VK_NULL_HANDLE};
+		
+		VkSwapchainKHR swapChain{VK_NULL_HANDLE};
+		std::vector<VkFramebuffer> swapChainFramebuffers{};
+		std::vector<VkImageView> swapChainImageViews{};
 	};
 }

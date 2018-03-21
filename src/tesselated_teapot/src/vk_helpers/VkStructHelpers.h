@@ -57,4 +57,17 @@ namespace vk_helpers
 	                                                               VkPipelineDepthStencilStateCreateInfo const * depthStencilState = nullptr,
 	                                                               VkPipelineCreateFlags flags = 0,
 	                                                               VkPipeline basePipelineHandle = VK_NULL_HANDLE);
+    VkSwapchainCreateInfoKHR get_swap_chain_create_info(VkSurfaceKHR surface,
+                                                        uint32_t imageCount,
+                                                        VkFormat imageFormat,
+                                                        VkColorSpaceKHR
+                                                        imageColorSpace,
+                                                        VkExtent2D imageExtent,
+                                                        VkSurfaceTransformFlagBitsKHR preTransform,
+                                                        VkPresentModeKHR presentMode);
+    VkImageViewCreateInfo get_image_view_create_info(VkImage image, VkFormat format, VkImageAspectFlags imageAspectFlags);
+    VkFramebufferCreateInfo get_frame_buffer_create_info(VkRenderPass renderPass,
+                                                         uint32_t width,
+                                                         uint32_t height,
+                                                         std::vector<VkImageView > const * attachments = nullptr);
 }

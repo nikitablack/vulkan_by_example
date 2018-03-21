@@ -418,4 +418,69 @@ namespace vk_helpers
 		
 		return info;
 	}
+	
+	VkSwapchainCreateInfoKHR get_swap_chain_create_info(VkSurfaceKHR const surface,
+	                                                    uint32_t const imageCount,
+	                                                    VkFormat const imageFormat,
+	                                                    VkColorSpaceKHR const imageColorSpace,
+	                                                    VkExtent2D const imageExtent,
+	                                                    VkSurfaceTransformFlagBitsKHR const preTransform,
+	                                                    VkPresentModeKHR const presentMode)
+	{
+		VkSwapchainCreateInfoKHR info{};
+		info.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
+		info.pNext = nullptr;
+		info.flags = 0;
+		info.surface = surface;
+		info.minImageCount = imageCount;
+		info.imageFormat = imageFormat;
+		info.imageColorSpace = imageColorSpace;
+		info.imageExtent = imageExtent;
+		info.imageArrayLayers = 1;
+		info.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
+		info.imageSharingMode = VK_SHARING_MODE_EXCLUSIVE;
+		info.queueFamilyIndexCount = 0;
+		info.pQueueFamilyIndices = nullptr;
+		info.preTransform = preTransform;
+		info.compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR;
+		info.presentMode = presentMode;
+		info.clipped = VK_TRUE;
+		info.oldSwapchain = VK_NULL_HANDLE;
+		
+		return info;
+	}
+	
+	VkImageViewCreateInfo get_image_view_create_info(VkImage const image, VkFormat const format, VkImageAspectFlags const imageAspectFlags)
+	{
+		VkImageViewCreateInfo info{};
+		info.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
+		info.pNext = nullptr;
+		info.flags = 0;
+		info.image = image;
+		info.viewType = VK_IMAGE_VIEW_TYPE_2D;
+		info.format = format;
+		info.components = { VK_COMPONENT_SWIZZLE_IDENTITY, VK_COMPONENT_SWIZZLE_IDENTITY, VK_COMPONENT_SWIZZLE_IDENTITY, VK_COMPONENT_SWIZZLE_IDENTITY };
+		info.subresourceRange = { imageAspectFlags, 0, 1, 0, 1 };
+		
+		return info;
+	}
+	
+	VkFramebufferCreateInfo get_frame_buffer_create_info(VkRenderPass const renderPass,
+	                                                     uint32_t const width,
+	                                                     uint32_t const height,
+	                                                     vector<VkImageView > const * const attachments = nullptr)
+	{
+		VkFramebufferCreateInfo info{};
+		info.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
+		info.pNext = nullptr;
+		info.flags = 0;
+		info.renderPass = renderPass;
+		info.attachmentCount = attachments ? static_cast<uint32_t>(attachments->size()) : 0;
+		info.pAttachments = attachments ? attachments->data() : nullptr;
+		info.width = width;
+		info.height = height;
+		info.layers = 1;
+		
+		return info;
+	}
 }

@@ -4,6 +4,8 @@
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
 
+#include <algorithm>
+
 using namespace std;
 using namespace vk_helpers;
 
@@ -13,6 +15,9 @@ namespace app
 	{
 		if(appData.device)
 		{
+			for_each(appData.swapChainImageViews.begin(), appData.swapChainImageViews.end(), [&appData](VkImageView imageView){vkDestroyImageView(appData.device, imageView, nullptr);});
+			for_each(appData.swapChainFramebuffers.begin(), appData.swapChainFramebuffers.end(), [&appData](VkFramebuffer framebuffer){vkDestroyFramebuffer(appData.device, framebuffer, nullptr);});
+			vkDestroySwapchainKHR(appData.device, appData.swapChain, nullptr);
 			vkDestroyPipeline(appData.device, appData.graphicsPipelineWireframe, nullptr);
 			vkDestroyPipeline(appData.device, appData.graphicsPipelineSolid, nullptr);
 			vkDestroyPipelineLayout(appData.device, appData.pipelineLayout, nullptr);

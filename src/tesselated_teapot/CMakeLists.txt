@@ -12,6 +12,7 @@ target_sources(tesselated_teapot PRIVATE
         src/app/clear.cpp
         src/app/create_debug_report_callback.cpp
         src/app/create_descriptor_set_layout.cpp
+        src/app/create_frame_buffers.cpp
         src/app/create_graphics_pipelines.cpp
         src/app/create_instance.cpp
         src/app/create_logical_device.cpp
@@ -19,17 +20,21 @@ target_sources(tesselated_teapot PRIVATE
         src/app/create_render_pass.cpp
         src/app/create_shader_modules.cpp
         src/app/create_surface.cpp
+        src/app/create_swap_chain.h
         src/app/create_window.cpp
         src/app/get_physical_device.cpp
         src/app/get_required_window_extensions.cpp
 
         src/details/check_device_suitability.cpp
         src/details/check_required_device_extensions.cpp
+        src/details/create_frame_buffers.cpp
+        src/details/create_image_views.cpp
         src/details/Details.h
         src/details/get_device_graphics_and_present_queue_families.cpp
         src/details/get_device_surface_format.cpp
         src/details/get_device_surface_present_mode.cpp
         src/details/get_surface_extent.cpp
+        src/details/get_swap_chain_images.cpp
 
         src/vk_helpers/VkObjectsHelper.cpp
         src/vk_helpers/VkObjectsHelper.h

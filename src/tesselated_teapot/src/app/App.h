@@ -23,4 +23,5 @@ namespace app
 	MaybeAppData create_descriptor_set_layout(AppData appData);
 	MaybeAppData create_pipeline_layout(AppData appData);
 	MaybeAppData create_graphics_pipelines(AppData appData);
+	MaybeAppData create_frame_buffers(AppData appData);
 }
