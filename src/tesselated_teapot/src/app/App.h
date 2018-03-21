@@ -1,10 +1,8 @@
 #pragma once
 
-#include "app/AppData.h"
+#include "AppData.h"
 
 #include "tl/expected.hpp"
-
-#include <string>
 
 struct GLFWwindow;
 
@@ -19,4 +17,10 @@ namespace app
 	MaybeAppData get_physical_device(AppData appData);
 	MaybeAppData create_logical_device(AppData appData);
 	MaybeAppData create_shader_modules(AppData appData);
+	MaybeAppData create_debug_report_callback(AppData appData);
+	void clear(AppData appData);
+	MaybeAppData create_render_pass(AppData appData);
+	MaybeAppData create_descriptor_set_layout(AppData appData);
+	MaybeAppData create_pipeline_layout(AppData appData);
+	MaybeAppData create_graphics_pipelines(AppData appData);
 }

@@ -1,4 +1,5 @@
 #include "app/App.h"
+#include "vk_helpers/VkObjectsHelper.h"
 #include "MainApplication.h"
 
 #define GLFW_INCLUDE_VULKAN
@@ -28,6 +29,20 @@ namespace
 			// TODO switch wireframe/solid rendering
 		}
 	}
+	
+	VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(VkDebugReportFlagsEXT const /*flags*/,
+	                                             VkDebugReportObjectTypeEXT const /*objType*/,
+	                                             uint64_t const /*obj*/,
+	                                             size_t const /*location*/,
+	                                             int32_t const /*code*/,
+	                                             char const * const layerPrefix,
+	                                             char const * const msg,
+	                                             void * const /*userData*/)
+	{
+		cerr << "layer " << layerPrefix << ": " << msg << endl;
+		
+		return VK_FALSE;
+	}
 }
 
 MainApplication::MainApplication(uint32_t const windowWidth, uint32_t const windowHeight, std::string const & appName)
@@ -45,13 +60,19 @@ MainApplication::MainApplication(uint32_t const windowWidth, uint32_t const wind
 	_appData.layers.push_back("VK_LAYER_LUNARG_standard_validation");
 	_appData.instanceExtensions.push_back(VK_EXT_DEBUG_REPORT_EXTENSION_NAME);
 	_appData.deviceExtensions.push_back(VK_KHR_SWAPCHAIN_EXTENSION_NAME);
+	_appData.debugCallbackPtr = &debugCallback;
 	
 	MaybeAppData maybeAppData{MaybeAppData{get_required_window_extensions(_appData)}
 	                          .and_then(create_instance)
 	                          .and_then(create_surface)
 	                          .and_then(get_physical_device)
 	                          .and_then(create_logical_device)
-	                          .and_then(create_shader_modules)};
+	                          .and_then(create_shader_modules)
+	                          .and_then(create_debug_report_callback)
+	                          .and_then(create_render_pass)
+	                          .and_then(create_descriptor_set_layout)
+	                          .and_then(create_pipeline_layout)
+	                          .and_then(create_graphics_pipelines)};
 	
 	if (!maybeAppData)
 		throw runtime_error{maybeAppData.error()};
@@ -61,7 +82,7 @@ MainApplication::MainApplication(uint32_t const windowWidth, uint32_t const wind
 
 MainApplication::~MainApplication()
 {
-	glfwTerminate();
+	clear(_appData);
 }
 
 void MainApplication::run()

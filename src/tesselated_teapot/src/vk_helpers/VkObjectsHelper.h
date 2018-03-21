@@ -10,4 +10,5 @@ namespace vk_helpers
 	using MaybeShaderModule = tl::expected<VkShaderModule, std::string>;
 	
 	MaybeShaderModule create_shader_module(VkDevice logicalDevice, std::string const & shaderFile);
+	void destroy_debug_report_callback(VkInstance instance, VkDebugReportCallbackEXT vkDebugCallback);
 }

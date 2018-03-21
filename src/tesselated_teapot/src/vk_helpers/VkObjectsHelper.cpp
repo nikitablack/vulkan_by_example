@@ -51,4 +51,13 @@ namespace vk_helpers
 		
 		return shaderModule;
 	}
+	
+	void destroy_debug_report_callback(VkInstance const instance, VkDebugReportCallbackEXT const vkDebugCallback)
+	{
+		PFN_vkDestroyDebugReportCallbackEXT const func{reinterpret_cast<PFN_vkDestroyDebugReportCallbackEXT>(vkGetInstanceProcAddr(instance, "vkDestroyDebugReportCallbackEXT"))};
+		if (func == nullptr)
+			return;
+		
+		func(instance, vkDebugCallback, nullptr);
+	}
 }

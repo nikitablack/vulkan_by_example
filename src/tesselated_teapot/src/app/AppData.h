@@ -37,5 +37,14 @@ namespace app
 		VkShaderModule tessControlShaderModule{VK_NULL_HANDLE};
 		VkShaderModule tessEvaluationShaderModule{VK_NULL_HANDLE};
 		VkShaderModule fragmentShaderModule{VK_NULL_HANDLE};
+		
+		PFN_vkDebugReportCallbackEXT debugCallbackPtr{nullptr};
+		VkDebugReportCallbackEXT debugCallback{VK_NULL_HANDLE};
+		
+		VkRenderPass renderPass{VK_NULL_HANDLE};
+		VkDescriptorSetLayout descriptorSetLayout{VK_NULL_HANDLE};
+		VkPipelineLayout pipelineLayout{VK_NULL_HANDLE};
+		VkPipeline graphicsPipelineWireframe{VK_NULL_HANDLE};
+		VkPipeline graphicsPipelineSolid{VK_NULL_HANDLE};
 	};
 }

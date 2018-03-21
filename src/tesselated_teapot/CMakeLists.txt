@@ -9,8 +9,14 @@ add_executable(tesselated_teapot "")
 target_sources(tesselated_teapot PRIVATE
         src/app/App.h
         src/app/AppData.h
+        src/app/clear.cpp
+        src/app/create_debug_report_callback.cpp
+        src/app/create_descriptor_set_layout.cpp
+        src/app/create_graphics_pipelines.cpp
         src/app/create_instance.cpp
         src/app/create_logical_device.cpp
+        src/app/create_pipeline_layout.cpp
+        src/app/create_render_pass.cpp
         src/app/create_shader_modules.cpp
         src/app/create_surface.cpp
         src/app/create_window.cpp
