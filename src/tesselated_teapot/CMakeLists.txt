@@ -14,17 +14,38 @@ target_sources(tesselated_teapot PRIVATE
         src/app/create_descriptor_set_layout.cpp
         src/app/create_frame_buffers.cpp
         src/app/create_graphics_pipelines.cpp
+        src/app/create_index_buffer.cpp
         src/app/create_instance.cpp
         src/app/create_logical_device.cpp
+        src/app/create_matrices_buffer.cpp
+        src/app/create_patches_buffer.cpp
         src/app/create_pipeline_layout.cpp
+        src/app/create_positions_buffer.cpp
         src/app/create_render_pass.cpp
         src/app/create_shader_modules.cpp
         src/app/create_surface.cpp
         src/app/create_swap_chain.h
         src/app/create_window.cpp
+        src/app/get_device_qeues.cpp
         src/app/get_physical_device.cpp
         src/app/get_required_window_extensions.cpp
 
+        src/details/device_local_buffer/allocate_command_buffer.cpp
+        src/details/device_local_buffer/bind_device_local_buffer_and_memory.cpp
+        src/details/device_local_buffer/bind_staging_buffer_and_memory.cpp
+        src/details/device_local_buffer/copy_buffer.cpp
+        src/details/device_local_buffer/copy_data_to_staging_buffer.cpp
+        src/details/device_local_buffer/create_copy_command_pool.cpp
+        src/details/device_local_buffer/create_device_local_buffer.cpp
+        src/details/device_local_buffer/create_device_local_buffer_with_data.cpp
+        src/details/device_local_buffer/create_device_local_buffer_with_data.h
+        src/details/device_local_buffer/create_device_local_device_memory.cpp
+        src/details/device_local_buffer/create_staging_buffer.cpp
+        src/details/device_local_buffer/create_staging_device_memory.cpp
+        src/details/device_local_buffer/find_device_local_buffer_memory_type.cpp
+        src/details/device_local_buffer/find_staging_buffer_memory_type.cpp
+        src/details/vk_raii/VkRaii.h
+        src/details/calculate_total_buffers_size.cpp
         src/details/check_device_suitability.cpp
         src/details/check_required_device_extensions.cpp
         src/details/create_frame_buffers.cpp

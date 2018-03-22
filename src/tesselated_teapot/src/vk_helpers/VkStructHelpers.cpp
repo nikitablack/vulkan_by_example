@@ -1,3 +1,5 @@
+#include "VkStructHelpers.h"
+
 #include <cassert>
 #include <vector>
 #include <vulkan/vulkan.h>
@@ -6,8 +8,8 @@ using namespace std;
 
 namespace vk_helpers
 {
-	VkInstanceCreateInfo get_instance_create_info(vector<char const *> const * const extensions = nullptr,
-	                                              vector<char const *> const * const layers = nullptr)
+	VkInstanceCreateInfo get_instance_create_info(vector<char const *> const * const extensions,
+	                                              vector<char const *> const * const layers)
 	{
 		VkInstanceCreateInfo info{};
 		info.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
@@ -103,8 +105,8 @@ namespace vk_helpers
 		return ref;
 	}
 	
-	VkSubpassDescription get_subpass_description(vector<VkAttachmentReference> const * const colorAttachments = nullptr,
-	                                             VkAttachmentReference const * const depthStencilAttachment = nullptr)
+	VkSubpassDescription get_subpass_description(vector<VkAttachmentReference> const * const colorAttachments,
+	                                             VkAttachmentReference const * const depthStencilAttachment)
 	{
 		VkSubpassDescription desc{};
 		desc.flags = 0;
@@ -122,8 +124,8 @@ namespace vk_helpers
 	}
 	
 	VkRenderPassCreateInfo get_render_pass_create_info(vector<VkSubpassDescription> const * const subpasses,
-	                                                   vector<VkAttachmentDescription> const * const attachments = nullptr,
-	                                                   vector<VkSubpassDependency> const * const dependencies = nullptr)
+	                                                   vector<VkAttachmentDescription> const * const attachments,
+	                                                   vector<VkSubpassDependency> const * const dependencies)
 	{
 		assert(subpasses != nullptr && !subpasses->empty());
 		
@@ -144,7 +146,7 @@ namespace vk_helpers
 	VkDescriptorSetLayoutBinding get_descriptor_set_layout_binding(VkDescriptorType const descriptorType,
 	                                                               uint32_t const binding,
 	                                                               VkShaderStageFlags const stageFlags,
-	                                                               uint32_t const descriptorCount = 1)
+	                                                               uint32_t const descriptorCount)
 	{
 		VkDescriptorSetLayoutBinding info{};
 		info.binding = binding;
@@ -156,7 +158,7 @@ namespace vk_helpers
 		return info;
 	}
 	
-	VkDescriptorSetLayoutCreateInfo get_descriptor_set_layout_create_info(vector<VkDescriptorSetLayoutBinding> const * const bindings = nullptr)
+	VkDescriptorSetLayoutCreateInfo get_descriptor_set_layout_create_info(vector<VkDescriptorSetLayoutBinding> const * const bindings)
 	{
 		VkDescriptorSetLayoutCreateInfo info{};
 		info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
@@ -168,7 +170,7 @@ namespace vk_helpers
 		return info;
 	}
 	
-	VkPushConstantRange get_push_constant_range(VkShaderStageFlags const stageFlags, uint32_t const size, uint32_t const offset = 0)
+	VkPushConstantRange get_push_constant_range(VkShaderStageFlags const stageFlags, uint32_t const size, uint32_t const offset)
 	{
 		VkPushConstantRange range{};
 		range.stageFlags = stageFlags;
@@ -178,8 +180,8 @@ namespace vk_helpers
 		return range;
 	}
 	
-	VkPipelineLayoutCreateInfo get_pipeline_layout_create_info(vector<VkDescriptorSetLayout> const * const setLayouts = nullptr,
-	                                                           vector<VkPushConstantRange> const * const pushConstantRanges = nullptr)
+	VkPipelineLayoutCreateInfo get_pipeline_layout_create_info(vector<VkDescriptorSetLayout> const * const setLayouts,
+	                                                           vector<VkPushConstantRange> const * const pushConstantRanges)
 	{
 		VkPipelineLayoutCreateInfo info{};
 		info.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
@@ -217,7 +219,7 @@ namespace vk_helpers
 		return desc;
 	}
 	
-	VkVertexInputAttributeDescription get_vertex_input_attribute_description(uint32_t const location, uint32_t const binding, VkFormat const format, uint32_t const offset = 0)
+	VkVertexInputAttributeDescription get_vertex_input_attribute_description(uint32_t const location, uint32_t const binding, VkFormat const format, uint32_t const offset)
 	{
 		VkVertexInputAttributeDescription desc{};
 		desc.location = location;
@@ -228,8 +230,8 @@ namespace vk_helpers
 		return desc;
 	}
 	
-	VkPipelineVertexInputStateCreateInfo get_pipeline_vertex_input_state_create_info(vector<VkVertexInputBindingDescription> const * const vertexInputBindings = nullptr,
-	                                                                                 vector<VkVertexInputAttributeDescription> const  * const vertexInputAttributes = nullptr)
+	VkPipelineVertexInputStateCreateInfo get_pipeline_vertex_input_state_create_info(vector<VkVertexInputBindingDescription> const * const vertexInputBindings,
+	                                                                                 vector<VkVertexInputAttributeDescription> const  * const vertexInputAttributes)
 	{
 		VkPipelineVertexInputStateCreateInfo info{};
 		info.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
@@ -243,7 +245,7 @@ namespace vk_helpers
 		return info;
 	}
 	
-	VkPipelineInputAssemblyStateCreateInfo get_pipeline_input_assembly_state_create_info(VkPrimitiveTopology const topology = VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST)
+	VkPipelineInputAssemblyStateCreateInfo get_pipeline_input_assembly_state_create_info(VkPrimitiveTopology const topology)
 	{
 		VkPipelineInputAssemblyStateCreateInfo info{};
 		info.sType = VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;
@@ -255,8 +257,8 @@ namespace vk_helpers
 		return info;
 	}
 	
-	VkPipelineRasterizationStateCreateInfo get_pipeline_rasterization_state_create_info(VkPolygonMode const polygonMode = VK_POLYGON_MODE_FILL,
-	                                                                                    VkCullModeFlags const cullMode = VK_CULL_MODE_BACK_BIT)
+	VkPipelineRasterizationStateCreateInfo get_pipeline_rasterization_state_create_info(VkPolygonMode const polygonMode,
+	                                                                                    VkCullModeFlags const cullMode)
 	{
 		VkPipelineRasterizationStateCreateInfo info{};
 		info.sType = VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
@@ -358,7 +360,7 @@ namespace vk_helpers
 		return state;
 	}
 	
-	VkPipelineColorBlendStateCreateInfo get_pipeline_color_blend_state_create_info(vector<VkPipelineColorBlendAttachmentState> const * const colorBlendAttachments = nullptr)
+	VkPipelineColorBlendStateCreateInfo get_pipeline_color_blend_state_create_info(vector<VkPipelineColorBlendAttachmentState> const * const colorBlendAttachments)
 	{
 		VkPipelineColorBlendStateCreateInfo info{};
 		info.sType = VK_STRUCTURE_TYPE_PIPELINE_COLOR_BLEND_STATE_CREATE_INFO;
@@ -382,13 +384,13 @@ namespace vk_helpers
 	                                                               VkPipelineVertexInputStateCreateInfo const * const  vertexInputState,
 	                                                               VkPipelineInputAssemblyStateCreateInfo const * const inputAssemblyState,
 	                                                               VkPipelineRasterizationStateCreateInfo const * const rasterizationState,
-	                                                               VkPipelineViewportStateCreateInfo const * const viewportState = nullptr,
-	                                                               VkPipelineMultisampleStateCreateInfo const * const multisampleState = nullptr,
-	                                                               VkPipelineTessellationStateCreateInfo const * const tesselationState = nullptr,
-	                                                               VkPipelineColorBlendStateCreateInfo const * const colorBlendState = nullptr,
-	                                                               VkPipelineDepthStencilStateCreateInfo const * const depthStencilState = nullptr,
-	                                                               VkPipelineCreateFlags const flags = 0,
-	                                                               VkPipeline const basePipelineHandle = VK_NULL_HANDLE)
+	                                                               VkPipelineViewportStateCreateInfo const * const viewportState,
+	                                                               VkPipelineMultisampleStateCreateInfo const * const multisampleState,
+	                                                               VkPipelineTessellationStateCreateInfo const * const tesselationState,
+	                                                               VkPipelineColorBlendStateCreateInfo const * const colorBlendState,
+	                                                               VkPipelineDepthStencilStateCreateInfo const * const depthStencilState,
+	                                                               VkPipelineCreateFlags const flags,
+	                                                               VkPipeline const basePipelineHandle)
 	{
 		assert(shaderStages && !shaderStages->empty());
 		assert(vertexInputState);
@@ -468,7 +470,7 @@ namespace vk_helpers
 	VkFramebufferCreateInfo get_frame_buffer_create_info(VkRenderPass const renderPass,
 	                                                     uint32_t const width,
 	                                                     uint32_t const height,
-	                                                     vector<VkImageView > const * const attachments = nullptr)
+	                                                     vector<VkImageView > const * const attachments)
 	{
 		VkFramebufferCreateInfo info{};
 		info.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
@@ -480,6 +482,132 @@ namespace vk_helpers
 		info.width = width;
 		info.height = height;
 		info.layers = 1;
+		
+		return info;
+	}
+	
+	VkBufferCreateInfo get_buffer_create_info(VkDeviceSize const size, VkBufferUsageFlags const usage)
+	{
+		VkBufferCreateInfo info{};
+		info.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
+		info.pNext = nullptr;
+		info.flags = 0;
+		info.size = size;
+		info.usage = usage;
+		info.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
+		info.queueFamilyIndexCount = 0;
+		info.pQueueFamilyIndices = nullptr;
+		
+		return info;
+	}
+	
+	VkMemoryAllocateInfo get_memory_allocate_info(VkDeviceSize const allocationSize, uint32_t const memoryTypeIndex)
+	{
+		VkMemoryAllocateInfo info{};
+		info.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
+		info.pNext = nullptr;
+		info.allocationSize = allocationSize;
+		info.memoryTypeIndex = memoryTypeIndex;
+		
+		return info;
+	}
+	
+	VkMappedMemoryRange get_mapped_memory_range(VkDeviceMemory const memory, VkDeviceSize const size, VkDeviceSize const offset)
+	{
+		VkMappedMemoryRange range{};
+		range.sType = VK_STRUCTURE_TYPE_MAPPED_MEMORY_RANGE;
+		range.pNext = nullptr;
+		range.memory = memory;
+		range.offset = offset;
+		range.size = size;
+		
+		return range;
+	}
+	
+	VkCommandPoolCreateInfo get_command_pool_create_info(uint32_t const queueFamilyIndex, VkCommandPoolCreateFlags const flags)
+	{
+		VkCommandPoolCreateInfo info{};
+		info.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
+		info.pNext = nullptr;
+		info.flags = flags;
+		info.queueFamilyIndex = queueFamilyIndex;
+		
+		return info;
+	}
+	
+	VkCommandBufferAllocateInfo get_command_buffer_allocate_info(VkCommandPool const commandPool, uint32_t const commandBufferCount)
+	{
+		VkCommandBufferAllocateInfo info{};
+		info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+		info.pNext = nullptr;
+		info.commandPool = commandPool;
+		info.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
+		info.commandBufferCount = commandBufferCount;
+		
+		return info;
+	}
+	
+	VkCommandBufferBeginInfo get_command_buffer_begin_info(VkCommandBufferUsageFlags const flags)
+	{
+		VkCommandBufferBeginInfo info{};
+		info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+		info.pNext = nullptr;
+		info.flags = flags;
+		info.pInheritanceInfo = nullptr;
+		
+		return info;
+	}
+	
+	VkBufferMemoryBarrier get_buffer_memory_barrier(VkBuffer const buffer,
+	                                                VkAccessFlags const srcAccessMask,
+	                                                VkAccessFlags const dstAccessMask,
+	                                                VkDeviceSize const size,
+	                                                VkDeviceSize const offset,
+	                                                uint32_t const srcQueueFamilyIndex,
+	                                                uint32_t const dstQueueFamilyIndex)
+	{
+		VkBufferMemoryBarrier barrier{};
+		barrier.sType = VK_STRUCTURE_TYPE_BUFFER_MEMORY_BARRIER;
+		barrier.pNext = nullptr;
+		barrier.srcAccessMask = srcAccessMask;
+		barrier.dstAccessMask = dstAccessMask;
+		barrier.srcQueueFamilyIndex = srcQueueFamilyIndex;
+		barrier.dstQueueFamilyIndex = dstQueueFamilyIndex;
+		barrier.buffer = buffer;
+		barrier.offset = offset;
+		barrier.size = size;
+		
+		return barrier;
+	}
+	
+	VkBufferCopy get_buffer_copy(VkDeviceSize const size)
+	{
+		VkBufferCopy copy{};
+		copy.srcOffset = 0;
+		copy.dstOffset = 0;
+		copy.size = size;
+		
+		return copy;
+	}
+	
+	VkSubmitInfo get_submit_info(vector<VkCommandBuffer> const * const commandBuffers,
+	                             vector<VkSemaphore> const * const waitSemaphores,
+	                             vector<VkPipelineStageFlags> const * const waitStages,
+	                             vector<VkSemaphore> const * const signalSemaphores)
+	{
+		assert(commandBuffers);
+		assert(waitSemaphores ? (waitStages && waitSemaphores->size() == waitStages->size()) : true);
+		
+		VkSubmitInfo info{};
+		info.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+		info.pNext = nullptr;
+		info.waitSemaphoreCount = waitSemaphores ? static_cast<uint32_t>(waitSemaphores->size()) : 0;
+		info.pWaitSemaphores = waitSemaphores ? waitSemaphores->data() : nullptr;
+		info.pWaitDstStageMask = waitStages ? waitStages->data() : nullptr;
+		info.commandBufferCount = static_cast<uint32_t>(commandBuffers->size());
+		info.pCommandBuffers = commandBuffers->data();
+		info.signalSemaphoreCount = signalSemaphores ? static_cast<uint32_t>(signalSemaphores->size()) : 0;
+		info.pSignalSemaphores = signalSemaphores ? signalSemaphores->data() : nullptr;
 		
 		return info;
 	}

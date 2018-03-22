@@ -24,4 +24,9 @@ namespace app
 	MaybeAppData create_pipeline_layout(AppData appData);
 	MaybeAppData create_graphics_pipelines(AppData appData);
 	MaybeAppData create_frame_buffers(AppData appData);
+	MaybeAppData create_matrices_buffers(AppData appData);
+	AppData get_device_qeues(AppData appData);
+	MaybeAppData create_positions_buffer(AppData appData);
+	MaybeAppData create_index_buffer(AppData appData);
+	MaybeAppData create_patches_buffer(AppData appData);
 }

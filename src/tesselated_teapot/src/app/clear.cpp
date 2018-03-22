@@ -15,6 +15,16 @@ namespace app
 	{
 		if(appData.device)
 		{
+			vkDestroyBuffer(appData.device, appData.patchesBuffer, nullptr);
+			vkFreeMemory(appData.device, appData.patchesBufferDeviceMemory, nullptr);
+			vkDestroyBuffer(appData.device, appData.indexBuffer, nullptr);
+			vkFreeMemory(appData.device, appData.indexBufferDeviceMemory, nullptr);
+			vkDestroyBuffer(appData.device, appData.positionsBuffer, nullptr);
+			vkFreeMemory(appData.device, appData.positionsBufferDeviceMemory, nullptr);
+			for_each(appData.modelMatricesBuffers.begin(), appData.modelMatricesBuffers.end(), [&appData](VkBuffer buffer){vkDestroyBuffer(appData.device, buffer, nullptr);});
+			for_each(appData.viewMatricesBuffers.begin(), appData.viewMatricesBuffers.end(), [&appData](VkBuffer buffer){vkDestroyBuffer(appData.device, buffer, nullptr);});
+			for_each(appData.projMatricesBuffers.begin(), appData.projMatricesBuffers.end(), [&appData](VkBuffer buffer){vkDestroyBuffer(appData.device, buffer, nullptr);});
+			vkFreeMemory(appData.device, appData.matricesDeviceMemory, nullptr);
 			for_each(appData.swapChainImageViews.begin(), appData.swapChainImageViews.end(), [&appData](VkImageView imageView){vkDestroyImageView(appData.device, imageView, nullptr);});
 			for_each(appData.swapChainFramebuffers.begin(), appData.swapChainFramebuffers.end(), [&appData](VkFramebuffer framebuffer){vkDestroyFramebuffer(appData.device, framebuffer, nullptr);});
 			vkDestroySwapchainKHR(appData.device, appData.swapChain, nullptr);

@@ -50,5 +50,25 @@ namespace app
 		VkSwapchainKHR swapChain{VK_NULL_HANDLE};
 		std::vector<VkFramebuffer> swapChainFramebuffers{};
 		std::vector<VkImageView> swapChainImageViews{};
+		
+		VkDeviceMemory matricesDeviceMemory{VK_NULL_HANDLE};
+		std::vector<VkBuffer> projMatricesBuffers{};
+		std::vector<VkBuffer> viewMatricesBuffers{};
+		std::vector<VkBuffer> modelMatricesBuffers{};
+		std::vector<VkDeviceSize> projMatricesOffsets{};
+		std::vector<VkDeviceSize> viewMatricesOffsets{};
+		std::vector<VkDeviceSize> modelMatricesOffsets{};
+		
+		VkQueue graphicsQueue{VK_NULL_HANDLE};
+		VkQueue presentQueue{VK_NULL_HANDLE};
+		
+		VkDeviceMemory positionsBufferDeviceMemory{VK_NULL_HANDLE};
+		VkBuffer positionsBuffer{VK_NULL_HANDLE};
+		
+		VkDeviceMemory indexBufferDeviceMemory{VK_NULL_HANDLE};
+		VkBuffer indexBuffer{VK_NULL_HANDLE};
+		
+		VkDeviceMemory patchesBufferDeviceMemory{VK_NULL_HANDLE};
+		VkBuffer patchesBuffer{VK_NULL_HANDLE};
 	};
 }

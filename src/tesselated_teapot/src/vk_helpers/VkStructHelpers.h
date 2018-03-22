@@ -70,4 +70,22 @@ namespace vk_helpers
                                                          uint32_t width,
                                                          uint32_t height,
                                                          std::vector<VkImageView > const * attachments = nullptr);
+    VkBufferCreateInfo get_buffer_create_info(VkDeviceSize size, VkBufferUsageFlags usage);
+    VkMemoryAllocateInfo get_memory_allocate_info(VkDeviceSize allocationSize, uint32_t memoryTypeIndex);
+    VkMappedMemoryRange get_mapped_memory_range(VkDeviceMemory memory, VkDeviceSize size, VkDeviceSize offset = 0);
+    VkCommandPoolCreateInfo get_command_pool_create_info(uint32_t queueFamilyIndex, VkCommandPoolCreateFlags flags = 0);
+    VkCommandBufferAllocateInfo get_command_buffer_allocate_info(VkCommandPool commandPool, uint32_t commandBufferCount = 1);
+    VkCommandBufferBeginInfo get_command_buffer_begin_info(VkCommandBufferUsageFlags flags = 0);
+    VkBufferMemoryBarrier get_buffer_memory_barrier(VkBuffer buffer,
+                                                    VkAccessFlags srcAccessMask,
+                                                    VkAccessFlags dstAccessMask,
+                                                    VkDeviceSize size,
+                                                    VkDeviceSize offset = 0,
+                                                    uint32_t srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED,
+                                                    uint32_t dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED);
+    VkBufferCopy get_buffer_copy(VkDeviceSize size);
+    VkSubmitInfo get_submit_info(std::vector<VkCommandBuffer> const * commandBuffers,
+                                 std::vector<VkSemaphore> const * waitSemaphores = nullptr,
+                                 std::vector<VkPipelineStageFlags> const * waitStages = nullptr,
+                                 std::vector<VkSemaphore> const * signalSemaphores = nullptr);
 }

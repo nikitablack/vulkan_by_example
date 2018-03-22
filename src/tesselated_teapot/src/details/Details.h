@@ -1,5 +1,7 @@
 #pragma once
 
+#include "device_local_buffer/create_device_local_buffer_with_data.h"
+
 #include "tl/expected.hpp"
 
 #include <string>
@@ -37,4 +39,5 @@ namespace details
 	MaybeSwapChainResources get_swap_chain_images(SwapChainImagesResourcesData resourcesData);
 	MaybeSwapChainResources create_image_views(SwapChainImagesResourcesData resourcesData);
 	MaybeSwapChainResources create_frame_buffers(SwapChainImagesResourcesData resourcesData);
+	VkDeviceSize calculate_total_buffers_size(VkDevice device, std::vector<VkBuffer> const & buffers);
 }

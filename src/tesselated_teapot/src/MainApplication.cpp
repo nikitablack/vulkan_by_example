@@ -75,7 +75,12 @@ MainApplication::MainApplication(uint32_t const windowWidth, uint32_t const wind
 	                          .and_then(create_pipeline_layout)
 	                          .and_then(create_graphics_pipelines)
 	                          .and_then(create_swap_chain<3>)
-	                          .and_then(create_frame_buffers)};
+	                          .and_then(create_frame_buffers)
+	                          .and_then(create_matrices_buffers)
+	                          .map(get_device_qeues)
+	                          .and_then(create_positions_buffer)
+	                          .and_then(create_index_buffer)
+	                          .and_then(create_patches_buffer)};
 	
 	if (!maybeAppData)
 		throw runtime_error{maybeAppData.error()};
