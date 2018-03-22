@@ -468,7 +468,7 @@ namespace vk_helpers
 	VkFramebufferCreateInfo get_frame_buffer_create_info(VkRenderPass const renderPass,
 	                                                     uint32_t const width,
 	                                                     uint32_t const height,
-	                                                     vector<VkImageView > const * const attachments = nullptr)
+	                                                     vector<VkImageView > const * const attachments)
 	{
 		VkFramebufferCreateInfo info{};
 		info.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
