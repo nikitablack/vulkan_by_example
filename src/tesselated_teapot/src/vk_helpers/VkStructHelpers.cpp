@@ -6,8 +6,8 @@ using namespace std;
 
 namespace vk_helpers
 {
-	VkInstanceCreateInfo get_instance_create_info(vector<char const *> const * const extensions = nullptr,
-	                                              vector<char const *> const * const layers = nullptr)
+	VkInstanceCreateInfo get_instance_create_info(vector<char const *> const * const extensions,
+	                                              vector<char const *> const * const layers)
 	{
 		VkInstanceCreateInfo info{};
 		info.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
