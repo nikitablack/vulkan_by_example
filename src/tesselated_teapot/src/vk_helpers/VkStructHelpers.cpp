@@ -103,8 +103,8 @@ namespace vk_helpers
 		return ref;
 	}
 	
-	VkSubpassDescription get_subpass_description(vector<VkAttachmentReference> const * const colorAttachments = nullptr,
-	                                             VkAttachmentReference const * const depthStencilAttachment = nullptr)
+	VkSubpassDescription get_subpass_description(vector<VkAttachmentReference> const * const colorAttachments,
+	                                             VkAttachmentReference const * const depthStencilAttachment)
 	{
 		VkSubpassDescription desc{};
 		desc.flags = 0;
@@ -122,8 +122,8 @@ namespace vk_helpers
 	}
 	
 	VkRenderPassCreateInfo get_render_pass_create_info(vector<VkSubpassDescription> const * const subpasses,
-	                                                   vector<VkAttachmentDescription> const * const attachments = nullptr,
-	                                                   vector<VkSubpassDependency> const * const dependencies = nullptr)
+	                                                   vector<VkAttachmentDescription> const * const attachments,
+	                                                   vector<VkSubpassDependency> const * const dependencies)
 	{
 		assert(subpasses != nullptr && !subpasses->empty());
 		
@@ -144,7 +144,7 @@ namespace vk_helpers
 	VkDescriptorSetLayoutBinding get_descriptor_set_layout_binding(VkDescriptorType const descriptorType,
 	                                                               uint32_t const binding,
 	                                                               VkShaderStageFlags const stageFlags,
-	                                                               uint32_t const descriptorCount = 1)
+	                                                               uint32_t const descriptorCount)
 	{
 		VkDescriptorSetLayoutBinding info{};
 		info.binding = binding;
@@ -156,7 +156,7 @@ namespace vk_helpers
 		return info;
 	}
 	
-	VkDescriptorSetLayoutCreateInfo get_descriptor_set_layout_create_info(vector<VkDescriptorSetLayoutBinding> const * const bindings = nullptr)
+	VkDescriptorSetLayoutCreateInfo get_descriptor_set_layout_create_info(vector<VkDescriptorSetLayoutBinding> const * const bindings)
 	{
 		VkDescriptorSetLayoutCreateInfo info{};
 		info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
@@ -168,7 +168,7 @@ namespace vk_helpers
 		return info;
 	}
 	
-	VkPushConstantRange get_push_constant_range(VkShaderStageFlags const stageFlags, uint32_t const size, uint32_t const offset = 0)
+	VkPushConstantRange get_push_constant_range(VkShaderStageFlags const stageFlags, uint32_t const size, uint32_t const offset)
 	{
 		VkPushConstantRange range{};
 		range.stageFlags = stageFlags;
@@ -178,8 +178,8 @@ namespace vk_helpers
 		return range;
 	}
 	
-	VkPipelineLayoutCreateInfo get_pipeline_layout_create_info(vector<VkDescriptorSetLayout> const * const setLayouts = nullptr,
-	                                                           vector<VkPushConstantRange> const * const pushConstantRanges = nullptr)
+	VkPipelineLayoutCreateInfo get_pipeline_layout_create_info(vector<VkDescriptorSetLayout> const * const setLayouts,
+	                                                           vector<VkPushConstantRange> const * const pushConstantRanges)
 	{
 		VkPipelineLayoutCreateInfo info{};
 		info.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
@@ -217,7 +217,7 @@ namespace vk_helpers
 		return desc;
 	}
 	
-	VkVertexInputAttributeDescription get_vertex_input_attribute_description(uint32_t const location, uint32_t const binding, VkFormat const format, uint32_t const offset = 0)
+	VkVertexInputAttributeDescription get_vertex_input_attribute_description(uint32_t const location, uint32_t const binding, VkFormat const format, uint32_t const offset)
 	{
 		VkVertexInputAttributeDescription desc{};
 		desc.location = location;
@@ -228,8 +228,8 @@ namespace vk_helpers
 		return desc;
 	}
 	
-	VkPipelineVertexInputStateCreateInfo get_pipeline_vertex_input_state_create_info(vector<VkVertexInputBindingDescription> const * const vertexInputBindings = nullptr,
-	                                                                                 vector<VkVertexInputAttributeDescription> const  * const vertexInputAttributes = nullptr)
+	VkPipelineVertexInputStateCreateInfo get_pipeline_vertex_input_state_create_info(vector<VkVertexInputBindingDescription> const * const vertexInputBindings,
+	                                                                                 vector<VkVertexInputAttributeDescription> const  * const vertexInputAttributes)
 	{
 		VkPipelineVertexInputStateCreateInfo info{};
 		info.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
@@ -243,7 +243,7 @@ namespace vk_helpers
 		return info;
 	}
 	
-	VkPipelineInputAssemblyStateCreateInfo get_pipeline_input_assembly_state_create_info(VkPrimitiveTopology const topology = VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST)
+	VkPipelineInputAssemblyStateCreateInfo get_pipeline_input_assembly_state_create_info(VkPrimitiveTopology const topology)
 	{
 		VkPipelineInputAssemblyStateCreateInfo info{};
 		info.sType = VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;
@@ -255,8 +255,8 @@ namespace vk_helpers
 		return info;
 	}
 	
-	VkPipelineRasterizationStateCreateInfo get_pipeline_rasterization_state_create_info(VkPolygonMode const polygonMode = VK_POLYGON_MODE_FILL,
-	                                                                                    VkCullModeFlags const cullMode = VK_CULL_MODE_BACK_BIT)
+	VkPipelineRasterizationStateCreateInfo get_pipeline_rasterization_state_create_info(VkPolygonMode const polygonMode,
+	                                                                                    VkCullModeFlags const cullMode)
 	{
 		VkPipelineRasterizationStateCreateInfo info{};
 		info.sType = VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
@@ -358,7 +358,7 @@ namespace vk_helpers
 		return state;
 	}
 	
-	VkPipelineColorBlendStateCreateInfo get_pipeline_color_blend_state_create_info(vector<VkPipelineColorBlendAttachmentState> const * const colorBlendAttachments = nullptr)
+	VkPipelineColorBlendStateCreateInfo get_pipeline_color_blend_state_create_info(vector<VkPipelineColorBlendAttachmentState> const * const colorBlendAttachments)
 	{
 		VkPipelineColorBlendStateCreateInfo info{};
 		info.sType = VK_STRUCTURE_TYPE_PIPELINE_COLOR_BLEND_STATE_CREATE_INFO;
@@ -382,13 +382,13 @@ namespace vk_helpers
 	                                                               VkPipelineVertexInputStateCreateInfo const * const  vertexInputState,
 	                                                               VkPipelineInputAssemblyStateCreateInfo const * const inputAssemblyState,
 	                                                               VkPipelineRasterizationStateCreateInfo const * const rasterizationState,
-	                                                               VkPipelineViewportStateCreateInfo const * const viewportState = nullptr,
-	                                                               VkPipelineMultisampleStateCreateInfo const * const multisampleState = nullptr,
-	                                                               VkPipelineTessellationStateCreateInfo const * const tesselationState = nullptr,
-	                                                               VkPipelineColorBlendStateCreateInfo const * const colorBlendState = nullptr,
-	                                                               VkPipelineDepthStencilStateCreateInfo const * const depthStencilState = nullptr,
-	                                                               VkPipelineCreateFlags const flags = 0,
-	                                                               VkPipeline const basePipelineHandle = VK_NULL_HANDLE)
+	                                                               VkPipelineViewportStateCreateInfo const * const viewportState,
+	                                                               VkPipelineMultisampleStateCreateInfo const * const multisampleState,
+	                                                               VkPipelineTessellationStateCreateInfo const * const tesselationState,
+	                                                               VkPipelineColorBlendStateCreateInfo const * const colorBlendState,
+	                                                               VkPipelineDepthStencilStateCreateInfo const * const depthStencilState,
+	                                                               VkPipelineCreateFlags const flags,
+	                                                               VkPipeline const basePipelineHandle)
 	{
 		assert(shaderStages && !shaderStages->empty());
 		assert(vertexInputState);
