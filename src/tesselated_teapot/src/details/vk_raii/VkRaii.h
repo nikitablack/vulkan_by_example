@@ -58,17 +58,17 @@ namespace details
 		std::function<void(T &)> m_deleter;
 	};
 	
-	inline auto getBufferDeleter(VkDevice device)
+	inline auto getBufferDeleter(VkDevice const device)
 	{
 		return [device](VkBuffer buffer) {if (device) vkDestroyBuffer(device, buffer, nullptr); };
 	}
 	
-	inline auto getDeviceMemoryDeleter(VkDevice device)
+	inline auto getDeviceMemoryDeleter(VkDevice const device)
 	{
 		return [device](VkDeviceMemory deviceMemory) {if (device) vkFreeMemory(device, deviceMemory, nullptr); };
 	}
 	
-	inline auto getCommandPoolDeleter(VkDevice device)
+	inline auto getCommandPoolDeleter(VkDevice const device)
 	{
 		return [device](VkCommandPool commandPool) {if (device) vkDestroyCommandPool(device, commandPool, nullptr); };
 	}
