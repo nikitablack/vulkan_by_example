@@ -2,9 +2,6 @@
 
 #include "device_local_buffer/create_device_local_buffer_with_data.h"
 
-#include "tl/expected.hpp"
-
-#include <string>
 #include <utility>
 #include <vector>
 #include <vulkan/vulkan.hpp>
