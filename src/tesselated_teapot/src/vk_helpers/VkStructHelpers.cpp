@@ -611,4 +611,94 @@ namespace vk_helpers
 		
 		return info;
 	}
+	
+	VkSemaphoreCreateInfo get_semaphore_create_info()
+	{
+		VkSemaphoreCreateInfo info{};
+		info.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
+		info.pNext = nullptr;
+		info.flags = 0;
+		
+		return info;
+	}
+	
+	VkFenceCreateInfo get_fence_create_info(VkFenceCreateFlags const flags)
+	{
+		VkFenceCreateInfo info{};
+		info.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
+		info.pNext = nullptr;
+		info.flags = flags;
+		
+		return info;
+	}
+	
+	VkDescriptorPoolSize get_descriptor_pool_size(VkDescriptorType const type, uint32_t const descriptorCount)
+	{
+		VkDescriptorPoolSize size{};
+		size.type = type;
+		size.descriptorCount = descriptorCount;
+		
+		return size;
+	}
+	
+	VkDescriptorPoolCreateInfo get_descriptor_pool_create_info(uint32_t const maxSets, vector<VkDescriptorPoolSize> const * const pollSizes)
+	{
+		assert(pollSizes && pollSizes->size() > 0);
+		
+		VkDescriptorPoolCreateInfo info{};
+		info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
+		info.pNext = nullptr;
+		info.flags = 0;
+		info.maxSets = maxSets;
+		info.poolSizeCount = static_cast<uint32_t>(pollSizes->size());
+		info.pPoolSizes = pollSizes->data();
+		
+		return info;
+	}
+	
+	VkDescriptorSetAllocateInfo get_descriptor_set_allocate_info(VkDescriptorPool const descriptorPool, vector<VkDescriptorSetLayout> const * const layouts)
+	{
+		assert(layouts && layouts->size() > 0);
+		
+		VkDescriptorSetAllocateInfo info{};
+		info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
+		info.pNext = nullptr;
+		info.descriptorPool = descriptorPool;
+		info.descriptorSetCount = static_cast<uint32_t>(layouts->size());
+		info.pSetLayouts = layouts->data();
+		
+		return info;
+	}
+	
+	VkDescriptorBufferInfo get_descriptor_buffer_info(VkBuffer const buffer, VkDeviceSize const range, VkDeviceSize const offset)
+	{
+		VkDescriptorBufferInfo info{};
+		info.buffer = buffer;
+		info.offset = offset;
+		info.range = range;
+		
+		return info;
+	}
+	
+	VkWriteDescriptorSet get_write_descriptor_set(VkDescriptorSet const dstSet,
+	                                              uint32_t const dstBinding,
+	                                              VkDescriptorType const descriptorType,
+	                                              vector<VkDescriptorBufferInfo> const * const bufferInfos)
+	{
+		assert(bufferInfos && bufferInfos->size() > 0);
+		
+		VkWriteDescriptorSet set{};
+		set.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+		set.pNext = nullptr;
+		set.dstSet = dstSet;
+		set.dstBinding = dstBinding;
+		set.dstArrayElement = 0;
+		set.descriptorCount = static_cast<uint32_t>(bufferInfos->size());
+		set.descriptorType = descriptorType;
+		set.pImageInfo = nullptr;
+		set.pBufferInfo = bufferInfos->data();
+		set.pTexelBufferView = nullptr;
+		
+		return set;
+	}
 }

@@ -15,6 +15,13 @@ namespace app
 	{
 		if(appData.device)
 		{
+			vkDestroyDescriptorPool(appData.device, appData.descriptorPool, nullptr);
+			for_each(appData.commandBufferFences.begin(), appData.commandBufferFences.end(), [&appData](VkFence fence){vkDestroyFence(appData.device, fence, nullptr);});
+			vkDestroySemaphore(appData.device, appData.renderFinishedSemaphore, nullptr);
+			vkDestroySemaphore(appData.device, appData.imageAvailableSemaphore, nullptr);
+			vkDestroyCommandPool(appData.device, appData.commandPoolRender, nullptr);
+			vkDestroyCommandPool(appData.device, appData.commandPoolPushConstants, nullptr);
+			vkDestroyCommandPool(appData.device, appData.commandPoolMatrices, nullptr);
 			vkDestroyBuffer(appData.device, appData.patchesBuffer, nullptr);
 			vkFreeMemory(appData.device, appData.patchesBufferDeviceMemory, nullptr);
 			vkDestroyBuffer(appData.device, appData.indexBuffer, nullptr);

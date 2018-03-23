@@ -7,11 +7,16 @@ find_package(Vulkan REQUIRED)
 add_executable(tesselated_teapot "")
 
 target_sources(tesselated_teapot PRIVATE
+        src/app/allocate_command_buffers.cpp
+        src/app/allocate_descriptor_sets.cpp
         src/app/App.h
         src/app/AppData.h
         src/app/clear.cpp
+        src/app/create_command_pools.cpp
         src/app/create_debug_report_callback.cpp
+        src/app/create_descriptor_pool.cpp
         src/app/create_descriptor_set_layout.cpp
+        src/app/create_fences.cpp
         src/app/create_frame_buffers.cpp
         src/app/create_graphics_pipelines.cpp
         src/app/create_index_buffer.cpp
@@ -21,6 +26,7 @@ target_sources(tesselated_teapot PRIVATE
         src/app/create_patches_buffer.cpp
         src/app/create_pipeline_layout.cpp
         src/app/create_positions_buffer.cpp
+        src/app/create_present_semaphores.cpp
         src/app/create_render_pass.cpp
         src/app/create_shader_modules.cpp
         src/app/create_surface.cpp
@@ -29,6 +35,7 @@ target_sources(tesselated_teapot PRIVATE
         src/app/get_device_qeues.cpp
         src/app/get_physical_device.cpp
         src/app/get_required_window_extensions.cpp
+        src/app/update_descriptor_set.cpp
 
         src/details/device_local_buffer/allocate_command_buffer.cpp
         src/details/device_local_buffer/bind_device_local_buffer_and_memory.cpp

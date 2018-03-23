@@ -70,5 +70,21 @@ namespace app
 		
 		VkDeviceMemory patchesBufferDeviceMemory{VK_NULL_HANDLE};
 		VkBuffer patchesBuffer{VK_NULL_HANDLE};
+		
+		VkCommandPool commandPoolRender{VK_NULL_HANDLE};
+		VkCommandPool commandPoolPushConstants{VK_NULL_HANDLE};
+		VkCommandPool commandPoolMatrices{VK_NULL_HANDLE};
+		std::vector<VkCommandBuffer> commandBuffersWireframe{};
+		std::vector<VkCommandBuffer> commandBuffersSolid{};
+		std::vector<VkCommandBuffer> const * currCommandBuffer{nullptr};
+		std::vector<VkCommandBuffer> commandBuffersPushConstants{};
+		
+		VkSemaphore imageAvailableSemaphore{VK_NULL_HANDLE};
+		VkSemaphore renderFinishedSemaphore{VK_NULL_HANDLE};
+		
+		std::vector<VkFence> commandBufferFences{};
+		
+		VkDescriptorPool descriptorPool{VK_NULL_HANDLE};
+		std::vector<VkDescriptorSet> descriptorSets{};
 	};
 }

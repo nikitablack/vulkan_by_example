@@ -80,7 +80,14 @@ MainApplication::MainApplication(uint32_t const windowWidth, uint32_t const wind
 	                          .map(get_device_qeues)
 	                          .and_then(create_positions_buffer)
 	                          .and_then(create_index_buffer)
-	                          .and_then(create_patches_buffer)};
+	                          .and_then(create_patches_buffer)
+	                          .and_then(create_command_pools)
+	                          .and_then(allocate_command_buffers)
+	                          .and_then(create_present_semaphores)
+	                          .and_then(create_fences)
+	                          .and_then(create_descriptor_pool)
+	                          .and_then(allocate_descriptor_sets)
+	                          .map(update_descriptor_set)};
 	
 	if (!maybeAppData)
 		throw runtime_error{maybeAppData.error()};

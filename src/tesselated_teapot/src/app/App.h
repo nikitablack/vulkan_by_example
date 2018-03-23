@@ -29,4 +29,11 @@ namespace app
 	MaybeAppData create_positions_buffer(AppData appData);
 	MaybeAppData create_index_buffer(AppData appData);
 	MaybeAppData create_patches_buffer(AppData appData);
+	MaybeAppData create_command_pools(AppData appData);
+	MaybeAppData allocate_command_buffers(AppData appData);
+	MaybeAppData create_present_semaphores(AppData appData);
+	MaybeAppData create_fences(AppData appData);
+	MaybeAppData create_descriptor_pool(AppData appData);
+	MaybeAppData allocate_descriptor_sets(AppData appData);
+	AppData update_descriptor_set(AppData appData);
 }
