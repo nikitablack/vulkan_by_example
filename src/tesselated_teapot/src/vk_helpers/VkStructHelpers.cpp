@@ -701,4 +701,42 @@ namespace vk_helpers
 		
 		return set;
 	}
+	
+	VkRenderPassBeginInfo get_render_pass_begin_info(VkRenderPass const renderPass,
+	                                                 VkFramebuffer const framebuffer,
+	                                                 VkExtent2D const renderExtent,
+	                                                 vector<VkClearValue> const * const clearValues)
+	{
+		VkRenderPassBeginInfo info{};
+		info.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
+		info.pNext = nullptr;
+		info.renderPass = renderPass;
+		info.framebuffer = framebuffer;
+		info.renderArea = {{0, 0}, renderExtent};
+		info.clearValueCount = clearValues ? static_cast<uint32_t>(clearValues->size()) : 0;
+		info.pClearValues = clearValues ? clearValues->data() : nullptr;
+		
+		return info;
+	}
+	
+	VkPresentInfoKHR get_present_info_KHR(vector<VkSwapchainKHR > const * const swapChains,
+	                                      vector<uint32_t > const * const imageIndices,
+	                                      vector<VkSemaphore> const * const signalSemaphores)
+	{
+		assert(swapChains && imageIndices);
+		assert(swapChains->size() > 0);
+		assert(swapChains->size() == imageIndices->size());
+		
+		VkPresentInfoKHR info{};
+		info.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
+		info.pNext = nullptr;
+		info.waitSemaphoreCount = signalSemaphores ? static_cast<uint32_t>(signalSemaphores->size()) : 0;
+		info.pWaitSemaphores = signalSemaphores ? signalSemaphores->data() : nullptr;
+		info.swapchainCount = static_cast<uint32_t>(swapChains->size());
+		info.pSwapchains = swapChains->data();
+		info.pImageIndices = imageIndices->data();
+		info.pResults = nullptr;
+		
+		return info;
+	}
 }

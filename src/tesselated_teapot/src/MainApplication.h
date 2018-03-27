@@ -17,4 +17,6 @@ private:
 
 private:
 	app::AppData _appData{};
+	uint32_t _numProjMatrixBuffersToUpdate{0};
+	uint32_t _numViewMatrixBuffersToUpdate{0};
 };

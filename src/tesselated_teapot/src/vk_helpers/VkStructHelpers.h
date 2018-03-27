@@ -98,4 +98,11 @@ namespace vk_helpers
                                                   uint32_t dstBinding,
                                                   VkDescriptorType descriptorType,
                                                   std::vector<VkDescriptorBufferInfo> const * bufferInfos);
+    VkRenderPassBeginInfo get_render_pass_begin_info(VkRenderPass renderPass,
+                                                     VkFramebuffer framebuffer,
+                                                     VkExtent2D renderExtent,
+                                                     std::vector<VkClearValue> const * clearValues = nullptr);
+    VkPresentInfoKHR get_present_info_KHR(std::vector<VkSwapchainKHR > const * swapChains,
+                                          std::vector<uint32_t > const * imageIndices,
+                                          std::vector<VkSemaphore> const * signalSemaphores = nullptr);
 }

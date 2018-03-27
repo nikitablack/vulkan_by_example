@@ -35,7 +35,11 @@ target_sources(tesselated_teapot PRIVATE
         src/app/get_device_qeues.cpp
         src/app/get_physical_device.cpp
         src/app/get_required_window_extensions.cpp
+        src/app/record_rendering_command_buffers.cpp
         src/app/update_descriptor_set.cpp
+        src/app/update_model_matrix.cpp
+        src/app/update_projection_matrix.cpp
+        src/app/update_view_matrix.cpp
 
         src/details/device_local_buffer/allocate_command_buffer.cpp
         src/details/device_local_buffer/bind_device_local_buffer_and_memory.cpp
@@ -58,6 +62,7 @@ target_sources(tesselated_teapot PRIVATE
         src/details/create_frame_buffers.cpp
         src/details/create_image_views.cpp
         src/details/Details.h
+        src/details/get_command_buffer_with_barrier.cpp
         src/details/get_device_graphics_and_present_queue_families.cpp
         src/details/get_device_surface_format.cpp
         src/details/get_device_surface_present_mode.cpp

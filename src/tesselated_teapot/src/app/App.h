@@ -1,5 +1,6 @@
 #pragma once
 
+#include "details/Details.h"
 #include "AppData.h"
 
 #include "tl/expected.hpp"
@@ -36,4 +37,8 @@ namespace app
 	MaybeAppData create_descriptor_pool(AppData appData);
 	MaybeAppData allocate_descriptor_sets(AppData appData);
 	AppData update_descriptor_set(AppData appData);
+	MaybeAppData record_rendering_command_buffers(AppData appData);
+	details::MaybeCommandBuffer update_projection_matrix(AppData const & appData, uint32_t bufferIndex);
+	details::MaybeCommandBuffer update_view_matrix(AppData const & appData, uint32_t bufferIndex);
+	details::MaybeCommandBuffer update_model_matrix(AppData const & appData, uint32_t bufferIndex);
 }
