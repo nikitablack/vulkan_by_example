@@ -1,5 +1,4 @@
-#include <vector>
-#include <vulkan/vulkan.h>
+#include "vk_helpers/VkStructHelpers.h"
 
 using namespace std;
 

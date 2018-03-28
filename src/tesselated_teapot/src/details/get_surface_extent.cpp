@@ -1,9 +1,10 @@
+#include "details/Details.h"
+
 #include "GLFW/glfw3.h"
 
 #include <algorithm>
 #include <cassert>
 #include <limits>
-#include <vulkan/vulkan.h>
 
 using namespace std;
 

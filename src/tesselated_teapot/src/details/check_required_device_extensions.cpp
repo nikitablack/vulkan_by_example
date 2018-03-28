@@ -1,7 +1,7 @@
+#include "details/Details.h"
+
 #include <algorithm>
 #include <cstring>
-#include <vector>
-#include <vulkan/vulkan.h>
 
 using namespace std;
 
