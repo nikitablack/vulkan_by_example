@@ -7,6 +7,8 @@
 #include <vector>
 #include <vulkan/vulkan.hpp>
 
+struct GLFWwindow;
+
 namespace details
 {
 	struct SwapChainImagesResourcesData
@@ -33,7 +35,7 @@ namespace details
 	MaybeQueueFamilies get_device_graphics_and_present_queue_families(VkPhysicalDevice physicalDevice, VkSurfaceKHR surface);
 	bool check_required_device_extensions(VkPhysicalDevice physicalDevice, std::vector<char const *> const & requiredExtensions);
 	bool check_device_suitability(VkPhysicalDevice physicalDevice, std::vector<char const *> const & requiredExtensions);
-	VkExtent2D get_surface_extent(struct GLFWwindow * window, VkSurfaceCapabilitiesKHR const & surfaceCapabilities);
+	VkExtent2D get_surface_extent(GLFWwindow * window, VkSurfaceCapabilitiesKHR const & surfaceCapabilities);
 	MaybeSwapChainResources get_swap_chain_images(SwapChainImagesResourcesData resourcesData);
 	MaybeSwapChainResources create_image_views(SwapChainImagesResourcesData resourcesData);
 	MaybeSwapChainResources create_frame_buffers(SwapChainImagesResourcesData resourcesData);

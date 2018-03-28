@@ -1,6 +1,6 @@
+#include "vk_helpers/VkStructHelpers.h"
+
 #include <cassert>
-#include <vector>
-#include <vulkan/vulkan.h>
 
 using namespace std;
 
