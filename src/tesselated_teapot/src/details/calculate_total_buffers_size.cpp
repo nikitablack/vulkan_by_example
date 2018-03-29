@@ -1,5 +1,4 @@
-#include <vector>
-#include <vulkan/vulkan.h>
+#include "details/Details.h"
 
 using namespace std;
 
