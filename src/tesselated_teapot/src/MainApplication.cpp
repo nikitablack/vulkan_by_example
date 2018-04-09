@@ -42,10 +42,6 @@ MainApplication::MainApplication(uint32_t const windowWidth, uint32_t const wind
 	glfwSetWindowUserPointer(window, &_appData);
 	glfwSetKeyCallback(window, &onKeyPress);
 	
-	_appData.layers.push_back("VK_LAYER_LUNARG_standard_validation");
-	_appData.instanceExtensions.push_back(VK_EXT_DEBUG_REPORT_EXTENSION_NAME);
-	_appData.deviceExtensions.push_back(VK_KHR_SWAPCHAIN_EXTENSION_NAME);
-	
 	MaybeAppData maybeAppData{MaybeAppData{get_required_window_extensions(_appData)}
 	                          .and_then(create_instance)
 	                          .and_then(create_surface)
