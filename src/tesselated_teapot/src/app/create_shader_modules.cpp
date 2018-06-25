@@ -13,19 +13,19 @@ namespace app
 	{
 		assert(appData.device);
 	
-		MaybeShaderModule const maybeVertexShaderModule{create_shader_module(appData.device, "VertexShader.vert.spv")};
+		MaybeShaderModule const maybeVertexShaderModule{create_shader_module(appData.device, "VertexShader.spv")};
 		if(!maybeVertexShaderModule)
 			return make_unexpected(maybeVertexShaderModule.error());
 		
-		MaybeShaderModule const maybeTessControlShaderModule{create_shader_module(appData.device, "TesselationControlShader.tesc.spv")};
+		MaybeShaderModule const maybeTessControlShaderModule{create_shader_module(appData.device, "TesselationControlShader.spv")};
 		if(!maybeTessControlShaderModule)
 			return make_unexpected(maybeTessControlShaderModule.error());
 		
-		MaybeShaderModule const maybeTessEvaluationShaderModule{create_shader_module(appData.device, "TesselationEvaluationShader.tese.spv")};
+		MaybeShaderModule const maybeTessEvaluationShaderModule{create_shader_module(appData.device, "TesselationEvaluationShader.spv")};
 		if(!maybeTessEvaluationShaderModule)
 			return make_unexpected(maybeTessEvaluationShaderModule.error());
 		
-		MaybeShaderModule const maybeFragmentShaderModule{create_shader_module(appData.device, "FragmentShader.frag.spv")};
+		MaybeShaderModule const maybeFragmentShaderModule{create_shader_module(appData.device, "FragmentShader.spv")};
 		if(!maybeFragmentShaderModule)
 			return make_unexpected(maybeFragmentShaderModule.error());
 		
