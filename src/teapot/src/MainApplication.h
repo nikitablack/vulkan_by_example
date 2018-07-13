@@ -13,8 +13,10 @@ public:
 	void run();
 	
 private:
+	MainApplication();
+	
 	void render();
 
 private:
-	app::AppData _appData{};
+	app::AppData m_appData{};
 };
