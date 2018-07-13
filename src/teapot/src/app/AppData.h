@@ -2,6 +2,8 @@
 
 #include "TeapotData.h"
 
+#include "vulkan/vulkan.h"
+
 struct GLFWwindow;
 
 namespace app

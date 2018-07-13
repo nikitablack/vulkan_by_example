@@ -68,6 +68,17 @@ MaybePhysicalDevicesSurfacePresentModes get_physical_device_surface_present_mode
 	return presentModes;
 }
 
+vector<VkQueueFamilyProperties> get_queue_family_properties(VkPhysicalDevice const physicalDevice)
+{
+	uint32_t queueFamilyCount{0};
+	vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice, &queueFamilyCount, nullptr);
+
+	vector<VkQueueFamilyProperties> queueFamilies(queueFamilyCount);
+	vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice, &queueFamilyCount, queueFamilies.data());
+
+	return queueFamilies;
+}
+
 MaybeDevice create_device(VkPhysicalDevice const physicalDevice, vector<uint32_t> const * const queueIndices, vector<vector<float>> const * const queuePriorities, VkPhysicalDeviceFeatures const * const features, vector<char const *> const * const extensions)
 {
 	assert(physicalDevice);

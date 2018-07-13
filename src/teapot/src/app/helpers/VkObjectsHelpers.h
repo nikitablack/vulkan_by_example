@@ -20,6 +20,7 @@ MaybeInstance create_instance(std::vector<char const *> const * extensions = nul
 MaybePhysicalDevices get_physical_devices(VkInstance instance);
 MaybePhysicalDevicesSurfaceFormats get_physical_devices_surface_formats(VkPhysicalDevice physicalDevice, VkSurfaceKHR surface);
 MaybePhysicalDevicesSurfacePresentModes get_physical_device_surface_present_modes(VkPhysicalDevice physicalDevice, VkSurfaceKHR surface);
+std::vector<VkQueueFamilyProperties> get_queue_family_properties(VkPhysicalDevice physicalDevice);
 MaybeDevice create_device(VkPhysicalDevice physicalDevice, std::vector<uint32_t> const * queueIndices, std::vector<std::vector<float>> const * queuePriorities, VkPhysicalDeviceFeatures const * features = nullptr, std::vector<char const *> const * extensions = nullptr);
 MaybeShaderModule create_shader_module(VkDevice device, std::vector<char> const * shaderCode);
 

@@ -21,6 +21,19 @@ MainApplication::MainApplication(uint32_t const windowWidth, uint32_t const wind
 	glfwSetKeyCallback(m_appData.window, &app::on_key_press);
 	glfwSetWindowSizeLimits(m_appData.window, 640, 480, GLFW_DONT_CARE, GLFW_DONT_CARE);
 	glfwSetFramebufferSizeCallback(m_appData.window, app::framebuffer_size_callback);
+
+	app::MaybeAppData mbData{app::MaybeAppData{app::get_required_window_extensions(std::move(m_appData))}
+		.and_then(app::create_instance)
+		.and_then(app::create_surface)
+		.and_then(app::get_physical_device)
+		.and_then(app::create_logical_device)};
+
+	if (!mbData)
+		throw std::runtime_error{mbData.error()};
+
+	m_appData = std::move(*mbData);
+
+	glfwSetWindowUserPointer(m_appData.window, &m_appData);
 }
 
 MainApplication::~MainApplication()

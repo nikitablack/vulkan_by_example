@@ -2,31 +2,30 @@
 #include "app/App.h"
 
 #include <cassert>
-#include <stdexcept>
 
 namespace app
 {
 
-MaybeAppData create_logical_device(AppData appData)
+MaybeAppData create_logical_device(AppData data)
 {
-	assert(appData.physicalDevice);
+	assert(data.physicalDevice);
 	
-	std::vector<uint32_t> queueIndices{appData.graphicsFamilyQueueIndex};
+	std::vector<uint32_t> queueIndices{data.graphicsFamilyQueueIndex};
 	std::vector<std::vector<float>> queueNumAndPriorities{{1.0f}};
 	
-	if(appData.graphicsFamilyQueueIndex != appData.presentFamilyQueueIndex)
+	if(data.graphicsFamilyQueueIndex != data.presentFamilyQueueIndex)
 	{
-		queueIndices.push_back(appData.presentFamilyQueueIndex);
+		queueIndices.push_back(data.presentFamilyQueueIndex);
 		queueNumAndPriorities.push_back({1.0f});
 	}
 	
-	helpers::MaybeDevice const mbDevice{helpers::create_device(appData.physicalDevice, &queueIndices, &queueNumAndPriorities, &appData.physicalDeviceFeatures, &appData.deviceExtensions)};
+	helpers::MaybeDevice const mbDevice{helpers::create_device(data.physicalDevice, &queueIndices, &queueNumAndPriorities, &data.physicalDeviceFeatures, &data.deviceExtensions)};
 	if(!mbDevice)
 		return tl::make_unexpected(mbDevice.error());
 	
-	appData.device = *mbDevice;
+	data.device = *mbDevice;
 	
-	return appData;
+	return data;
 }
 
 } // namespace app

@@ -4,15 +4,15 @@
 namespace app
 {
 
-MaybeAppData create_instance(AppData appData)
+MaybeAppData create_instance(AppData data)
 {
-	helpers::MaybeInstance const mbInstance{helpers::create_instance(&appData.instanceExtensions, &appData.layers)};
+	helpers::MaybeInstance const mbInstance{helpers::create_instance(&data.instanceExtensions, &data.layers)};
 	if(!mbInstance)
 		return tl::make_unexpected(mbInstance.error());
 	
-	appData.instance = *mbInstance;
+	data.instance = *mbInstance;
 	
-	return appData;
+	return data;
 }
 
-}
+} // namespace app

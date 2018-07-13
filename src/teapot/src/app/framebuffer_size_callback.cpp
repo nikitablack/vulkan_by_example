@@ -9,11 +9,11 @@ namespace app
 
 void framebuffer_size_callback(GLFWwindow * const window, int const /*width*/, int const /*height*/)
 {
-	AppData * const appData{static_cast<AppData *>(glfwGetWindowUserPointer(window))};
+	AppData * const data{static_cast<AppData *>(glfwGetWindowUserPointer(window))};
 
-	assert(appData);
+	assert(data);
 	
-	appData->framebufferResized = true;
+	data->framebufferResized = true;
 }
 
 } // namespace app
