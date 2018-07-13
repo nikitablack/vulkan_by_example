@@ -8,7 +8,10 @@ target_sources(tesselated_teapot PRIVATE
         src/app/App.h
         src/app/AppData.h
         src/app/create_window.cpp
-        src/Main.cpp
+        src/app/framebuffer_size_callback.cpp
+        src/app/on_key_press.cpp
+
+        src/main.cpp
         src/MainApplication.cpp
         src/MainApplication.h
         src/TeapotData.h)
@@ -16,6 +19,7 @@ target_sources(tesselated_teapot PRIVATE
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     set(CXXCOMPILEOPTIONS -Wall -ansi -pedantic -Wextra -Wshadow -Weffc++)
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    string(REGEX REPLACE " /W[0-4]" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
     set(CXXCOMPILEOPTIONS /W4)
 endif()
 
