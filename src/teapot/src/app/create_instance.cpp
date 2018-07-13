@@ -1,19 +1,18 @@
-#include "App.h"
-#include "vk_helpers/VkStructHelpers.h"
-
-using namespace std;
-using namespace tl;
-using namespace vk_helpers;
+#include "app/helpers/VkObjectsHelpers.h"
+#include "app/App.h"
 
 namespace app
 {
-	MaybeAppData create_instance(AppData appData)
-	{
-		VkInstanceCreateInfo const createInfo{get_instance_create_info(&appData.instanceExtensions, &appData.layers)};
-		
-		if (vkCreateInstance(&createInfo, nullptr, &appData.instance) != VK_SUCCESS)
-			return make_unexpected("failed to create instance");
-		
-		return appData;
-	}
+
+MaybeAppData create_instance(AppData appData)
+{
+	helpers::MaybeInstance const mbInstance{helpers::create_instance(&appData.instanceExtensions, &appData.layers)};
+	if(!mbInstance)
+		return tl::make_unexpected(mbInstance.error());
+	
+	appData.instance = *mbInstance;
+	
+	return appData;
+}
+
 }

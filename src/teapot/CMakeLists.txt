@@ -7,6 +7,11 @@ find_package(Vulkan REQUIRED)
 add_executable(tesselated_teapot "")
 
 target_sources(tesselated_teapot PRIVATE
+        src/app/helpers/VkObjectsHelpers.cpp
+        src/app/helpers/VkObjectsHelpers.h
+        src/app/helpers/VkStructsHelpers.cpp
+        src/app/helpers/VkStructsHelpers.h
+
         src/app/App.h
         src/app/AppData.h
         src/app/create_instance.cpp
@@ -15,25 +20,11 @@ target_sources(tesselated_teapot PRIVATE
         src/app/create_surface.cpp
         src/app/create_window.cpp
         src/app/framebuffer_size_callback.cpp
+        src/app/get_physical_device.cpp
+        src/app/get_required_window_extensions.cpp
         src/app/on_key_press.cpp
 
         src/main.cpp
-        src/app/get_physical_device.cpp
-        src/app/get_required_window_extensions.cpp
-
-        src/details/check_device_suitability.cpp
-        src/details/check_required_device_extensions.cpp
-        src/details/Details.h
-        src/details/get_device_graphics_and_present_queue_families.cpp
-        src/details/get_device_surface_format.cpp
-        src/details/get_device_surface_present_mode.cpp
-        src/details/get_surface_extent.cpp
-
-        src/vk_helpers/VkObjectsHelper.cpp
-        src/vk_helpers/VkObjectsHelper.h
-        src/vk_helpers/VkStructHelpers.cpp
-        src/vk_helpers/VkStructHelpers.h
-
         src/MainApplication.cpp
         src/MainApplication.h
         src/TeapotData.h)
