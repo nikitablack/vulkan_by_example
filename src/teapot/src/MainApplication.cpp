@@ -26,7 +26,8 @@ MainApplication::MainApplication(uint32_t const windowWidth, uint32_t const wind
 		.and_then(app::create_instance)
 		.and_then(app::create_surface)
 		.and_then(app::get_physical_device)
-		.and_then(app::create_logical_device)};
+		.and_then(app::create_logical_device)
+		.and_then(app::create_shader_modules)};
 
 	if (!mbData)
 		throw std::runtime_error{mbData.error()};

@@ -2,6 +2,38 @@
 #include "app/App.h"
 
 #include <cassert>
+#include <fstream>
+
+using namespace std;
+
+namespace
+{
+	using MaybeShaderData = tl::expected<vector<char>, string>;
+
+	MaybeShaderData load_shader(string const & fileName)
+	{
+		ifstream file{fileName, ios::ate | ios::binary};
+
+		if (!file.is_open())
+			return tl::make_unexpected("failed to open shader file");
+
+		size_t const fileSize{static_cast<size_t>(file.tellg())};
+		vector<char> buffer(fileSize);
+
+		file.seekg(0);
+		file.read(buffer.data(), fileSize);
+
+		file.close();
+
+		if (!file)
+			return tl::make_unexpected("failed to read shader file");
+
+		if (buffer.empty() || buffer.size() % 4 != 0)
+			return tl::make_unexpected("failed to read shader file");
+
+		return buffer;
+	}
+}
 
 namespace app
 {
@@ -10,27 +42,54 @@ MaybeAppData create_shader_modules(AppData data)
 {
 	assert(data.device);
 	
-	/*helpers::MaybeShaderModule const maybeVertexShaderModule{helpers::create_shader_module(appData.device, "VertexShader.vert.spv")};
-	if(!maybeVertexShaderModule)
-		return tl::make_unexpected(maybeVertexShaderModule.error());
-		
-	helpers::MaybeShaderModule const maybeTessControlShaderModule{helpers::create_shader_module(appData.device, "TesselationControlShader.tesc.spv")};
-	if(!maybeTessControlShaderModule)
-		return tl::make_unexpected(maybeTessControlShaderModule.error());
-		
-	helpers::MaybeShaderModule const maybeTessEvaluationShaderModule{helpers::create_shader_module(appData.device, "TesselationEvaluationShader.tese.spv")};
-	if(!maybeTessEvaluationShaderModule)
-		return tl::make_unexpected(maybeTessEvaluationShaderModule.error());
-		
-	helpers::MaybeShaderModule const maybeFragmentShaderModule{helpers::create_shader_module(appData.device, "FragmentShader.frag.spv")};
-	if(!maybeFragmentShaderModule)
-		return tl::make_unexpected(maybeFragmentShaderModule.error());
-		
-	appData.vertexShaderModule = *maybeVertexShaderModule;
-	appData.tessControlShaderModule = *maybeTessControlShaderModule;
-	appData.tessEvaluationShaderModule = *maybeTessEvaluationShaderModule;
-	appData.fragmentShaderModule = *maybeFragmentShaderModule;*/
-		
+	{
+		MaybeShaderData const mbShaderData{load_shader("VertexShader.spv")};
+		if (!mbShaderData)
+			tl::make_unexpected(mbShaderData.error());
+
+		helpers::MaybeShaderModule const mbVertexShaderModule{helpers::create_shader_module(data.device, &(*mbShaderData))};
+		if (!mbVertexShaderModule)
+			return tl::make_unexpected(mbVertexShaderModule.error());
+
+		data.vertexShaderModule = *mbVertexShaderModule;
+	}
+
+	{
+		MaybeShaderData const mbShaderData{load_shader("TesselationControlShader.spv")};
+		if (!mbShaderData)
+			tl::make_unexpected(mbShaderData.error());
+
+		helpers::MaybeShaderModule const mbTessControlShaderModule{helpers::create_shader_module(data.device, &(*mbShaderData))};
+		if (!mbTessControlShaderModule)
+			return tl::make_unexpected(mbTessControlShaderModule.error());
+
+		data.tessControlShaderModule = *mbTessControlShaderModule;
+	}
+
+	{
+		MaybeShaderData const mbShaderData{load_shader("TesselationEvaluationShader.spv")};
+		if (!mbShaderData)
+			tl::make_unexpected(mbShaderData.error());
+
+		helpers::MaybeShaderModule const mbTessEvaluationShaderModule{helpers::create_shader_module(data.device, &(*mbShaderData))};
+		if (!mbTessEvaluationShaderModule)
+			return tl::make_unexpected(mbTessEvaluationShaderModule.error());
+
+		data.tessEvaluationShaderModule = *mbTessEvaluationShaderModule;
+	}
+
+	{
+		MaybeShaderData const mbShaderData{load_shader("FragmentShader.spv")};
+		if (!mbShaderData)
+			tl::make_unexpected(mbShaderData.error());
+
+		helpers::MaybeShaderModule const mbFragmentShaderModule{helpers::create_shader_module(data.device, &(*mbShaderData))};
+		if (!mbFragmentShaderModule)
+			return tl::make_unexpected(mbFragmentShaderModule.error());
+
+		data.fragmentShaderModule = *mbFragmentShaderModule;
+	}
+
 	return data;
 }
 
