@@ -52,6 +52,8 @@ MaybeAppData create_shader_modules(AppData data)
 			return tl::make_unexpected(mbVertexShaderModule.error());
 
 		data.vertexShaderModule = *mbVertexShaderModule;
+		
+		helpers::set_debug_utils_object_name(data.instance, data.device, VK_OBJECT_TYPE_SHADER_MODULE, reinterpret_cast<uint64_t>(data.vertexShaderModule), "vertex shader module");
 	}
 
 	{
@@ -64,6 +66,8 @@ MaybeAppData create_shader_modules(AppData data)
 			return tl::make_unexpected(mbTessControlShaderModule.error());
 
 		data.tessControlShaderModule = *mbTessControlShaderModule;
+		
+		helpers::set_debug_utils_object_name(data.instance, data.device, VK_OBJECT_TYPE_SHADER_MODULE, reinterpret_cast<uint64_t>(data.tessControlShaderModule), "tesselation control shader module");
 	}
 
 	{
@@ -76,6 +80,8 @@ MaybeAppData create_shader_modules(AppData data)
 			return tl::make_unexpected(mbTessEvaluationShaderModule.error());
 
 		data.tessEvaluationShaderModule = *mbTessEvaluationShaderModule;
+		
+		helpers::set_debug_utils_object_name(data.instance, data.device, VK_OBJECT_TYPE_SHADER_MODULE, reinterpret_cast<uint64_t>(data.tessEvaluationShaderModule), "tesselation evaluation shader module");
 	}
 
 	{
@@ -88,6 +94,8 @@ MaybeAppData create_shader_modules(AppData data)
 			return tl::make_unexpected(mbFragmentShaderModule.error());
 
 		data.fragmentShaderModule = *mbFragmentShaderModule;
+		
+		helpers::set_debug_utils_object_name(data.instance, data.device, VK_OBJECT_TYPE_SHADER_MODULE, reinterpret_cast<uint64_t>(data.fragmentShaderModule), "fragment shader module");
 	}
 
 	return data;

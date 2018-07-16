@@ -14,8 +14,14 @@ target_sources(teapot PRIVATE
 
         src/app/App.h
         src/app/AppData.h
+        src/app/clear.cpp
+        src/app/create_debug_utils_messenger.cpp
+        src/app/create_descriptor_set_layout.cpp
         src/app/create_instance.cpp
         src/app/create_logical_device.cpp
+        src/app/create_pipeline_layout.cpp
+        src/app/create_pipelines.cpp
+        src/app/create_render_pass.cpp
         src/app/create_shader_modules.cpp
         src/app/create_surface.cpp
         src/app/create_window.cpp
@@ -23,6 +29,7 @@ target_sources(teapot PRIVATE
         src/app/get_physical_device.cpp
         src/app/get_required_window_extensions.cpp
         src/app/on_key_press.cpp
+        src/app/vulkan_debug_callback.cpp
 
         src/main.cpp
         src/MainApplication.cpp

@@ -13,6 +13,7 @@ struct AppData
 {
 	GLFWwindow* window{nullptr};
 	bool framebufferResized{false};
+	float tessLevel{1.0f};
 	
 	TeapotData teapotData{};
 	
@@ -37,6 +38,15 @@ struct AppData
 	VkShaderModule tessControlShaderModule{VK_NULL_HANDLE};
 	VkShaderModule tessEvaluationShaderModule{VK_NULL_HANDLE};
 	VkShaderModule fragmentShaderModule{VK_NULL_HANDLE};
+	
+	VkDebugUtilsMessengerEXT debugUtilsMessenger{VK_NULL_HANDLE};
+	PFN_vkDebugUtilsMessengerCallbackEXT debugCallback{nullptr};
+	
+	VkRenderPass renderPass{VK_NULL_HANDLE};
+	VkDescriptorSetLayout descriptorSetLayout{VK_NULL_HANDLE};
+	VkPipelineLayout pipelineLayout{VK_NULL_HANDLE};
+	VkPipeline wireframePipeline{VK_NULL_HANDLE};
+	VkPipeline solidPipeline{VK_NULL_HANDLE};
 };
 
 } // namespace app

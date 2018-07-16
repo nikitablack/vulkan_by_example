@@ -1,14 +1,13 @@
-#include "homm/render/Render.h"
-
-#include "vulkan/vulkan.h"
+#include "app/App.h"
 
 #include <iostream>
-#include <string>
+
+using namespace std;
 
 namespace
 {
 
-std::string string_VkObjectType(VkObjectType const input_value)
+string string_VkObjectType(VkObjectType const input_value)
 {
 	switch ((VkObjectType)input_value)
 	{
@@ -93,12 +92,12 @@ std::string string_VkObjectType(VkObjectType const input_value)
 
 } // namespace
 
-namespace homm::render::vulkan
+namespace app
 {
 
 VkBool32 vulkan_debug_callback(VkDebugUtilsMessageSeverityFlagBitsEXT const messageSeverity, VkDebugUtilsMessageTypeFlagsEXT const messageType, VkDebugUtilsMessengerCallbackDataEXT const * const pCallbackData, void * const)
 {
-	std::string message{};
+	string message{};
 	message.reserve(5000);
 	
 	if (messageSeverity & VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT)
@@ -126,32 +125,32 @@ VkBool32 vulkan_debug_callback(VkDebugUtilsMessageSeverityFlagBitsEXT const mess
 		}
 	}
 	
-	message += " - Message Id Number: " + std::to_string(pCallbackData->messageIdNumber) + " | Message Id Name: " + (pCallbackData->pMessageIdName ? pCallbackData->pMessageIdName : "NULL") + "\n\t" + pCallbackData->pMessage + "\n";
+	message += " - Message Id Number: " + to_string(pCallbackData->messageIdNumber) + " | Message Id Name: " + (pCallbackData->pMessageIdName ? pCallbackData->pMessageIdName : "NULL") + "\n\t" + pCallbackData->pMessage + "\n";
 	
 	if (pCallbackData->objectCount > 0)
 	{
-		message += "\n\tObjects - " + std::to_string(pCallbackData->objectCount) + "\n";
+		message += "\n\tObjects - " + to_string(pCallbackData->objectCount) + "\n";
 		
 		for (uint32_t object = 0; object < pCallbackData->objectCount; ++object)
 		{
-			if (pCallbackData->pObjects[object].pObjectName != nullptr && std::string{pCallbackData->pObjects[object].pObjectName}.size() > 0)
-				message += "\t\tObject[" + std::to_string(object) + "] - " + string_VkObjectType(pCallbackData->pObjects[object].objectType) + ", Handle " + std::to_string(pCallbackData->pObjects[object].objectHandle) + ", Name \"" + pCallbackData->pObjects[object].pObjectName + "\"\n";
+			if (pCallbackData->pObjects[object].pObjectName != nullptr && string{pCallbackData->pObjects[object].pObjectName}.size() > 0)
+				message += "\t\tObject[" + to_string(object) + "] - " + string_VkObjectType(pCallbackData->pObjects[object].objectType) + ", Handle " + to_string(pCallbackData->pObjects[object].objectHandle) + ", Name \"" + pCallbackData->pObjects[object].pObjectName + "\"\n";
 			else
-				message += "\t\tObject[" + std::to_string(object) + "] - " + string_VkObjectType(pCallbackData->pObjects[object].objectType) + ", Handle " + std::to_string(pCallbackData->pObjects[object].objectHandle) + "\n";
+				message += "\t\tObject[" + to_string(object) + "] - " + string_VkObjectType(pCallbackData->pObjects[object].objectType) + ", Handle " + to_string(pCallbackData->pObjects[object].objectHandle) + "\n";
 		}
 	}
 	
 	if (pCallbackData->cmdBufLabelCount > 0)
 	{
-		message += "\n\tCommand Buffer Labels - " + std::to_string(pCallbackData->cmdBufLabelCount) + "\n";
+		message += "\n\tCommand Buffer Labels - " + to_string(pCallbackData->cmdBufLabelCount) + "\n";
 		
 		for (uint32_t cmd_buf_label = 0; cmd_buf_label < pCallbackData->cmdBufLabelCount; ++cmd_buf_label)
-			message += "\t\tLabel[" + std::to_string(cmd_buf_label) + "] - " + pCallbackData->pCmdBufLabels[cmd_buf_label].pLabelName + " { " + std::to_string(pCallbackData->pCmdBufLabels[cmd_buf_label].color[0]) + ", " + std::to_string(pCallbackData->pCmdBufLabels[cmd_buf_label].color[1]) + ", " + std::to_string(pCallbackData->pCmdBufLabels[cmd_buf_label].color[1]) + ", " + std::to_string(pCallbackData->pCmdBufLabels[cmd_buf_label].color[3]) + "}\n";
+			message += "\t\tLabel[" + to_string(cmd_buf_label) + "] - " + pCallbackData->pCmdBufLabels[cmd_buf_label].pLabelName + " { " + to_string(pCallbackData->pCmdBufLabels[cmd_buf_label].color[0]) + ", " + to_string(pCallbackData->pCmdBufLabels[cmd_buf_label].color[1]) + ", " + to_string(pCallbackData->pCmdBufLabels[cmd_buf_label].color[1]) + ", " + to_string(pCallbackData->pCmdBufLabels[cmd_buf_label].color[3]) + "}\n";
 	}
 	
-	std::cerr << message << "\n";
+	cerr << message << "\n";
 	
 	return false;
 }
 
-} // namespace homm::render::vulkan
+} // namespace app
