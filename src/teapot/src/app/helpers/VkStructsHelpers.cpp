@@ -430,4 +430,68 @@ VkPipelineColorBlendStateCreateInfo get_pipeline_color_blend_state_create_info(v
 	return info;
 }
 
+VkSwapchainCreateInfoKHR get_swap_chain_create_info(VkSurfaceKHR const surface, uint32_t const imageCount, VkFormat const imageFormat, VkColorSpaceKHR const imageColorSpace, VkExtent2D const imageExtent, VkSurfaceTransformFlagBitsKHR const preTransform, VkPresentModeKHR const presentMode, VkSharingMode const imageSharingMode, vector<uint32_t> const * const queueFamilyIndices, VkImageUsageFlags const imageUsage, uint32_t const imageArrayLayers, VkCompositeAlphaFlagBitsKHR const compositeAlpha, VkBool32 const clipped, VkSwapchainKHR const oldSwapchain)
+{
+	assert(imageUsage);
+	assert(imageArrayLayers);
+	
+	VkSwapchainCreateInfoKHR info{};
+	info.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
+	info.pNext = nullptr;
+	info.flags = 0;
+	info.surface = surface;
+	info.minImageCount = imageCount;
+	info.imageFormat = imageFormat;
+	info.imageColorSpace = imageColorSpace;
+	info.imageExtent = imageExtent;
+	info.imageArrayLayers = imageArrayLayers;
+	info.imageUsage = imageUsage;
+	info.imageSharingMode = imageSharingMode;
+	info.queueFamilyIndexCount = queueFamilyIndices ? static_cast<uint32_t>(queueFamilyIndices->size()) : 0;
+	info.pQueueFamilyIndices = queueFamilyIndices ? queueFamilyIndices->data() : nullptr;
+	info.preTransform = preTransform;
+	info.compositeAlpha = compositeAlpha;
+	info.presentMode = presentMode;
+	info.clipped = clipped;
+	info.oldSwapchain = oldSwapchain;
+	
+	return info;
+}
+
+VkImageViewCreateInfo get_image_view_create_info(VkImage const image, VkImageViewType const viewType, VkFormat const format, VkImageSubresourceRange const subresourceRange, VkComponentMapping const components)
+{
+	VkImageViewCreateInfo info{};
+	info.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
+	info.pNext = nullptr;
+	info.flags = 0;
+	info.image = image;
+	info.viewType = viewType;
+	info.format = format;
+	info.components = components;
+	info.subresourceRange = subresourceRange;
+	
+	return info;
+}
+
+VkFramebufferCreateInfo get_frame_buffer_create_info(VkRenderPass const renderPass, uint32_t const width, uint32_t const height, vector<VkImageView > const * const attachments, uint32_t const layers)
+{
+	assert(renderPass);
+	assert(width);
+	assert(height);
+	assert(height);
+	
+	VkFramebufferCreateInfo info{};
+	info.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
+	info.pNext = nullptr;
+	info.flags = 0;
+	info.renderPass = renderPass;
+	info.attachmentCount = attachments ? static_cast<uint32_t>(attachments->size()) : 0;
+	info.pAttachments = attachments ? attachments->data() : nullptr;
+	info.width = width;
+	info.height = height;
+	info.layers = layers;
+	
+	return info;
+}
+
 } // namespace app::helpers

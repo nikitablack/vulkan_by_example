@@ -37,7 +37,11 @@ MainApplication::MainApplication(uint32_t const windowWidth, uint32_t const wind
 	                         .and_then(app::create_render_pass)
 	                         .and_then(app::create_descriptor_set_layout)
 	                         .and_then(app::create_pipeline_layout)
-	                         .and_then(app::create_pipelines)};
+	                         .and_then(app::create_pipelines)
+	                         .and_then(app::get_surface_capabilities)
+	                         .map(app::get_surface_extent)
+	                         .and_then(app::create_swap_chain)
+	                         .and_then(app::create_frame_buffers)};
 
 	if (!mbData)
 		throw std::runtime_error{mbData.error()};
@@ -63,5 +67,16 @@ void MainApplication::run()
 
 void MainApplication::render()
 {
+	if(m_appData.framebufferResized)
+	{
+		m_appData.framebufferResized = false;
+		
+		app::MaybeAppData mbRenderData{app::resize_swap_chain(m_appData)};
+		if(!mbRenderData)
+			throw std::runtime_error{mbRenderData.error()};
+		
+		m_appData = std::move(*mbRenderData);
+	}
+	
 	// TODO render cool stuff
 }

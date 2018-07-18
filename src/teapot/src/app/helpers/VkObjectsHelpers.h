@@ -20,6 +20,9 @@ using MaybeRenderPass = tl::expected<VkRenderPass, std::string>;
 using MaybeDescriptorSetLayout = tl::expected<VkDescriptorSetLayout, std::string>;
 using MaybePipelineLayout = tl::expected<VkPipelineLayout, std::string>;
 using MaybePipeline = tl::expected<VkPipeline, std::string>;
+using MaybeSwapchain = tl::expected<VkSwapchainKHR, std::string>;
+using MaybeImageView = tl::expected<VkImageView, std::string>;
+using MaybeFrameBuffer = tl::expected<VkFramebuffer, std::string>;
 
 MaybeInstance create_instance(std::vector<char const *> const * extensions = nullptr, std::vector<char const *> const * layers = nullptr, VkApplicationInfo const * applicationInfo = nullptr);
 MaybePhysicalDevices get_physical_devices(VkInstance instance);
@@ -35,5 +38,9 @@ MaybeRenderPass create_render_pass(VkDevice device, std::vector<VkSubpassDescrip
 MaybeDescriptorSetLayout create_descriptor_set_layout(VkDevice device, std::vector<VkDescriptorSetLayoutBinding> const * bindings = nullptr);
 MaybePipelineLayout create_pipeline_layout(VkDevice device, std::vector<VkDescriptorSetLayout> const * setLayouts = nullptr, std::vector<VkPushConstantRange> const * pushConstantRanges = nullptr);
 MaybePipeline create_pipeline(VkDevice device, VkRenderPass renderPass, VkPipelineLayout layout, uint32_t subpass, VkPipelineCreateFlags flags, std::vector<VkPipelineShaderStageCreateInfo> const * shaderStages, VkPipelineVertexInputStateCreateInfo const * vertexInputState, VkPipelineInputAssemblyStateCreateInfo const * inputAssemblyState, VkPipelineRasterizationStateCreateInfo const * rasterizationState, VkPipelineColorBlendStateCreateInfo const * colorBlendState = nullptr, VkPipelineDepthStencilStateCreateInfo const * depthStencilState = nullptr, VkPipelineViewportStateCreateInfo const * viewportState = nullptr, VkPipelineMultisampleStateCreateInfo const * multisampleState = nullptr, VkPipelineTessellationStateCreateInfo const * tesselationState = nullptr, VkPipelineDynamicStateCreateInfo const * dynamicState = nullptr, VkPipeline basePipelineHandle = VK_NULL_HANDLE, VkPipelineCache pipelineCache = VK_NULL_HANDLE);
+MaybeSwapchain create_swap_chain(VkDevice device, VkSurfaceKHR surface, uint32_t imageCount, VkFormat imageFormat, VkColorSpaceKHR imageColorSpace, VkExtent2D imageExtent, VkSurfaceTransformFlagBitsKHR preTransform, VkPresentModeKHR presentMode, VkSwapchainKHR oldSwapchain = VK_NULL_HANDLE, VkSharingMode imageSharingMode = VK_SHARING_MODE_EXCLUSIVE, std::vector<uint32_t> const * queueFamilyIndices = nullptr, VkImageUsageFlags imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT, uint32_t imageArrayLayers = 1, VkCompositeAlphaFlagBitsKHR compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR, VkBool32 clipped = VK_TRUE);
+bool destroy_swap_chain(VkInstance instance, VkDevice device, VkSwapchainKHR swapChain);
+MaybeImageView create_image_view(VkDevice device, VkImage image, VkImageViewType viewType, VkFormat format, VkImageSubresourceRange subresourceRange, VkComponentMapping components = {VK_COMPONENT_SWIZZLE_IDENTITY, VK_COMPONENT_SWIZZLE_IDENTITY, VK_COMPONENT_SWIZZLE_IDENTITY, VK_COMPONENT_SWIZZLE_IDENTITY});
+MaybeFrameBuffer create_framebuffer(VkDevice device, VkRenderPass renderPass, uint32_t width, uint32_t height, std::vector<VkImageView > const * attachments = nullptr, uint32_t layers = 1);
 
 } // namespace app::helpers

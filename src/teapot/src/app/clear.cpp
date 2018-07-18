@@ -10,6 +10,8 @@ void clear(AppData data)
 {
 	if(data.device)
 	{
+		data = destroy_frame_buffers(data);
+		helpers::destroy_swap_chain(data.instance, data.device, data.swapChain);
 		vkDestroyPipeline(data.device, data.wireframePipeline, nullptr);
 		vkDestroyPipeline(data.device, data.solidPipeline, nullptr);
 		vkDestroyPipelineLayout(data.device, data.pipelineLayout, nullptr);
@@ -23,7 +25,7 @@ void clear(AppData data)
 	
 	vkDestroyDevice(data.device, nullptr);
 	if(data.instance) vkDestroySurfaceKHR(data.instance, data.surface, nullptr);
-	helpers::destroy_debug_utils_messenger(data.instance, data.debugUtilsMessenger);
+	if(data.instance) helpers::destroy_debug_utils_messenger(data.instance, data.debugUtilsMessenger);
 	vkDestroyInstance(data.instance, nullptr);
 	glfwTerminate();
 }

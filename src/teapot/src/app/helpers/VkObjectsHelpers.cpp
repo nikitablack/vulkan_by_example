@@ -10,7 +10,7 @@ using namespace tl;
 namespace app::helpers
 {
 
-MaybeInstance create_instance(vector<char const *> const * const extensions, std::vector<char const *> const * const layers, VkApplicationInfo const * const applicationInfo)
+MaybeInstance create_instance(vector<char const *> const * const extensions, vector<char const *> const * const layers, VkApplicationInfo const * const applicationInfo)
 {
 	VkInstanceCreateInfo const createInfo{get_instance_create_info(extensions, layers, applicationInfo)};
 	
@@ -227,6 +227,75 @@ MaybePipeline create_pipeline(VkDevice const device, VkRenderPass const renderPa
 		return make_unexpected("failed to create graphics pipeline");
 	
 	return pipeline;
+}
+
+MaybeSwapchain create_swap_chain(VkDevice const device, VkSurfaceKHR const surface, uint32_t const imageCount, VkFormat const imageFormat, VkColorSpaceKHR const imageColorSpace, VkExtent2D const imageExtent, VkSurfaceTransformFlagBitsKHR const preTransform, VkPresentModeKHR const presentMode, VkSwapchainKHR const oldSwapchain, VkSharingMode const imageSharingMode, vector<uint32_t> const * const queueFamilyIndices, VkImageUsageFlags const imageUsage, uint32_t const imageArrayLayers, VkCompositeAlphaFlagBitsKHR const compositeAlpha, VkBool32 const clipped)
+{
+	assert(device);
+	
+	VkSwapchainCreateInfoKHR const createInfo{get_swap_chain_create_info(surface,
+	                                                                     imageCount,
+	                                                                     imageFormat,
+	                                                                     imageColorSpace,
+	                                                                     imageExtent,
+	                                                                     preTransform,
+	                                                                     presentMode,
+	                                                                     imageSharingMode,
+	                                                                     queueFamilyIndices,
+	                                                                     imageUsage,
+	                                                                     imageArrayLayers,
+	                                                                     compositeAlpha,
+	                                                                     clipped,
+	                                                                     oldSwapchain)};
+	
+	VkSwapchainKHR swapChain{VK_NULL_HANDLE};
+	if (vkCreateSwapchainKHR(device, &createInfo, nullptr, &swapChain) != VK_SUCCESS)
+		return tl::make_unexpected("failed to create swap chain");
+	
+	return swapChain;
+}
+
+bool destroy_swap_chain(VkInstance const instance, VkDevice const device, VkSwapchainKHR const swapChain)
+{
+	assert(instance);
+	assert(device);
+	
+	PFN_vkDestroySwapchainKHR const func{reinterpret_cast<PFN_vkDestroySwapchainKHR>(vkGetInstanceProcAddr(instance, "vkDestroySwapchainKHR"))};
+	
+	assert(func);
+	
+	if (func == nullptr)
+		return false;
+	
+	func(device, swapChain, nullptr);
+	
+	return true;
+}
+
+MaybeImageView create_image_view(VkDevice const device, VkImage const image, VkImageViewType const viewType, VkFormat const format, VkImageSubresourceRange const subresourceRange, VkComponentMapping const components)
+{
+	assert(device);
+	
+	VkImageViewCreateInfo const createInfo{get_image_view_create_info(image, viewType, format, subresourceRange, components)};
+	
+	VkImageView imageView{VK_NULL_HANDLE};
+	if (vkCreateImageView(device, &createInfo, nullptr, &imageView) != VK_SUCCESS)
+		return make_unexpected("failed to create image view");
+	
+	return imageView;
+}
+
+MaybeFrameBuffer create_framebuffer(VkDevice const device, VkRenderPass const renderPass, uint32_t const width, uint32_t const height, vector<VkImageView > const * const attachments, uint32_t const layers)
+{
+	assert(device);
+	
+	VkFramebufferCreateInfo const framebufferInfo{get_frame_buffer_create_info(renderPass, width, height, attachments, layers)};
+	
+	VkFramebuffer framebuffer{VK_NULL_HANDLE};
+	if (vkCreateFramebuffer(device, &framebufferInfo, nullptr, &framebuffer) != VK_SUCCESS)
+		return make_unexpected("failed to create framebuffer");
+	
+	return framebuffer;
 }
 
 } // namespace app::helpers

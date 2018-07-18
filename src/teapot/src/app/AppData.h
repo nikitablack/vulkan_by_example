@@ -47,6 +47,11 @@ struct AppData
 	VkPipelineLayout pipelineLayout{VK_NULL_HANDLE};
 	VkPipeline wireframePipeline{VK_NULL_HANDLE};
 	VkPipeline solidPipeline{VK_NULL_HANDLE};
+	
+	VkSwapchainKHR swapChain{VK_NULL_HANDLE};
+	std::vector<VkFramebuffer> swapChainFramebuffers{};
+	std::vector<VkImageView> swapChainImageViews{};
+	uint32_t numConcurrentResources{};
 };
 
 } // namespace app

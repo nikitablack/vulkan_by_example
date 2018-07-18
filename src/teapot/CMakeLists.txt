@@ -9,6 +9,7 @@ add_executable(teapot "")
 target_sources(teapot PRIVATE
         src/app/helpers/VkObjectsHelpers.cpp
         src/app/helpers/VkObjectsHelpers.h
+        src/app/helpers/VkRaii.h
         src/app/helpers/VkStructsHelpers.cpp
         src/app/helpers/VkStructsHelpers.h
 
@@ -17,6 +18,7 @@ target_sources(teapot PRIVATE
         src/app/clear.cpp
         src/app/create_debug_utils_messenger.cpp
         src/app/create_descriptor_set_layout.cpp
+        src/app/create_frame_buffers.cpp
         src/app/create_instance.cpp
         src/app/create_logical_device.cpp
         src/app/create_pipeline_layout.cpp
@@ -24,12 +26,17 @@ target_sources(teapot PRIVATE
         src/app/create_render_pass.cpp
         src/app/create_shader_modules.cpp
         src/app/create_surface.cpp
+        src/app/create_swap_chain.cpp
         src/app/create_window.cpp
+        src/app/destroy_frame_buffers.cpp
         src/app/framebuffer_size_callback.cpp
         src/app/get_physical_device.cpp
         src/app/get_required_window_extensions.cpp
+        src/app/get_surface_capabilities.cpp
+        src/app/get_surface_extent.cpp
         src/app/on_key_press.cpp
         src/app/prepare_device_features.cpp
+        src/app/resize_swap_chain.cpp
         src/app/vulkan_debug_callback.cpp
 
         src/main.cpp
