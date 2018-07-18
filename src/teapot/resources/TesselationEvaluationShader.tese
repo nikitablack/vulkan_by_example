@@ -8,7 +8,7 @@ struct PatchData
     vec4 color;
 };
 
-layout(binding = 0, row_major) buffer PatchDataBuffer
+layout(binding = 0, row_major) readonly buffer PatchDataBuffer
 {
     PatchData data[];
 } patchData;
