@@ -29,7 +29,7 @@ void framebuffer_size_callback(GLFWwindow * window, int width, int height);
 MaybeAppData get_physical_device(AppData data);
 AppData get_required_window_extensions(AppData data);
 void on_key_press(GLFWwindow * window, int key, int scancode, int action, int mods);
-VkBool32 vulkan_debug_callback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity, VkDebugUtilsMessageTypeFlagsEXT messageType, VkDebugUtilsMessengerCallbackDataEXT const * pCallbackData, void * pUserData);
 AppData prepare_device_features(AppData data);
+VkBool32 vulkan_debug_callback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity, VkDebugUtilsMessageTypeFlagsEXT messageType, VkDebugUtilsMessengerCallbackDataEXT const * pCallbackData, void * pUserData);
 
 } // namespace app
