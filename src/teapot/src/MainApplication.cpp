@@ -23,11 +23,12 @@ MainApplication::MainApplication(uint32_t const windowWidth, uint32_t const wind
 	glfwSetFramebufferSizeCallback(m_appData.window, app::framebuffer_size_callback);
 
 	app::MaybeAppData mbData{app::MaybeAppData{app::get_required_window_extensions(std::move(m_appData))}
-		.and_then(app::create_instance)
-		.and_then(app::create_surface)
-		.and_then(app::get_physical_device)
-		.and_then(app::create_logical_device)
-		.and_then(app::create_shader_modules)};
+	                         .and_then(app::create_instance)
+	                         .and_then(app::create_surface)
+	                         .and_then(app::get_physical_device)
+	                         .map(app::prepare_device_features)
+	                         .and_then(app::create_logical_device)
+	                         .and_then(app::create_shader_modules)};
 
 	if (!mbData)
 		throw std::runtime_error{mbData.error()};

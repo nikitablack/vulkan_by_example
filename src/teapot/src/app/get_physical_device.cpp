@@ -190,7 +190,6 @@ MaybeAppData get_physical_device(AppData data)
 		data.surfaceFormat = *mbSurfaceFormat;
 		data.surfacePresentMode = *mbPresentMode;
 		
-		vkGetPhysicalDeviceFeatures(data.physicalDevice, &data.physicalDeviceFeatures);
 		vkGetPhysicalDeviceProperties(data.physicalDevice, &data.physicalDeviceProperties);
 		
 		return data;
