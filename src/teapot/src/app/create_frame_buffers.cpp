@@ -130,7 +130,7 @@ MaybeAppData create_frame_buffers(AppData data)
 	for(helpers::VkRaii<VkFramebuffer> & framebufferRaii : mbRes->framebuffers)
 		data.swapChainFramebuffers.push_back(framebufferRaii.release());
 	
-	data.numConcurrentResources = data.swapChainImageViews.size();
+	data.numConcurrentResources = static_cast<uint32_t>(data.swapChainImageViews.size());
 	
 	return data;
 }
