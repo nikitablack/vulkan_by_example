@@ -30,6 +30,7 @@ MainApplication::MainApplication(uint32_t const windowWidth, uint32_t const wind
 	                         .and_then(app::create_instance)
 	                         .and_then(app::create_surface)
 	                         .and_then(app::get_physical_device)
+			                         .map(app::prepare_device_features)
 	                         .and_then(app::create_logical_device)
 	                         .and_then(app::create_shader_modules)
 	                         .and_then(app::create_debug_utils_messenger)

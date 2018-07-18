@@ -30,6 +30,7 @@ target_sources(teapot PRIVATE
         src/app/get_required_window_extensions.cpp
         src/app/on_key_press.cpp
         src/app/vulkan_debug_callback.cpp
+        src/app/prepare_device_features.cpp
 
         src/main.cpp
         src/MainApplication.cpp
