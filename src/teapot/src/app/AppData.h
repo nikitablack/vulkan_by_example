@@ -52,6 +52,15 @@ struct AppData
 	std::vector<VkFramebuffer> swapChainFramebuffers{};
 	std::vector<VkImageView> swapChainImageViews{};
 	uint32_t numConcurrentResources{};
+	
+	VkQueue graphicsQueue{VK_NULL_HANDLE};
+	VkQueue presentQueue{VK_NULL_HANDLE};
+	
+	VkDeviceMemory matricesDeviceMemory{VK_NULL_HANDLE};
+	VkBuffer projMatrixBuffer{};
+	VkBuffer viewMatrixBuffer{};
+	VkBuffer modelMatrixBuffer{};
+	VkDeviceSize projMatricesOffsets{};
 };
 
 } // namespace app

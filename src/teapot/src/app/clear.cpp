@@ -10,6 +10,10 @@ void clear(AppData data)
 {
 	if(data.device)
 	{
+		vkDestroyBuffer(data.device, data.projMatrixBuffer, nullptr);
+		vkDestroyBuffer(data.device, data.viewMatrixBuffer, nullptr);
+		vkDestroyBuffer(data.device, data.modelMatrixBuffer, nullptr);
+		vkFreeMemory(data.device, data.matricesDeviceMemory, nullptr);
 		data = destroy_frame_buffers(data);
 		helpers::destroy_swap_chain(data.instance, data.device, data.swapChain);
 		vkDestroyPipeline(data.device, data.wireframePipeline, nullptr);

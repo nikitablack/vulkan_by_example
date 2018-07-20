@@ -494,4 +494,34 @@ VkFramebufferCreateInfo get_frame_buffer_create_info(VkRenderPass const renderPa
 	return info;
 }
 
+VkBufferCreateInfo get_buffer_create_info(VkDeviceSize const size, VkBufferUsageFlags const usage, VkSharingMode const sharingMode, vector<uint32_t> const * const queueFamilyIndices, VkBufferCreateFlags const flags, void const * const next)
+{
+	assert(size);
+	assert(usage);
+	assert(sharingMode == VK_SHARING_MODE_CONCURRENT ? queueFamilyIndices != nullptr && !queueFamilyIndices->empty() : true);
+	
+	VkBufferCreateInfo info{};
+	info.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
+	info.pNext = next;
+	info.flags = flags;
+	info.size = size;
+	info.usage = usage;
+	info.sharingMode = sharingMode;
+	info.queueFamilyIndexCount = queueFamilyIndices ? static_cast<uint32_t>(queueFamilyIndices->size()) : 0;
+	info.pQueueFamilyIndices = queueFamilyIndices ? queueFamilyIndices->data() : nullptr;
+	
+	return info;
+}
+
+VkMemoryAllocateInfo get_memory_allocate_info(VkDeviceSize const allocationSize, uint32_t const memoryTypeIndex, void const * const next)
+{
+	VkMemoryAllocateInfo info{};
+	info.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
+	info.pNext = next;
+	info.allocationSize = allocationSize;
+	info.memoryTypeIndex = memoryTypeIndex;
+	
+	return info;
+}
+
 } // namespace app::helpers

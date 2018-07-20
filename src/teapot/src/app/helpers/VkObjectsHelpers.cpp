@@ -298,4 +298,48 @@ MaybeFrameBuffer create_framebuffer(VkDevice const device, VkRenderPass const re
 	return framebuffer;
 }
 
+MaybeBuffer create_buffer(VkDevice const device, VkDeviceSize const size, VkBufferUsageFlags const usage, VkSharingMode const sharingMode, vector<uint32_t> const * const queueFamilyIndices, VkBufferCreateFlags const flags, void const * const next)
+{
+	assert(device);
+	
+	VkBufferCreateInfo const bufferInfo{get_buffer_create_info(size, usage, sharingMode, queueFamilyIndices, flags, next)};
+	
+	VkBuffer buffer{VK_NULL_HANDLE};
+	if (vkCreateBuffer(device, &bufferInfo, nullptr, &buffer) != VK_SUCCESS)
+		return make_unexpected("failed to create buffer");
+	
+	return buffer;
+}
+
+MaybeMemoryPropertyIndex get_supported_memory_property_index(VkPhysicalDevice const physicalDevice, uint32_t const supportedMemoryTypeBits, VkMemoryPropertyFlags const desiredMemoryFlags)
+{
+	VkPhysicalDeviceMemoryProperties memProperties{};
+	vkGetPhysicalDeviceMemoryProperties(physicalDevice, &memProperties);
+	
+	uint32_t memPropertyIndex{ 0 };
+	for (uint32_t i{ 0 }; i < memProperties.memoryTypeCount; ++i)
+	{
+		if ((supportedMemoryTypeBits & (static_cast<uint32_t>(1) << i)) && (memProperties.memoryTypes[i].propertyFlags & desiredMemoryFlags) == desiredMemoryFlags)
+		{
+			memPropertyIndex = i;
+			return memPropertyIndex;
+		}
+	}
+	
+	return make_unexpected("failed to find memory property index");
+}
+
+MaybeDeviceMemory allocate_device_memory(VkDevice const device, VkDeviceSize const allocationSize, uint32_t const memoryTypeIndex, void const * const next)
+{
+	assert(device);
+	
+	VkMemoryAllocateInfo const allocateInfo{get_memory_allocate_info(allocationSize, memoryTypeIndex, next)};
+	
+	VkDeviceMemory deviceMemory{ VK_NULL_HANDLE };
+	if (vkAllocateMemory(device, &allocateInfo, nullptr, &deviceMemory) != VK_SUCCESS)
+		return make_unexpected("failed to allocate buffer memory");
+	
+	return deviceMemory;
+}
+
 } // namespace app::helpers

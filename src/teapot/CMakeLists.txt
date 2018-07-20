@@ -21,6 +21,7 @@ target_sources(teapot PRIVATE
         src/app/create_frame_buffers.cpp
         src/app/create_instance.cpp
         src/app/create_logical_device.cpp
+        src/app/create_matrices_buffer.cpp
         src/app/create_pipeline_layout.cpp
         src/app/create_pipelines.cpp
         src/app/create_render_pass.cpp
@@ -30,6 +31,7 @@ target_sources(teapot PRIVATE
         src/app/create_window.cpp
         src/app/destroy_frame_buffers.cpp
         src/app/framebuffer_size_callback.cpp
+        src/app/get_device_qeues.cpp
         src/app/get_physical_device.cpp
         src/app/get_required_window_extensions.cpp
         src/app/get_surface_capabilities.cpp

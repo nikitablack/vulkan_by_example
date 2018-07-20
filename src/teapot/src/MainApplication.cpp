@@ -41,7 +41,12 @@ MainApplication::MainApplication(uint32_t const windowWidth, uint32_t const wind
 	                         .and_then(app::get_surface_capabilities)
 	                         .map(app::get_surface_extent)
 	                         .and_then(app::create_swap_chain)
-	                         .and_then(app::create_frame_buffers)};
+	                         .and_then(app::create_frame_buffers)
+	                         .map(app::get_device_qeues)
+	                         .and_then(app::create_matrices_buffers)
+	                         /*.and_then(app::create_positions_buffer)
+	                         .and_then(app::create_index_buffer)
+	                         .and_then(app::create_patches_buffer)*/};
 
 	if (!mbData)
 		throw std::runtime_error{mbData.error()};

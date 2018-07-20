@@ -23,6 +23,9 @@ using MaybePipeline = tl::expected<VkPipeline, std::string>;
 using MaybeSwapchain = tl::expected<VkSwapchainKHR, std::string>;
 using MaybeImageView = tl::expected<VkImageView, std::string>;
 using MaybeFrameBuffer = tl::expected<VkFramebuffer, std::string>;
+using MaybeBuffer = tl::expected<VkBuffer, std::string>;
+using MaybeMemoryPropertyIndex = tl::expected<uint32_t, std::string>;
+using MaybeDeviceMemory = tl::expected<VkDeviceMemory, std::string>;
 
 MaybeInstance create_instance(std::vector<char const *> const * extensions = nullptr, std::vector<char const *> const * layers = nullptr, VkApplicationInfo const * applicationInfo = nullptr);
 MaybePhysicalDevices get_physical_devices(VkInstance instance);
@@ -42,5 +45,8 @@ MaybeSwapchain create_swap_chain(VkDevice device, VkSurfaceKHR surface, uint32_t
 bool destroy_swap_chain(VkInstance instance, VkDevice device, VkSwapchainKHR swapChain);
 MaybeImageView create_image_view(VkDevice device, VkImage image, VkImageViewType viewType, VkFormat format, VkImageSubresourceRange subresourceRange, VkComponentMapping components = {VK_COMPONENT_SWIZZLE_IDENTITY, VK_COMPONENT_SWIZZLE_IDENTITY, VK_COMPONENT_SWIZZLE_IDENTITY, VK_COMPONENT_SWIZZLE_IDENTITY});
 MaybeFrameBuffer create_framebuffer(VkDevice device, VkRenderPass renderPass, uint32_t width, uint32_t height, std::vector<VkImageView > const * attachments = nullptr, uint32_t layers = 1);
+MaybeBuffer create_buffer(VkDevice device, VkDeviceSize size, VkBufferUsageFlags usage, VkSharingMode sharingMode, std::vector<uint32_t> const * queueFamilyIndices = nullptr, VkBufferCreateFlags flags = 0, void const * next = nullptr);
+MaybeMemoryPropertyIndex get_supported_memory_property_index(VkPhysicalDevice physicalDevice, uint32_t supportedMemoryTypeBits, VkMemoryPropertyFlags desiredMemoryFlags);
+MaybeDeviceMemory allocate_device_memory(VkDevice device, VkDeviceSize allocationSize, uint32_t memoryTypeIndex, void const * next = nullptr);
 
 } // namespace app::helpers
