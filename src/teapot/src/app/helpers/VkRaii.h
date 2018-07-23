@@ -11,6 +11,8 @@ template<typename T>
 class VkRaii
 {
 public:
+	VkRaii() : m_obj{VK_NULL_HANDLE}, m_deleter{[](T){}} {}
+	explicit VkRaii(std::function<void(T)> deleter) : m_obj{VK_NULL_HANDLE}, m_deleter{deleter} {}
 	VkRaii(T obj, std::function<void(T)> deleter) : m_obj(obj), m_deleter(deleter) {}
 	
 	~VkRaii()
@@ -77,12 +79,12 @@ inline auto get_buffer_deleter(VkDevice const device)
 	return [device](VkBuffer const buffer) { if (device) vkDestroyBuffer(device, buffer, nullptr); };
 }
 
-inline auto get_deviceMemory_deleter(VkDevice const device)
+inline auto get_device_memory_deleter(VkDevice const device)
 {
 	return [device](VkDeviceMemory const deviceMemory) { if (device) vkFreeMemory(device, deviceMemory, nullptr); };
 }
 
-inline auto get_commandPool_deleter(VkDevice const device)
+inline auto get_command_pool_deleter(VkDevice const device)
 {
 	return [device](VkCommandPool const commandPool) { if (device) vkDestroyCommandPool(device, commandPool, nullptr); };
 }
