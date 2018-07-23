@@ -524,4 +524,83 @@ VkMemoryAllocateInfo get_memory_allocate_info(VkDeviceSize const allocationSize,
 	return info;
 }
 
+VkCommandPoolCreateInfo get_command_pool_create_info(uint32_t const queueFamilyIndex, VkCommandPoolCreateFlags const flags)
+{
+	VkCommandPoolCreateInfo info{};
+	info.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
+	info.pNext = nullptr;
+	info.flags = flags;
+	info.queueFamilyIndex = queueFamilyIndex;
+	
+	return info;
+}
+
+VkCommandBufferAllocateInfo get_command_buffer_allocate_info(VkCommandPool const commandPool, uint32_t const commandBufferCount, VkCommandBufferLevel const level)
+{
+	VkCommandBufferAllocateInfo info{};
+	info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+	info.pNext = nullptr;
+	info.commandPool = commandPool;
+	info.level = level;
+	info.commandBufferCount = commandBufferCount;
+	
+	return info;
+}
+
+VkCommandBufferBeginInfo get_command_buffer_begin_info(VkCommandBufferUsageFlags const flags, VkCommandBufferInheritanceInfo const * const inheritanceInfo)
+{
+	VkCommandBufferBeginInfo info{};
+	info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+	info.pNext = nullptr;
+	info.flags = flags;
+	info.pInheritanceInfo = inheritanceInfo;
+	
+	return info;
+}
+
+VkBufferCopy get_buffer_copy(VkDeviceSize const size, VkDeviceSize const srcOffset, VkDeviceSize const dstOffset)
+{
+	VkBufferCopy copy{};
+	copy.srcOffset = srcOffset;
+	copy.dstOffset = dstOffset;
+	copy.size = size;
+	
+	return copy;
+}
+
+VkBufferMemoryBarrier get_buffer_memory_barrier(VkBuffer const buffer, VkAccessFlags const srcAccessMask, VkAccessFlags const dstAccessMask, VkDeviceSize const size, VkDeviceSize const offset, uint32_t const srcQueueFamilyIndex, uint32_t const dstQueueFamilyIndex)
+{
+	VkBufferMemoryBarrier barrier{};
+	barrier.sType = VK_STRUCTURE_TYPE_BUFFER_MEMORY_BARRIER;
+	barrier.pNext = nullptr;
+	barrier.srcAccessMask = srcAccessMask;
+	barrier.dstAccessMask = dstAccessMask;
+	barrier.srcQueueFamilyIndex = srcQueueFamilyIndex;
+	barrier.dstQueueFamilyIndex = dstQueueFamilyIndex;
+	barrier.buffer = buffer;
+	barrier.offset = offset;
+	barrier.size = size;
+	
+	return barrier;
+}
+
+VkSubmitInfo get_submit_info(vector<VkCommandBuffer> const * const commandBuffers, vector<VkSemaphore> const * const waitSemaphores, vector<VkPipelineStageFlags> const * const waitStages, vector<VkSemaphore> const * const signalSemaphores)
+{
+	assert(commandBuffers);
+	assert(waitSemaphores ? (waitStages && waitSemaphores->size() == waitStages->size()) : true);
+	
+	VkSubmitInfo info{};
+	info.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+	info.pNext = nullptr;
+	info.waitSemaphoreCount = waitSemaphores ? static_cast<uint32_t>(waitSemaphores->size()) : 0;
+	info.pWaitSemaphores = waitSemaphores ? waitSemaphores->data() : nullptr;
+	info.pWaitDstStageMask = waitStages ? waitStages->data() : nullptr;
+	info.commandBufferCount = static_cast<uint32_t>(commandBuffers->size());
+	info.pCommandBuffers = commandBuffers->data();
+	info.signalSemaphoreCount = signalSemaphores ? static_cast<uint32_t>(signalSemaphores->size()) : 0;
+	info.pSignalSemaphores = signalSemaphores ? signalSemaphores->data() : nullptr;
+	
+	return info;
+}
+
 } // namespace app::helpers

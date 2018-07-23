@@ -39,5 +39,11 @@ VkImageViewCreateInfo get_image_view_create_info(VkImage image, VkImageViewType 
 VkFramebufferCreateInfo get_frame_buffer_create_info(VkRenderPass renderPass, uint32_t width, uint32_t height, std::vector<VkImageView > const * attachments = nullptr, uint32_t layers = 1);
 VkBufferCreateInfo get_buffer_create_info(VkDeviceSize size, VkBufferUsageFlags usage, VkSharingMode sharingMode, std::vector<uint32_t> const * queueFamilyIndices = nullptr, VkBufferCreateFlags flags = 0, void const * next = nullptr);
 VkMemoryAllocateInfo get_memory_allocate_info(VkDeviceSize allocationSize, uint32_t memoryTypeIndex, void const * next = nullptr);
+VkCommandPoolCreateInfo get_command_pool_create_info(uint32_t queueFamilyIndex, VkCommandPoolCreateFlags flags = 0);
+VkCommandBufferAllocateInfo get_command_buffer_allocate_info(VkCommandPool commandPool, uint32_t commandBufferCount, VkCommandBufferLevel level = VK_COMMAND_BUFFER_LEVEL_PRIMARY);
+VkCommandBufferBeginInfo get_command_buffer_begin_info(VkCommandBufferUsageFlags flags, VkCommandBufferInheritanceInfo const * inheritanceInfo = nullptr);
+VkBufferCopy get_buffer_copy(VkDeviceSize size, VkDeviceSize srcOffset = 0, VkDeviceSize dstOffset = 0);
+VkBufferMemoryBarrier get_buffer_memory_barrier(VkBuffer buffer, VkAccessFlags srcAccessMask, VkAccessFlags dstAccessMask, VkDeviceSize size, VkDeviceSize offset = 0, uint32_t srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED, uint32_t dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED);
+VkSubmitInfo get_submit_info(std::vector<VkCommandBuffer> const * commandBuffers, std::vector<VkSemaphore> const * waitSemaphores = nullptr, std::vector<VkPipelineStageFlags> const * waitStages = nullptr, std::vector<VkSemaphore> const * signalSemaphores = nullptr);
 
 } // namespace app::helpers

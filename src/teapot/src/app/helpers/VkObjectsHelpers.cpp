@@ -342,4 +342,31 @@ MaybeDeviceMemory allocate_device_memory(VkDevice const device, VkDeviceSize con
 	return deviceMemory;
 }
 
+MaybeCommandPool create_command_pool(VkDevice const device, uint32_t const queueFamilyIndex, VkCommandPoolCreateFlags const flags)
+{
+	assert(device);
+	
+	VkCommandPoolCreateInfo const commandPoolCreateInfo{get_command_pool_create_info(queueFamilyIndex, flags)};
+	
+	VkCommandPool commandPool{ VK_NULL_HANDLE };
+	if (vkCreateCommandPool(device, &commandPoolCreateInfo, nullptr, &commandPool) != VK_SUCCESS)
+		return make_unexpected("failed to create command pool");
+	
+	return commandPool;
+}
+
+MaybeCommandBuffers allocate_command_buffers(VkDevice const device, VkCommandPool const commandPool, uint32_t const commandBufferCount, VkCommandBufferLevel const level)
+{
+	assert(device);
+	assert(commandPool);
+	
+	VkCommandBufferAllocateInfo const commandBufferAllocateInfo{get_command_buffer_allocate_info(commandPool, commandBufferCount, level)};
+	
+	vector<VkCommandBuffer> commandBuffers(commandBufferCount);
+	if (vkAllocateCommandBuffers(device, &commandBufferAllocateInfo, commandBuffers.data()) != VK_SUCCESS)
+		return make_unexpected("failed to allocate command buffer");
+	
+	return {commandBuffers};
+}
+
 } // namespace app::helpers

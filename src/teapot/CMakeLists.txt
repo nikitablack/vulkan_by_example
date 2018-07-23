@@ -24,6 +24,7 @@ target_sources(teapot PRIVATE
         src/app/create_matrices_buffer.cpp
         src/app/create_pipeline_layout.cpp
         src/app/create_pipelines.cpp
+        src/app/create_positions_buffer.cpp
         src/app/create_render_pass.cpp
         src/app/create_shader_modules.cpp
         src/app/create_surface.cpp

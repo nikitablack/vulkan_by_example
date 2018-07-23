@@ -60,7 +60,10 @@ struct AppData
 	VkBuffer projMatrixBuffer{};
 	VkBuffer viewMatrixBuffer{};
 	VkBuffer modelMatrixBuffer{};
-	VkDeviceSize projMatricesOffsets{};
+	VkDeviceSize matrixBufferOffset{};
+	
+	VkDeviceMemory positionsBufferDeviceMemory{VK_NULL_HANDLE};
+	VkBuffer positionsBuffer{VK_NULL_HANDLE};
 };
 
 } // namespace app

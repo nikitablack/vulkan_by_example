@@ -26,6 +26,8 @@ using MaybeFrameBuffer = tl::expected<VkFramebuffer, std::string>;
 using MaybeBuffer = tl::expected<VkBuffer, std::string>;
 using MaybeMemoryPropertyIndex = tl::expected<uint32_t, std::string>;
 using MaybeDeviceMemory = tl::expected<VkDeviceMemory, std::string>;
+using MaybeCommandPool = tl::expected<VkCommandPool, std::string>;
+using MaybeCommandBuffers = tl::expected<std::vector<VkCommandBuffer>, std::string>;
 
 MaybeInstance create_instance(std::vector<char const *> const * extensions = nullptr, std::vector<char const *> const * layers = nullptr, VkApplicationInfo const * applicationInfo = nullptr);
 MaybePhysicalDevices get_physical_devices(VkInstance instance);
@@ -48,5 +50,7 @@ MaybeFrameBuffer create_framebuffer(VkDevice device, VkRenderPass renderPass, ui
 MaybeBuffer create_buffer(VkDevice device, VkDeviceSize size, VkBufferUsageFlags usage, VkSharingMode sharingMode, std::vector<uint32_t> const * queueFamilyIndices = nullptr, VkBufferCreateFlags flags = 0, void const * next = nullptr);
 MaybeMemoryPropertyIndex get_supported_memory_property_index(VkPhysicalDevice physicalDevice, uint32_t supportedMemoryTypeBits, VkMemoryPropertyFlags desiredMemoryFlags);
 MaybeDeviceMemory allocate_device_memory(VkDevice device, VkDeviceSize allocationSize, uint32_t memoryTypeIndex, void const * next = nullptr);
+MaybeCommandPool create_command_pool(VkDevice device, uint32_t queueFamilyIndex, VkCommandPoolCreateFlags flags = 0);
+MaybeCommandBuffers allocate_command_buffers(VkDevice device, VkCommandPool commandPool, uint32_t commandBufferCount, VkCommandBufferLevel level = VK_COMMAND_BUFFER_LEVEL_PRIMARY);
 
 } // namespace app::helpers

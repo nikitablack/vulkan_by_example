@@ -23,6 +23,7 @@ MaybeAppData create_logical_device(AppData data);
 MaybeAppData create_matrices_buffers(AppData data);
 MaybeAppData create_pipeline_layout(AppData data);
 MaybeAppData create_pipelines(AppData data);
+MaybeAppData create_positions_buffer(AppData data);
 MaybeAppData create_render_pass(AppData data);
 MaybeAppData create_shader_modules(AppData data);
 MaybeAppData create_surface(AppData data);

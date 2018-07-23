@@ -44,6 +44,8 @@ app::MaybeAppData create_buffers(app::AppData data)
 	
 	helpers::set_debug_utils_object_name(data.instance, data.device, VK_OBJECT_TYPE_BUFFER, reinterpret_cast<uint64_t>(data.modelMatrixBuffer), "model matrix buffer");
 	
+	data.matrixBufferOffset = get_buffer_size_aligned_up(data.device, data.projMatrixBuffer, data.physicalDeviceProperties.limits.minUniformBufferOffsetAlignment);
+	
 	return data;
 }
 
@@ -61,9 +63,7 @@ app::MaybeAppData allocate_memory(app::AppData data)
 	if (!mbMemPropIndex)
 		return tl::make_unexpected(mbMemPropIndex.error());
 	
-	VkDeviceSize const bufferSizeAlignedUp{get_buffer_size_aligned_up(data.device, data.projMatrixBuffer, data.physicalDeviceProperties.limits.minUniformBufferOffsetAlignment)};
-	
-	helpers::MaybeDeviceMemory const mbDeviceMemory{helpers::allocate_device_memory(data.device, bufferSizeAlignedUp * 3, *mbMemPropIndex)};
+	helpers::MaybeDeviceMemory const mbDeviceMemory{helpers::allocate_device_memory(data.device, data.matrixBufferOffset * 3, *mbMemPropIndex)};
 	if (!mbDeviceMemory)
 		return tl::make_unexpected(mbDeviceMemory.error());
 	
@@ -76,16 +76,21 @@ app::MaybeAppData allocate_memory(app::AppData data)
 
 app::MaybeAppData bind_buffers(app::AppData data)
 {
+	// to make layers not report Binding memory to buffer 0xXX but vkGetBufferMemoryRequirements() has not been called on that buffer
+	VkMemoryRequirements memRequirements{};
+	vkGetBufferMemoryRequirements(data.device, data.viewMatrixBuffer, &memRequirements);
+	vkGetBufferMemoryRequirements(data.device, data.modelMatrixBuffer, &memRequirements);
+	
 	VkDeviceSize offset{0};
 	
 	if (vkBindBufferMemory(data.device, data.projMatrixBuffer, data.matricesDeviceMemory, offset) != VK_SUCCESS)
 		return tl::make_unexpected("failed to bind project matrix buffer");
 	
-	offset += get_buffer_size_aligned_up(data.device, data.viewMatrixBuffer, data.physicalDeviceProperties.limits.minUniformBufferOffsetAlignment);
+	offset += data.matrixBufferOffset;
 	if (vkBindBufferMemory(data.device, data.viewMatrixBuffer, data.matricesDeviceMemory, offset) != VK_SUCCESS)
 		return tl::make_unexpected("failed to bind view matrix buffer");
 	
-	offset += get_buffer_size_aligned_up(data.device, data.modelMatrixBuffer, data.physicalDeviceProperties.limits.minUniformBufferOffsetAlignment);
+	offset += data.matrixBufferOffset;
 	if (vkBindBufferMemory(data.device, data.modelMatrixBuffer, data.matricesDeviceMemory, offset) != VK_SUCCESS)
 		return tl::make_unexpected("failed to bind view matrix buffer");
 	
