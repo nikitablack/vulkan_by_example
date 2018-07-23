@@ -46,7 +46,14 @@ MainApplication::MainApplication(uint32_t const windowWidth, uint32_t const wind
 	                         .and_then(app::create_matrices_buffers)
 	                         .and_then(app::create_positions_buffer)
 	                         .and_then(app::create_index_buffer)
-	                         .and_then(app::create_patches_buffer)};
+	                         .and_then(app::create_patches_buffer)
+	                         .and_then(app::create_command_pools)
+	                         .and_then(app::allocate_command_buffers)
+	                         .and_then(app::create_descriptor_pool)
+	                         /*.and_then(app::allocate_descriptor_sets)
+	                         .map(app::update_descriptor_set)
+	                         .and_then(app::create_present_semaphores)
+	                         .and_then(app::create_fences)*/};
 
 	if (!mbData)
 		throw std::runtime_error{mbData.error()};

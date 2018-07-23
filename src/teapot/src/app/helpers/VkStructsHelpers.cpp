@@ -603,4 +603,28 @@ VkSubmitInfo get_submit_info(vector<VkCommandBuffer> const * const commandBuffer
 	return info;
 }
 
+VkDescriptorPoolCreateInfo get_descriptor_pool_create_info(uint32_t const maxSets, vector<VkDescriptorPoolSize> const * const poolSizes)
+{
+	assert(poolSizes && !poolSizes->empty());
+	
+	VkDescriptorPoolCreateInfo info{};
+	info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
+	info.pNext = nullptr;
+	info.flags = 0;
+	info.maxSets = maxSets;
+	info.poolSizeCount = static_cast<uint32_t>(poolSizes->size());
+	info.pPoolSizes = poolSizes->data();
+	
+	return info;
+}
+
+VkDescriptorPoolSize get_descriptor_pool_size(VkDescriptorType const type, uint32_t const descriptorCount)
+{
+	VkDescriptorPoolSize size{};
+	size.type = type;
+	size.descriptorCount = descriptorCount;
+	
+	return size;
+}
+
 } // namespace app::helpers

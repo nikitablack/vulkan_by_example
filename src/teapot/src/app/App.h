@@ -40,8 +40,11 @@ using MaybeWindow = tl::expected<GLFWwindow *, std::string>;
 using MaybeAppData = tl::expected<AppData, std::string>;
 using MaybeStaticBufferData = tl::expected<StaticBufferData, std::string>;
 
+MaybeAppData allocate_command_buffers(AppData data);
 void clear(AppData data);
+MaybeAppData create_command_pools(AppData appData);
 MaybeAppData create_debug_utils_messenger(AppData data);
+MaybeAppData create_descriptor_pool(AppData data);
 MaybeAppData create_descriptor_set_layout(AppData data);
 MaybeAppData create_frame_buffers(AppData data);
 MaybeAppData create_index_buffer(AppData data);

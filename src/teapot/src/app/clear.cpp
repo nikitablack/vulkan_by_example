@@ -10,6 +10,10 @@ void clear(AppData data)
 {
 	if(data.device)
 	{
+		vkDestroyDescriptorPool(data.device, data.descriptorPool, nullptr);
+		vkDestroyCommandPool(data.device, data.renderCommandPool, nullptr);
+		vkDestroyCommandPool(data.device, data.pushConstantsCommandPool, nullptr);
+		vkDestroyCommandPool(data.device, data.updateMatricesCommandPool, nullptr);
 		vkDestroyBuffer(data.device, data.patchesBuffer, nullptr);
 		vkFreeMemory(data.device, data.patchesBufferDeviceMemory, nullptr);
 		vkDestroyBuffer(data.device, data.indexBuffer, nullptr);

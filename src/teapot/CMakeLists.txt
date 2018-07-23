@@ -13,10 +13,13 @@ target_sources(teapot PRIVATE
         src/app/helpers/VkStructsHelpers.cpp
         src/app/helpers/VkStructsHelpers.h
 
+        src/app/allocate_command_buffers.cpp
         src/app/App.h
         src/app/AppData.h
         src/app/clear.cpp
+        src/app/create_command_pools.cpp
         src/app/create_debug_utils_messenger.cpp
+        src/app/create_descriptor_pool.cpp
         src/app/create_descriptor_set_layout.cpp
         src/app/create_frame_buffers.cpp
         src/app/create_index_buffer.cpp

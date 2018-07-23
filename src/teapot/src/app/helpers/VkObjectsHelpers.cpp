@@ -369,4 +369,15 @@ MaybeCommandBuffers allocate_command_buffers(VkDevice const device, VkCommandPoo
 	return {commandBuffers};
 }
 
+MaybeDescriptorPool create_descriptor_pool(VkDevice const device, uint32_t const maxSets, std::vector<VkDescriptorPoolSize> const * const poolSizes)
+{
+	VkDescriptorPoolCreateInfo const poolInfo{get_descriptor_pool_create_info(maxSets, poolSizes)};
+	
+	VkDescriptorPool descriptorPool{VK_NULL_HANDLE};
+	if (vkCreateDescriptorPool(device, &poolInfo, nullptr, &descriptorPool) != VK_SUCCESS)
+		return make_unexpected("failed to create descriptor pool");
+	
+	return descriptorPool;
+}
+
 } // namespace app::helpers

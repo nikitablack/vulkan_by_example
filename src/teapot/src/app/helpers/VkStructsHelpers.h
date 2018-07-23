@@ -45,5 +45,7 @@ VkCommandBufferBeginInfo get_command_buffer_begin_info(VkCommandBufferUsageFlags
 VkBufferCopy get_buffer_copy(VkDeviceSize size, VkDeviceSize srcOffset = 0, VkDeviceSize dstOffset = 0);
 VkBufferMemoryBarrier get_buffer_memory_barrier(VkBuffer buffer, VkAccessFlags srcAccessMask, VkAccessFlags dstAccessMask, VkDeviceSize size, VkDeviceSize offset = 0, uint32_t srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED, uint32_t dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED);
 VkSubmitInfo get_submit_info(std::vector<VkCommandBuffer> const * commandBuffers, std::vector<VkSemaphore> const * waitSemaphores = nullptr, std::vector<VkPipelineStageFlags> const * waitStages = nullptr, std::vector<VkSemaphore> const * signalSemaphores = nullptr);
+VkDescriptorPoolCreateInfo get_descriptor_pool_create_info(uint32_t maxSets, std::vector<VkDescriptorPoolSize> const * poolSizes);
+VkDescriptorPoolSize get_descriptor_pool_size(VkDescriptorType type, uint32_t descriptorCount);
 
 } // namespace app::helpers
