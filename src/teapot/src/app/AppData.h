@@ -64,6 +64,12 @@ struct AppData
 	
 	VkDeviceMemory positionsBufferDeviceMemory{VK_NULL_HANDLE};
 	VkBuffer positionsBuffer{VK_NULL_HANDLE};
+	
+	VkDeviceMemory indexBufferDeviceMemory{VK_NULL_HANDLE};
+	VkBuffer indexBuffer{VK_NULL_HANDLE};
+	
+	VkDeviceMemory patchesBufferDeviceMemory{VK_NULL_HANDLE};
+	VkBuffer patchesBuffer{VK_NULL_HANDLE};
 };
 
 } // namespace app

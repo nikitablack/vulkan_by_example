@@ -19,14 +19,17 @@ target_sources(teapot PRIVATE
         src/app/create_debug_utils_messenger.cpp
         src/app/create_descriptor_set_layout.cpp
         src/app/create_frame_buffers.cpp
+        src/app/create_index_buffer.cpp
         src/app/create_instance.cpp
         src/app/create_logical_device.cpp
         src/app/create_matrices_buffer.cpp
+        src/app/create_patches_buffer.cpp
         src/app/create_pipeline_layout.cpp
         src/app/create_pipelines.cpp
         src/app/create_positions_buffer.cpp
         src/app/create_render_pass.cpp
         src/app/create_shader_modules.cpp
+        src/app/create_static_buffer.cpp
         src/app/create_surface.cpp
         src/app/create_swap_chain.cpp
         src/app/create_window.cpp

@@ -10,6 +10,12 @@ void clear(AppData data)
 {
 	if(data.device)
 	{
+		vkDestroyBuffer(data.device, data.patchesBuffer, nullptr);
+		vkFreeMemory(data.device, data.patchesBufferDeviceMemory, nullptr);
+		vkDestroyBuffer(data.device, data.indexBuffer, nullptr);
+		vkFreeMemory(data.device, data.indexBufferDeviceMemory, nullptr);
+		vkDestroyBuffer(data.device, data.positionsBuffer, nullptr);
+		vkFreeMemory(data.device, data.positionsBufferDeviceMemory, nullptr);
 		vkDestroyBuffer(data.device, data.projMatrixBuffer, nullptr);
 		vkDestroyBuffer(data.device, data.viewMatrixBuffer, nullptr);
 		vkDestroyBuffer(data.device, data.modelMatrixBuffer, nullptr);

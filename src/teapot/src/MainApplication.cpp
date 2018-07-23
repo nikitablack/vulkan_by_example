@@ -45,8 +45,8 @@ MainApplication::MainApplication(uint32_t const windowWidth, uint32_t const wind
 	                         .map(app::get_device_qeues)
 	                         .and_then(app::create_matrices_buffers)
 	                         .and_then(app::create_positions_buffer)
-	                         /*.and_then(app::create_index_buffer)
-	                         .and_then(app::create_patches_buffer)*/};
+	                         .and_then(app::create_index_buffer)
+	                         .and_then(app::create_patches_buffer)};
 
 	if (!mbData)
 		throw std::runtime_error{mbData.error()};
