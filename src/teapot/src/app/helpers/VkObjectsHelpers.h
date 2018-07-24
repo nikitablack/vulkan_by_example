@@ -29,6 +29,9 @@ using MaybeDeviceMemory = tl::expected<VkDeviceMemory, std::string>;
 using MaybeCommandPool = tl::expected<VkCommandPool, std::string>;
 using MaybeCommandBuffers = tl::expected<std::vector<VkCommandBuffer>, std::string>;
 using MaybeDescriptorPool = tl::expected<VkDescriptorPool, std::string>;
+using MaybeDescriptorSets = tl::expected<std::vector<VkDescriptorSet>, std::string>;
+using MaybeSemaphore = tl::expected<VkSemaphore, std::string>;
+using MaybeFence = tl::expected<VkFence, std::string>;
 
 MaybeInstance create_instance(std::vector<char const *> const * extensions = nullptr, std::vector<char const *> const * layers = nullptr, VkApplicationInfo const * applicationInfo = nullptr);
 MaybePhysicalDevices get_physical_devices(VkInstance instance);
@@ -54,5 +57,8 @@ MaybeDeviceMemory allocate_device_memory(VkDevice device, VkDeviceSize allocatio
 MaybeCommandPool create_command_pool(VkDevice device, uint32_t queueFamilyIndex, VkCommandPoolCreateFlags flags = 0);
 MaybeCommandBuffers allocate_command_buffers(VkDevice device, VkCommandPool commandPool, uint32_t commandBufferCount, VkCommandBufferLevel level = VK_COMMAND_BUFFER_LEVEL_PRIMARY);
 MaybeDescriptorPool create_descriptor_pool(VkDevice device, uint32_t maxSets, std::vector<VkDescriptorPoolSize> const * poolSizes);
+MaybeDescriptorSets allocate_descriptor_sets(VkDevice device, VkDescriptorPool descriptorPool, std::vector<VkDescriptorSetLayout> const * layouts);
+MaybeSemaphore create_semaphore(VkDevice device);
+MaybeFence create_fence(VkDevice device, VkFenceCreateFlags flags = 0);
 
 } // namespace app::helpers

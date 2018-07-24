@@ -50,10 +50,10 @@ MainApplication::MainApplication(uint32_t const windowWidth, uint32_t const wind
 	                         .and_then(app::create_command_pools)
 	                         .and_then(app::allocate_command_buffers)
 	                         .and_then(app::create_descriptor_pool)
-	                         /*.and_then(app::allocate_descriptor_sets)
+	                         .and_then(app::allocate_descriptor_set)
 	                         .map(app::update_descriptor_set)
-	                         .and_then(app::create_present_semaphores)
-	                         .and_then(app::create_fences)*/};
+	                         .and_then(app::create_semaphores)
+	                         .and_then(app::create_command_buffer_fences)};
 
 	if (!mbData)
 		throw std::runtime_error{mbData.error()};

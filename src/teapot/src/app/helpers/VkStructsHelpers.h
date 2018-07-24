@@ -47,5 +47,10 @@ VkBufferMemoryBarrier get_buffer_memory_barrier(VkBuffer buffer, VkAccessFlags s
 VkSubmitInfo get_submit_info(std::vector<VkCommandBuffer> const * commandBuffers, std::vector<VkSemaphore> const * waitSemaphores = nullptr, std::vector<VkPipelineStageFlags> const * waitStages = nullptr, std::vector<VkSemaphore> const * signalSemaphores = nullptr);
 VkDescriptorPoolCreateInfo get_descriptor_pool_create_info(uint32_t maxSets, std::vector<VkDescriptorPoolSize> const * poolSizes);
 VkDescriptorPoolSize get_descriptor_pool_size(VkDescriptorType type, uint32_t descriptorCount);
+VkDescriptorSetAllocateInfo get_descriptor_set_allocate_info(VkDescriptorPool descriptorPool, std::vector<VkDescriptorSetLayout> const * layouts);
+VkDescriptorBufferInfo get_descriptor_buffer_info(VkBuffer buffer, VkDeviceSize range, VkDeviceSize offset = 0);
+VkWriteDescriptorSet get_write_descriptor_set(VkDescriptorSet dstSet, uint32_t dstBinding, VkDescriptorType descriptorType, std::vector<VkDescriptorBufferInfo> const * bufferInfos);
+VkSemaphoreCreateInfo get_semaphore_create_info();
+VkFenceCreateInfo get_fence_create_info(VkFenceCreateFlags flags = 0);
 
 } // namespace app::helpers

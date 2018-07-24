@@ -10,6 +10,9 @@ void clear(AppData data)
 {
 	if(data.device)
 	{
+		vkDestroySemaphore(data.device, data.imageAvailableSemaphore, nullptr);
+		vkDestroySemaphore(data.device, data.presentFinishedSemaphore, nullptr);
+		for(VkFence const fence : data.commandBufferFences) vkDestroyFence(data.device, fence, nullptr);
 		vkDestroyDescriptorPool(data.device, data.descriptorPool, nullptr);
 		vkDestroyCommandPool(data.device, data.renderCommandPool, nullptr);
 		vkDestroyCommandPool(data.device, data.pushConstantsCommandPool, nullptr);

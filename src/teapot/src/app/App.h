@@ -41,7 +41,9 @@ using MaybeAppData = tl::expected<AppData, std::string>;
 using MaybeStaticBufferData = tl::expected<StaticBufferData, std::string>;
 
 MaybeAppData allocate_command_buffers(AppData data);
+MaybeAppData allocate_descriptor_set(AppData data);
 void clear(AppData data);
+MaybeAppData create_command_buffer_fences(AppData data);
 MaybeAppData create_command_pools(AppData appData);
 MaybeAppData create_debug_utils_messenger(AppData data);
 MaybeAppData create_descriptor_pool(AppData data);
@@ -56,6 +58,7 @@ MaybeAppData create_pipeline_layout(AppData data);
 MaybeAppData create_pipelines(AppData data);
 MaybeAppData create_positions_buffer(AppData data);
 MaybeAppData create_render_pass(AppData data);
+MaybeAppData create_semaphores(AppData data);
 MaybeAppData create_shader_modules(AppData data);
 MaybeStaticBufferData create_static_buffer(StaticBufferData data);
 MaybeAppData create_surface(AppData data);
@@ -71,6 +74,7 @@ AppData get_surface_extent(AppData data);
 void on_key_press(GLFWwindow * window, int key, int scancode, int action, int mods);
 AppData prepare_device_features(AppData data);
 MaybeAppData resize_swap_chain(AppData data);
+AppData update_descriptor_set(AppData data);
 VkBool32 vulkan_debug_callback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity, VkDebugUtilsMessageTypeFlagsEXT messageType, VkDebugUtilsMessengerCallbackDataEXT const * pCallbackData, void * pUserData);
 
 } // namespace app

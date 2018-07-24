@@ -380,4 +380,41 @@ MaybeDescriptorPool create_descriptor_pool(VkDevice const device, uint32_t const
 	return descriptorPool;
 }
 
+MaybeDescriptorSets allocate_descriptor_sets(VkDevice const device, VkDescriptorPool const descriptorPool, vector<VkDescriptorSetLayout> const * const layouts)
+{
+	VkDescriptorSetAllocateInfo const allocateInfo{get_descriptor_set_allocate_info(descriptorPool, layouts)};
+	
+	vector<VkDescriptorSet> descriptorSets(allocateInfo.descriptorSetCount);
+	if (vkAllocateDescriptorSets(device, &allocateInfo, descriptorSets.data()) != VK_SUCCESS)
+		return make_unexpected("failed to allocate descriptor set");
+	
+	return descriptorSets;
+}
+
+MaybeSemaphore create_semaphore(VkDevice const device)
+{
+	assert(device);
+	
+	VkSemaphoreCreateInfo const semaphoreInfo{get_semaphore_create_info()};
+	
+	VkSemaphore semaphore{VK_NULL_HANDLE};
+	if(vkCreateSemaphore(device, &semaphoreInfo, nullptr, &semaphore) != VK_SUCCESS)
+		return make_unexpected("failed to create semaphore");
+	
+	return semaphore;
+}
+
+MaybeFence create_fence(VkDevice const device, VkFenceCreateFlags const flags)
+{
+	assert(device);
+	
+	VkFenceCreateInfo const fenceInfo{get_fence_create_info(flags)};
+	
+	VkFence fence{VK_NULL_HANDLE};
+	if(vkCreateFence(device, &fenceInfo, nullptr, &fence) != VK_SUCCESS)
+		return make_unexpected("failed to create fence");
+	
+	return fence;
+}
+
 } // namespace app::helpers

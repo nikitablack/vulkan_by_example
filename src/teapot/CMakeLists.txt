@@ -14,9 +14,11 @@ target_sources(teapot PRIVATE
         src/app/helpers/VkStructsHelpers.h
 
         src/app/allocate_command_buffers.cpp
+        src/app/allocate_descriptor_set.cpp
         src/app/App.h
         src/app/AppData.h
         src/app/clear.cpp
+        src/app/create_command_buffer_fences.cpp
         src/app/create_command_pools.cpp
         src/app/create_debug_utils_messenger.cpp
         src/app/create_descriptor_pool.cpp
@@ -31,6 +33,7 @@ target_sources(teapot PRIVATE
         src/app/create_pipelines.cpp
         src/app/create_positions_buffer.cpp
         src/app/create_render_pass.cpp
+        src/app/create_semaphores.cpp
         src/app/create_shader_modules.cpp
         src/app/create_static_buffer.cpp
         src/app/create_surface.cpp
@@ -46,6 +49,7 @@ target_sources(teapot PRIVATE
         src/app/on_key_press.cpp
         src/app/prepare_device_features.cpp
         src/app/resize_swap_chain.cpp
+        src/app/update_descriptor_set.cpp
         src/app/vulkan_debug_callback.cpp
 
         src/main.cpp

@@ -80,7 +80,12 @@ struct AppData
 	std::vector<VkCommandBuffer> pushConstantsCommandBuffers{};
 	
 	VkDescriptorPool descriptorPool{VK_NULL_HANDLE};
-	std::vector<VkDescriptorSet> descriptorSets{};
+	VkDescriptorSet descriptorSet{};
+	
+	VkSemaphore imageAvailableSemaphore{VK_NULL_HANDLE};
+	VkSemaphore presentFinishedSemaphore{VK_NULL_HANDLE};
+	
+	std::vector<VkFence> commandBufferFences{};
 };
 
 } // namespace app
