@@ -30,12 +30,7 @@ public:
 		return tmp;
 	}
 	
-	T get()
-	{
-		return m_obj;
-	}
-	
-	const T get() const
+	T get() const
 	{
 		return m_obj;
 	}
