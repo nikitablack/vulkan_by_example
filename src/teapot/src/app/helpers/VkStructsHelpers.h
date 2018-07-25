@@ -52,5 +52,7 @@ VkDescriptorBufferInfo get_descriptor_buffer_info(VkBuffer buffer, VkDeviceSize 
 VkWriteDescriptorSet get_write_descriptor_set(VkDescriptorSet dstSet, uint32_t dstBinding, VkDescriptorType descriptorType, std::vector<VkDescriptorBufferInfo> const * bufferInfos);
 VkSemaphoreCreateInfo get_semaphore_create_info();
 VkFenceCreateInfo get_fence_create_info(VkFenceCreateFlags flags = 0);
+VkRenderPassBeginInfo get_render_pass_begin_info(VkRenderPass renderPass, VkFramebuffer framebuffer, VkRect2D renderArea, std::vector<VkClearValue> const * clearValues = nullptr);
+VkPresentInfoKHR get_present_info(std::vector<VkSwapchainKHR> const * swapChains, std::vector<uint32_t> const * imageIndices, std::vector<VkSemaphore> const * signalSemaphores = nullptr, std::vector<VkResult> * results = nullptr);
 
 } // namespace app::helpers

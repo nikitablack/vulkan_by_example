@@ -48,6 +48,8 @@ target_sources(teapot PRIVATE
         src/app/get_surface_extent.cpp
         src/app/on_key_press.cpp
         src/app/prepare_device_features.cpp
+        src/app/record_solid_command_buffer.cpp
+        src/app/record_wireframe_command_buffer.cpp
         src/app/resize_swap_chain.cpp
         src/app/update_descriptor_set.cpp
         src/app/vulkan_debug_callback.cpp

@@ -73,6 +73,8 @@ MaybeAppData get_surface_capabilities(AppData data);
 AppData get_surface_extent(AppData data);
 void on_key_press(GLFWwindow * window, int key, int scancode, int action, int mods);
 AppData prepare_device_features(AppData data);
+MaybeAppData record_solid_command_buffer(AppData data);
+MaybeAppData record_wireframe_command_buffer(AppData data);
 MaybeAppData resize_swap_chain(AppData data);
 AppData update_descriptor_set(AppData data);
 VkBool32 vulkan_debug_callback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity, VkDebugUtilsMessageTypeFlagsEXT messageType, VkDebugUtilsMessengerCallbackDataEXT const * pCallbackData, void * pUserData);

@@ -1,3 +1,4 @@
+#include "app/helpers/VkStructsHelpers.h"
 #include "app/App.h"
 #include "MainApplication.h"
 
@@ -5,6 +6,30 @@
 #include "GLFW/glfw3.h"
 
 #include <stdexcept>
+
+namespace
+{
+
+std::vector<VkFence> waitFences{};
+std::vector<VkSemaphore> waitSemaphores{};
+std::vector<VkPipelineStageFlags> waitStages{};
+std::vector<VkCommandBuffer> commandBuffers{};
+std::vector<VkSemaphore> signalSemaphores{};
+std::vector<VkSwapchainKHR> swapChains{};
+std::vector<uint32_t> imageIndices{};
+
+void clear_containers()
+{
+	waitFences.clear();
+	waitSemaphores.clear();
+	waitStages.clear();
+	commandBuffers.clear();
+	signalSemaphores.clear();
+	swapChains.clear();
+	imageIndices.clear();
+}
+
+} // namespace
 
 MainApplication::MainApplication(){}
 
@@ -53,7 +78,9 @@ MainApplication::MainApplication(uint32_t const windowWidth, uint32_t const wind
 	                         .and_then(app::allocate_descriptor_set)
 	                         .map(app::update_descriptor_set)
 	                         .and_then(app::create_semaphores)
-	                         .and_then(app::create_command_buffer_fences)};
+	                         .and_then(app::create_command_buffer_fences)
+	                         .and_then(app::record_wireframe_command_buffer)
+	                         .and_then(app::record_solid_command_buffer)};
 
 	if (!mbData)
 		throw std::runtime_error{mbData.error()};
@@ -65,6 +92,9 @@ MainApplication::MainApplication(uint32_t const windowWidth, uint32_t const wind
 
 MainApplication::~MainApplication()
 {
+	if(m_appData.device && vkDeviceWaitIdle(m_appData.device) != VK_SUCCESS)
+		return; // don't throw in destructor
+	
 	app::clear(m_appData);
 }
 
@@ -79,7 +109,37 @@ void MainApplication::run()
 
 void MainApplication::render()
 {
-	if(m_appData.framebufferResized)
+	clear_containers();
+	
+	uint32_t imageIndex{};
+	if(vkAcquireNextImageKHR(m_appData.device, m_appData.swapChain, std::numeric_limits<uint64_t>::max(), m_appData.imageAvailableSemaphore, VK_NULL_HANDLE, &imageIndex) != VK_SUCCESS)
+		throw std::runtime_error("failed to acquire swap chain image");
+	
+	waitFences.push_back(m_appData.commandBufferFences[imageIndex]);
+	
+	if(vkWaitForFences(m_appData.device, static_cast<uint32_t>(waitFences.size()), waitFences.data(), VK_TRUE, std::numeric_limits<uint64_t>::max()) != VK_SUCCESS)
+		throw std::runtime_error("failed to wait for fences");
+	
+	if(vkResetFences(m_appData.device, static_cast<uint32_t>(waitFences.size()), waitFences.data()) != VK_SUCCESS)
+		throw std::runtime_error("failed to reset fences");
+	
+	waitSemaphores.push_back(m_appData.imageAvailableSemaphore);
+	waitStages.push_back(VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT);
+	commandBuffers.push_back(m_appData.wireframeCommandBuffers[imageIndex]);
+	signalSemaphores.push_back(m_appData.presentFinishedSemaphore);
+	
+	VkSubmitInfo const submitInfo{app::helpers::get_submit_info(&commandBuffers, &waitSemaphores, &waitStages, &signalSemaphores)};
+	
+	if(vkQueueSubmit(m_appData.graphicsQueue, 1, &submitInfo, m_appData.commandBufferFences[imageIndex]) != VK_SUCCESS)
+		throw std::runtime_error("failed to submit draw command buffer");
+	
+	swapChains.push_back(m_appData.swapChain);
+	imageIndices.push_back(imageIndex);
+	
+	VkPresentInfoKHR presentInfo{app::helpers::get_present_info(&swapChains, &imageIndices, &signalSemaphores)};
+	
+	VkResult const res{vkQueuePresentKHR(m_appData.presentQueue, &presentInfo)};
+	if(res == VK_SUBOPTIMAL_KHR || res == VK_ERROR_OUT_OF_DATE_KHR || m_appData.framebufferResized)
 	{
 		m_appData.framebufferResized = false;
 		
@@ -89,6 +149,6 @@ void MainApplication::render()
 		
 		m_appData = std::move(*mbRenderData);
 	}
-	
-	// TODO render cool stuff
+	else if(res != VK_SUCCESS)
+		throw std::runtime_error("failed to present");
 }

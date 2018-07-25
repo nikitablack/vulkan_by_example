@@ -690,4 +690,38 @@ VkFenceCreateInfo get_fence_create_info(VkFenceCreateFlags const flags)
 	return info;
 }
 
+VkRenderPassBeginInfo get_render_pass_begin_info(VkRenderPass const renderPass, VkFramebuffer const framebuffer, VkRect2D const renderArea, vector<VkClearValue> const * const clearValues)
+{
+	VkRenderPassBeginInfo info{};
+	info.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
+	info.pNext = nullptr;
+	info.renderPass = renderPass;
+	info.framebuffer = framebuffer;
+	info.renderArea = renderArea;
+	info.clearValueCount = clearValues ? static_cast<uint32_t>(clearValues->size()) : 0;
+	info.pClearValues = clearValues ? clearValues->data() : nullptr;
+	
+	return info;
+}
+
+VkPresentInfoKHR get_present_info(vector<VkSwapchainKHR> const * const swapChains, vector<uint32_t> const * const imageIndices, vector<VkSemaphore> const * const signalSemaphores, vector<VkResult> * const results)
+{
+	assert(swapChains && imageIndices);
+	assert(!swapChains->empty());
+	assert(swapChains->size() == imageIndices->size());
+	assert(results ? results->size() == swapChains->size() : true);
+	
+	VkPresentInfoKHR info{};
+	info.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
+	info.pNext = nullptr;
+	info.waitSemaphoreCount = signalSemaphores ? static_cast<uint32_t>(signalSemaphores->size()) : 0;
+	info.pWaitSemaphores = signalSemaphores ? signalSemaphores->data() : nullptr;
+	info.swapchainCount = static_cast<uint32_t>(swapChains->size());
+	info.pSwapchains = swapChains->data();
+	info.pImageIndices = imageIndices->data();
+	info.pResults = results ? results->data() : nullptr;
+	
+	return info;
+}
+
 } // namespace app::helpers
