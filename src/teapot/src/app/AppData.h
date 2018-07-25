@@ -71,9 +71,8 @@ struct AppData
 	VkDeviceMemory patchesBufferDeviceMemory{VK_NULL_HANDLE};
 	VkBuffer patchesBuffer{VK_NULL_HANDLE};
 	
-	VkCommandPool renderCommandPool{VK_NULL_HANDLE};
-	VkCommandPool pushConstantsCommandPool{VK_NULL_HANDLE};
-	VkCommandPool updateMatricesCommandPool{VK_NULL_HANDLE};
+	VkCommandPool staticCommandPool{VK_NULL_HANDLE};
+	VkCommandPool dynamicCommandPool{VK_NULL_HANDLE};
 	
 	std::vector<VkCommandBuffer> wireframeCommandBuffers{};
 	std::vector<VkCommandBuffer> solidCommandBuffers{};

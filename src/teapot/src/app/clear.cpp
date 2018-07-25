@@ -14,9 +14,8 @@ void clear(AppData data)
 		vkDestroySemaphore(data.device, data.presentFinishedSemaphore, nullptr);
 		for(VkFence const fence : data.commandBufferFences) vkDestroyFence(data.device, fence, nullptr);
 		vkDestroyDescriptorPool(data.device, data.descriptorPool, nullptr);
-		vkDestroyCommandPool(data.device, data.renderCommandPool, nullptr);
-		vkDestroyCommandPool(data.device, data.pushConstantsCommandPool, nullptr);
-		vkDestroyCommandPool(data.device, data.updateMatricesCommandPool, nullptr);
+		vkDestroyCommandPool(data.device, data.staticCommandPool, nullptr);
+		vkDestroyCommandPool(data.device, data.dynamicCommandPool, nullptr);
 		vkDestroyBuffer(data.device, data.patchesBuffer, nullptr);
 		vkFreeMemory(data.device, data.patchesBufferDeviceMemory, nullptr);
 		vkDestroyBuffer(data.device, data.indexBuffer, nullptr);
