@@ -61,10 +61,18 @@ MainApplication::MainApplication(uint32_t const windowWidth, uint32_t const wind
 	m_appData = std::move(*mbData);
 
 	glfwSetWindowUserPointer(m_appData.window, &m_appData);
+	
+	void * mappedPtr{nullptr};
+	if(vkMapMemory(m_appData.device, m_appData.matricesDeviceMemory, 0, VK_WHOLE_SIZE, 0, &mappedPtr) != VK_SUCCESS)
+		throw std::runtime_error{"failed to map uniform buffer memory"};
+	m_matricesMemoryPtr = static_cast<char *>(mappedPtr);
 }
 
 MainApplication::~MainApplication()
 {
+	if(m_matricesMemoryPtr)
+		vkUnmapMemory(m_appData.device, m_appData.matricesDeviceMemory);
+	
 	app::clear(m_appData);
 }
 
