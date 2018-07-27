@@ -56,7 +56,7 @@ MaybeAppData create_pipelines(AppData data)
 	
 	helpers::set_debug_utils_object_name(data.instance, data.device, VK_OBJECT_TYPE_PIPELINE, reinterpret_cast<uint64_t>(data.wireframePipeline), "wireframe graphics pipeline");
 	
-	VkPipelineRasterizationStateCreateInfo const rasterizationStateSolid{helpers::get_pipeline_rasterization_state_create_info(VK_POLYGON_MODE_FILL, VK_CULL_MODE_BACK_BIT)};
+	VkPipelineRasterizationStateCreateInfo const rasterizationStateSolid{helpers::get_pipeline_rasterization_state_create_info(VK_POLYGON_MODE_FILL, VK_CULL_MODE_BACK_BIT, VK_FRONT_FACE_COUNTER_CLOCKWISE)};
 	
 	helpers::MaybePipeline const mbSolidPipeline{helpers::create_pipeline(data.device, data.renderPass, data.pipelineLayout, 0, VK_PIPELINE_CREATE_DERIVATIVE_BIT, &shaderStages, &vertexInputState, &inputAssemblyState, &rasterizationStateSolid, &colorBlendState, nullptr, &viewportState, &multisampleState, &tesselationState, &dynamicState, data.wireframePipeline)};
 	if(!mbSolidPipeline)
