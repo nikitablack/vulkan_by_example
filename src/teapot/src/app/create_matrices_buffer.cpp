@@ -58,7 +58,7 @@ app::MaybeAppData allocate_memory(app::AppData data)
 	
 	helpers::MaybeMemoryPropertyIndex const mbMemPropIndex{helpers::get_supported_memory_property_index(data.physicalDevice,
 	                                                                                                    memRequirements.memoryTypeBits,
-	                                                                                                    VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT)};
+	                                                                                                    VK_MEMORY_PROPERTY_HOST_COHERENT_BIT | VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT)};
 	
 	if (!mbMemPropIndex)
 		return tl::make_unexpected(mbMemPropIndex.error());
