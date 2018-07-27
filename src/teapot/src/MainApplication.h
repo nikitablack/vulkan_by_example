@@ -8,6 +8,8 @@ class MainApplication
 {
 public:
 	MainApplication(uint32_t windowWidth, uint32_t windowHeight, std::string const & appName);
+	MainApplication(MainApplication const &) = delete;
+	MainApplication & operator=(MainApplication const &) = delete;
 	~MainApplication();
 	
 	void run();

@@ -12,6 +12,7 @@ target_sources(teapot PRIVATE
         src/app/helpers/VkStructsHelpers.cpp
         src/app/helpers/VkStructsHelpers.h
 
+target_sources(teapot PRIVATE
         src/app/App.h
         src/app/AppData.h
         src/app/create_instance.cpp
