@@ -105,7 +105,8 @@ MainApplication::~MainApplication()
 	if(m_appData.device && vkDeviceWaitIdle(m_appData.device) != VK_SUCCESS)
 		return; // don't throw in destructor
 	
-	vkUnmapMemory(m_appData.device, m_appData.matricesDeviceMemory);
+	if(m_matricesMemoryPtr)
+		vkUnmapMemory(m_appData.device, m_appData.matricesDeviceMemory);
 	
 	app::clear(m_appData);
 }
