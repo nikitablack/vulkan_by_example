@@ -21,4 +21,5 @@ private:
 
 private:
 	app::AppData m_appData{};
+	char * m_matricesMemoryPtr{nullptr};
 };
