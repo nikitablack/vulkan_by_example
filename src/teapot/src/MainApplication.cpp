@@ -123,8 +123,21 @@ void MainApplication::render()
 	if(vkResetFences(m_appData.device, static_cast<uint32_t>(waitFences.size()), waitFences.data()) != VK_SUCCESS)
 		throw std::runtime_error("failed to reset fences");
 	
+	{
+		VkCommandBufferBeginInfo const beginInfo{app::helpers::get_command_buffer_begin_info(VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT)};
+		
+		if(vkBeginCommandBuffer(m_appData.pushConstantsCommandBuffers[imageIndex], &beginInfo) != VK_SUCCESS)
+			throw std::runtime_error("failed to begin command buffer");
+		
+		vkCmdPushConstants(m_appData.pushConstantsCommandBuffers[imageIndex], m_appData.pipelineLayout, VK_SHADER_STAGE_TESSELLATION_CONTROL_BIT, 0, sizeof(m_appData.tessLevel), &m_appData.tessLevel);
+		
+		if(vkEndCommandBuffer(m_appData.pushConstantsCommandBuffers[imageIndex]) != VK_SUCCESS)
+			throw std::runtime_error("failed to end command buffer");
+	}
+	
 	waitSemaphores.push_back(m_appData.imageAvailableSemaphore);
 	waitStages.push_back(VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT);
+	commandBuffers.push_back(m_appData.pushConstantsCommandBuffers[imageIndex]);
 	commandBuffers.push_back(m_appData.wireframeCommandBuffers[imageIndex]);
 	signalSemaphores.push_back(m_appData.presentFinishedSemaphore);
 	
