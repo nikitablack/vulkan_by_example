@@ -206,7 +206,7 @@ void MainApplication::render()
 	waitSemaphores.push_back(m_appData.imageAvailableSemaphore);
 	waitStages.push_back(VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT);
 	commandBuffers.push_back(m_appData.pushConstantsCommandBuffers[imageIndex]);
-	commandBuffers.push_back(m_appData.wireframeCommandBuffers[imageIndex]);
+	commandBuffers.push_back(m_appData.currRenderingStyle == app::AppData::RenderingStyle::Wireframe ? m_appData.wireframeCommandBuffers[imageIndex] : m_appData.solidCommandBuffers[imageIndex]);
 	signalSemaphores.push_back(m_appData.presentFinishedSemaphore);
 	
 	VkSubmitInfo const submitInfo{app::helpers::get_submit_info(&commandBuffers, &waitSemaphores, &waitStages, &signalSemaphores)};

@@ -25,7 +25,7 @@ void on_key_press(GLFWwindow * const window, int const key, int const /*scancode
 	}
 	else if (key == GLFW_KEY_SPACE && (action == GLFW_RELEASE))
 	{
-		// TODO switch wireframe/solid rendering
+		appData->currRenderingStyle = appData->currRenderingStyle == AppData::RenderingStyle::Wireframe ? AppData::RenderingStyle::Solid : AppData::RenderingStyle::Wireframe;
 	}
 }
 

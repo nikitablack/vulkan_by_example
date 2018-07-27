@@ -11,6 +11,12 @@ namespace app
 
 struct AppData
 {
+	enum class RenderingStyle
+	{
+		Wireframe,
+		Solid
+	};
+	
 	GLFWwindow* window{nullptr};
 	bool framebufferResized{false};
 	float tessLevel{1.0f};
@@ -85,6 +91,8 @@ struct AppData
 	VkSemaphore presentFinishedSemaphore{VK_NULL_HANDLE};
 	
 	std::vector<VkFence> commandBufferFences{};
+	
+	RenderingStyle currRenderingStyle{RenderingStyle::Wireframe};
 };
 
 } // namespace app
