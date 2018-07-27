@@ -724,4 +724,16 @@ VkPresentInfoKHR get_present_info(vector<VkSwapchainKHR> const * const swapChain
 	return info;
 }
 
+VkMappedMemoryRange get_mapped_memory_range(VkDeviceMemory const memory, VkDeviceSize const size, VkDeviceSize const offset)
+{
+	VkMappedMemoryRange range{};
+	range.sType = VK_STRUCTURE_TYPE_MAPPED_MEMORY_RANGE;
+	range.pNext = nullptr;
+	range.memory = memory;
+	range.offset = offset;
+	range.size = size;
+	
+	return range;
+}
+
 } // namespace app::helpers

@@ -54,5 +54,6 @@ VkSemaphoreCreateInfo get_semaphore_create_info();
 VkFenceCreateInfo get_fence_create_info(VkFenceCreateFlags flags = 0);
 VkRenderPassBeginInfo get_render_pass_begin_info(VkRenderPass renderPass, VkFramebuffer framebuffer, VkRect2D renderArea, std::vector<VkClearValue> const * clearValues = nullptr);
 VkPresentInfoKHR get_present_info(std::vector<VkSwapchainKHR> const * swapChains, std::vector<uint32_t> const * imageIndices, std::vector<VkSemaphore> const * signalSemaphores = nullptr, std::vector<VkResult> * results = nullptr);
+VkMappedMemoryRange get_mapped_memory_range(VkDeviceMemory memory, VkDeviceSize size, VkDeviceSize offset);
 
 } // namespace app::helpers

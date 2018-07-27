@@ -15,11 +15,13 @@ void on_key_press(GLFWwindow * const window, int const key, int const /*scancode
 
 	if (key == GLFW_KEY_KP_ADD && (action == GLFW_PRESS || action == GLFW_REPEAT))
 	{
-		// TODO increase tesselation level
+		if(appData->tessLevel < appData->physicalDeviceProperties.limits.maxTessellationGenerationLevel)
+			appData->tessLevel += 0.1f;
 	}
 	else if (key == GLFW_KEY_KP_SUBTRACT && (action == GLFW_PRESS || action == GLFW_REPEAT))
 	{
-		// TODO decrease tesselation level
+		if(appData->tessLevel > 1)
+			appData->tessLevel -= 0.1;
 	}
 	else if (key == GLFW_KEY_SPACE && (action == GLFW_RELEASE))
 	{

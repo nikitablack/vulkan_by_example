@@ -19,4 +19,8 @@ private:
 
 private:
 	app::AppData m_appData{};
+	char * m_matricesMemoryPtr{nullptr};
+	uint32_t m_numProjMatrixBuffersToUpdate{0};
+	uint32_t m_numViewMatrixBuffersToUpdate{0};
+	uint32_t m_numModelMatrixBuffersToUpdate{0};
 };

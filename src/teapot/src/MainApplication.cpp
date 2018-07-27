@@ -6,6 +6,7 @@
 #include "GLFW/glfw3.h"
 
 #include <stdexcept>
+#include <app/helpers/VkObjectsHelpers.h>
 
 namespace
 {
@@ -88,12 +89,23 @@ MainApplication::MainApplication(uint32_t const windowWidth, uint32_t const wind
 	m_appData = std::move(*mbData);
 
 	glfwSetWindowUserPointer(m_appData.window, &m_appData);
+	
+	m_numProjMatrixBuffersToUpdate = m_appData.numConcurrentResources;
+	m_numViewMatrixBuffersToUpdate = m_appData.numConcurrentResources;
+	m_numModelMatrixBuffersToUpdate = m_appData.numConcurrentResources;
+	
+	void * mappedPtr{nullptr};
+	if(vkMapMemory(m_appData.device, m_appData.matricesDeviceMemory, 0, VK_WHOLE_SIZE, 0, &mappedPtr) != VK_SUCCESS)
+		throw std::runtime_error{"failed to map uniform buffer memory"};
+	m_matricesMemoryPtr = static_cast<char *>(mappedPtr);
 }
 
 MainApplication::~MainApplication()
 {
 	if(m_appData.device && vkDeviceWaitIdle(m_appData.device) != VK_SUCCESS)
 		return; // don't throw in destructor
+	
+	vkUnmapMemory(m_appData.device, m_appData.matricesDeviceMemory);
 	
 	app::clear(m_appData);
 }
@@ -135,6 +147,61 @@ void MainApplication::render()
 			throw std::runtime_error("failed to end command buffer");
 	}
 	
+	if(m_numProjMatrixBuffersToUpdate > 0)
+	{
+		app::MaybeCommandBuffer const mbUpdateProjMatrixCommandBuffer{app::get_update_project_matrix_command_buffer(m_appData.device, m_appData.dynamicCommandPool, m_appData.projMatrixBuffer, imageIndex, m_appData.numConcurrentResources, static_cast<float>(m_appData.surfaceExtent.width) / m_appData.surfaceExtent.height, m_matricesMemoryPtr + sizeof(float) * 16 * imageIndex)};
+		if(!mbUpdateProjMatrixCommandBuffer)
+			throw std::runtime_error(mbUpdateProjMatrixCommandBuffer.error());
+		
+		commandBuffers.push_back(*mbUpdateProjMatrixCommandBuffer);
+		
+		--m_numProjMatrixBuffersToUpdate;
+	}
+	
+	if(m_numViewMatrixBuffersToUpdate > 0)
+	{
+		app::update_view_matrix(m_matricesMemoryPtr + m_appData.matrixBufferOffset + sizeof(float) * 16 * imageIndex);
+		
+		app::MaybeCommandBuffer const mbUpdateViewMatrixCommandBuffer{app::allocate_synchronization_buffer(m_appData.device, m_appData.dynamicCommandPool, m_appData.viewMatrixBuffer, sizeof(float) * 16, sizeof(float) * 16 * imageIndex)};
+		if(!mbUpdateViewMatrixCommandBuffer)
+			throw std::runtime_error(mbUpdateViewMatrixCommandBuffer.error());
+		
+		static std::vector<VkCommandBuffer> updateViewMatrixCommandBuffers(m_appData.numConcurrentResources, VK_NULL_HANDLE);
+		
+		if(updateViewMatrixCommandBuffers[imageIndex] != VK_NULL_HANDLE)
+			vkFreeCommandBuffers(m_appData.device, m_appData.dynamicCommandPool, 1, &updateViewMatrixCommandBuffers[imageIndex]);
+		
+		updateViewMatrixCommandBuffers[imageIndex] = *mbUpdateViewMatrixCommandBuffer;
+		
+		commandBuffers.push_back(updateViewMatrixCommandBuffers[imageIndex]);
+		
+		--m_numViewMatrixBuffersToUpdate;
+	}
+	
+	if(m_numModelMatrixBuffersToUpdate > 0)
+	{
+		static uint32_t n{0};
+		++n;
+		m_numModelMatrixBuffersToUpdate = m_appData.numConcurrentResources;
+		
+		app::update_model_matrix(n, m_matricesMemoryPtr + m_appData.matrixBufferOffset * 2 + sizeof(float) * 16 * imageIndex);
+		
+		app::MaybeCommandBuffer const mbUpdateModelMatrixCommandBuffer{app::allocate_synchronization_buffer(m_appData.device, m_appData.dynamicCommandPool, m_appData.modelMatrixBuffer, sizeof(float) * 16, sizeof(float) * 16 * imageIndex)};
+		if(!mbUpdateModelMatrixCommandBuffer)
+			throw std::runtime_error(mbUpdateModelMatrixCommandBuffer.error());
+		
+		static std::vector<VkCommandBuffer> updateModelMatrixCommandBuffers(m_appData.numConcurrentResources, VK_NULL_HANDLE);
+		
+		if(updateModelMatrixCommandBuffers[imageIndex] != VK_NULL_HANDLE)
+			vkFreeCommandBuffers(m_appData.device, m_appData.dynamicCommandPool, 1, &updateModelMatrixCommandBuffers[imageIndex]);
+		
+		updateModelMatrixCommandBuffers[imageIndex] = *mbUpdateModelMatrixCommandBuffer;
+		
+		commandBuffers.push_back(updateModelMatrixCommandBuffers[imageIndex]);
+		
+		--m_numModelMatrixBuffersToUpdate;
+	}
+	
 	waitSemaphores.push_back(m_appData.imageAvailableSemaphore);
 	waitStages.push_back(VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT);
 	commandBuffers.push_back(m_appData.pushConstantsCommandBuffers[imageIndex]);
@@ -161,6 +228,8 @@ void MainApplication::render()
 			throw std::runtime_error{mbRenderData.error()};
 		
 		m_appData = std::move(*mbRenderData);
+		
+		m_numProjMatrixBuffersToUpdate = m_appData.numConcurrentResources;
 	}
 	else if(res != VK_SUCCESS)
 		throw std::runtime_error("failed to present");

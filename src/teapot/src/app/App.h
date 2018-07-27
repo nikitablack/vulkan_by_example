@@ -39,9 +39,11 @@ struct StaticBufferData
 using MaybeWindow = tl::expected<GLFWwindow *, std::string>;
 using MaybeAppData = tl::expected<AppData, std::string>;
 using MaybeStaticBufferData = tl::expected<StaticBufferData, std::string>;
+using MaybeCommandBuffer = tl::expected<VkCommandBuffer, std::string>;
 
 MaybeAppData allocate_command_buffers(AppData data);
 MaybeAppData allocate_descriptor_set(AppData data);
+MaybeCommandBuffer allocate_synchronization_buffer(VkDevice device, VkCommandPool commandPool, VkBuffer buffer, VkDeviceSize size, VkDeviceSize offset);
 void clear(AppData data);
 MaybeAppData create_command_buffer_fences(AppData data);
 MaybeAppData create_command_pools(AppData appData);
@@ -71,12 +73,16 @@ MaybeAppData get_physical_device(AppData data);
 AppData get_required_window_extensions(AppData data);
 MaybeAppData get_surface_capabilities(AppData data);
 AppData get_surface_extent(AppData data);
+MaybeCommandBuffer get_update_project_matrix_command_buffer(VkDevice device, VkCommandPool commandPool, VkBuffer buffer, uint32_t resourceIndex, uint32_t numConcurrentResources, float aspectRatio, char * memPtr);
 void on_key_press(GLFWwindow * window, int key, int scancode, int action, int mods);
 AppData prepare_device_features(AppData data);
 MaybeAppData record_solid_command_buffer(AppData data);
 MaybeAppData record_wireframe_command_buffer(AppData data);
 MaybeAppData resize_swap_chain(AppData data);
 AppData update_descriptor_set(AppData data);
+void update_model_matrix(uint32_t n, char * memPtr);
+void update_projection_matrix(float aspectRatio, char * memPtr);
+void update_view_matrix(char * memPtr);
 VkBool32 vulkan_debug_callback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity, VkDebugUtilsMessageTypeFlagsEXT messageType, VkDebugUtilsMessengerCallbackDataEXT const * pCallbackData, void * pUserData);
 
 } // namespace app

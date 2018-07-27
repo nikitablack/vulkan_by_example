@@ -15,6 +15,7 @@ target_sources(teapot PRIVATE
 
         src/app/allocate_command_buffers.cpp
         src/app/allocate_descriptor_set.cpp
+        src/app/allocate_synchronization_buffer.cpp
         src/app/App.h
         src/app/AppData.h
         src/app/clear.cpp
@@ -46,12 +47,16 @@ target_sources(teapot PRIVATE
         src/app/get_required_window_extensions.cpp
         src/app/get_surface_capabilities.cpp
         src/app/get_surface_extent.cpp
+        src/app/get_update_project_matrix_command_buffer.cpp
         src/app/on_key_press.cpp
         src/app/prepare_device_features.cpp
         src/app/record_solid_command_buffer.cpp
         src/app/record_wireframe_command_buffer.cpp
         src/app/resize_swap_chain.cpp
         src/app/update_descriptor_set.cpp
+        src/app/update_model_matrix.cpp
+        src/app/update_projection_matrix.cpp
+        src/app/update_view_matrix.cpp
         src/app/vulkan_debug_callback.cpp
 
         src/main.cpp
