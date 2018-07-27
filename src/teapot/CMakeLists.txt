@@ -2,9 +2,9 @@ cmake_minimum_required(VERSION 3.9 FATAL_ERROR)
 
 find_package(Vulkan REQUIRED)
 
-add_executable(tesselated_teapot "")
+add_executable(teapot "")
 
-target_sources(tesselated_teapot PRIVATE
+target_sources(teapot PRIVATE
         src/app/App.h
         src/app/AppData.h
         src/app/create_window.cpp
@@ -23,21 +23,21 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     set(CXXCOMPILEOPTIONS /W4)
 endif()
 
-set_target_properties(tesselated_teapot PROPERTIES
+set_target_properties(teapot PROPERTIES
         CXX_STANDARD 17
         CXX_STANDARD_REQUIRED YES
         CXX_EXTENSIONS NO
         RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
 )
 
-target_compile_options(tesselated_teapot PRIVATE ${CXXCOMPILEOPTIONS})
+target_compile_options(teapot PRIVATE ${CXXCOMPILEOPTIONS})
 
-target_link_libraries(tesselated_teapot PRIVATE
+target_link_libraries(teapot PRIVATE
         eigen
         glfw
         tl
         ${Vulkan_LIBRARIES}
 )
 
-target_include_directories(tesselated_teapot PRIVATE src)
-target_include_directories(tesselated_teapot SYSTEM PRIVATE ${Vulkan_INCLUDE_DIRS})
+target_include_directories(teapot PRIVATE src)
+target_include_directories(teapot SYSTEM PRIVATE ${Vulkan_INCLUDE_DIRS})
