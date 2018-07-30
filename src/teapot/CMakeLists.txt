@@ -47,7 +47,9 @@ target_sources(teapot PRIVATE
         src/app/get_required_window_extensions.cpp
         src/app/get_surface_capabilities.cpp
         src/app/get_surface_extent.cpp
+        src/app/get_update_model_matrix_command_buffer.cpp
         src/app/get_update_project_matrix_command_buffer.cpp
+        src/app/get_update_view_matrix_command_buffer.cpp
         src/app/on_key_press.cpp
         src/app/prepare_device_features.cpp
         src/app/record_solid_command_buffer.cpp

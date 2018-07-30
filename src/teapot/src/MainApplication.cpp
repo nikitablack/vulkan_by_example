@@ -150,31 +150,22 @@ void MainApplication::render()
 	
 	if(m_numProjMatrixBuffersToUpdate > 0)
 	{
-		app::MaybeCommandBuffer const mbUpdateProjMatrixCommandBuffer{app::get_update_project_matrix_command_buffer(m_appData.device, m_appData.dynamicCommandPool, m_appData.projMatrixBuffer, imageIndex, m_appData.numConcurrentResources, static_cast<float>(m_appData.surfaceExtent.width) / m_appData.surfaceExtent.height, m_matricesMemoryPtr + sizeof(float) * 16 * imageIndex)};
-		if(!mbUpdateProjMatrixCommandBuffer)
-			throw std::runtime_error(mbUpdateProjMatrixCommandBuffer.error());
+		app::MaybeCommandBuffer const mbCommandBuffer{app::get_update_project_matrix_command_buffer(m_appData.device, m_appData.dynamicCommandPool, m_appData.projMatrixBuffer, imageIndex, static_cast<float>(m_appData.surfaceExtent.width) / m_appData.surfaceExtent.height, m_matricesMemoryPtr + sizeof(float) * 16 * imageIndex)};
+		if(!mbCommandBuffer)
+			throw std::runtime_error(mbCommandBuffer.error());
 		
-		commandBuffers.push_back(*mbUpdateProjMatrixCommandBuffer);
+		commandBuffers.push_back(*mbCommandBuffer);
 		
 		--m_numProjMatrixBuffersToUpdate;
 	}
 	
 	if(m_numViewMatrixBuffersToUpdate > 0)
 	{
-		app::update_view_matrix(m_matricesMemoryPtr + m_appData.matrixBufferOffset + sizeof(float) * 16 * imageIndex);
+		app::MaybeCommandBuffer const mbCommandBuffer{app::get_update_view_matrix_command_buffer(m_appData.device, m_appData.dynamicCommandPool, m_appData.viewMatrixBuffer, imageIndex, m_matricesMemoryPtr + m_appData.matrixBufferOffset + sizeof(float) * 16 * imageIndex)};
+		if(!mbCommandBuffer)
+			throw std::runtime_error(mbCommandBuffer.error());
 		
-		app::MaybeCommandBuffer const mbUpdateViewMatrixCommandBuffer{app::allocate_synchronization_buffer(m_appData.device, m_appData.dynamicCommandPool, m_appData.viewMatrixBuffer, sizeof(float) * 16, sizeof(float) * 16 * imageIndex)};
-		if(!mbUpdateViewMatrixCommandBuffer)
-			throw std::runtime_error(mbUpdateViewMatrixCommandBuffer.error());
-		
-		static std::vector<VkCommandBuffer> updateViewMatrixCommandBuffers(m_appData.numConcurrentResources, VK_NULL_HANDLE);
-		
-		if(updateViewMatrixCommandBuffers[imageIndex] != VK_NULL_HANDLE)
-			vkFreeCommandBuffers(m_appData.device, m_appData.dynamicCommandPool, 1, &updateViewMatrixCommandBuffers[imageIndex]);
-		
-		updateViewMatrixCommandBuffers[imageIndex] = *mbUpdateViewMatrixCommandBuffer;
-		
-		commandBuffers.push_back(updateViewMatrixCommandBuffers[imageIndex]);
+		commandBuffers.push_back(*mbCommandBuffer);
 		
 		--m_numViewMatrixBuffersToUpdate;
 	}
@@ -182,24 +173,14 @@ void MainApplication::render()
 	if(m_numModelMatrixBuffersToUpdate > 0)
 	{
 		static uint32_t n{0};
-		++n;
+		
+		app::MaybeCommandBuffer const mbCommandBuffer{app::get_update_model_matrix_command_buffer(m_appData.device, m_appData.dynamicCommandPool, m_appData.modelMatrixBuffer, imageIndex, ++n, m_matricesMemoryPtr + m_appData.matrixBufferOffset * 2 + sizeof(float) * 16 * imageIndex)};
+		if(!mbCommandBuffer)
+			throw std::runtime_error(mbCommandBuffer.error());
+		
+		commandBuffers.push_back(*mbCommandBuffer);
+		
 		m_numModelMatrixBuffersToUpdate = m_appData.numConcurrentResources;
-		
-		app::update_model_matrix(n, m_matricesMemoryPtr + m_appData.matrixBufferOffset * 2 + sizeof(float) * 16 * imageIndex);
-		
-		app::MaybeCommandBuffer const mbUpdateModelMatrixCommandBuffer{app::allocate_synchronization_buffer(m_appData.device, m_appData.dynamicCommandPool, m_appData.modelMatrixBuffer, sizeof(float) * 16, sizeof(float) * 16 * imageIndex)};
-		if(!mbUpdateModelMatrixCommandBuffer)
-			throw std::runtime_error(mbUpdateModelMatrixCommandBuffer.error());
-		
-		static std::vector<VkCommandBuffer> updateModelMatrixCommandBuffers(m_appData.numConcurrentResources, VK_NULL_HANDLE);
-		
-		if(updateModelMatrixCommandBuffers[imageIndex] != VK_NULL_HANDLE)
-			vkFreeCommandBuffers(m_appData.device, m_appData.dynamicCommandPool, 1, &updateModelMatrixCommandBuffers[imageIndex]);
-		
-		updateModelMatrixCommandBuffers[imageIndex] = *mbUpdateModelMatrixCommandBuffer;
-		
-		commandBuffers.push_back(updateModelMatrixCommandBuffers[imageIndex]);
-		
 		--m_numModelMatrixBuffersToUpdate;
 	}
 	
