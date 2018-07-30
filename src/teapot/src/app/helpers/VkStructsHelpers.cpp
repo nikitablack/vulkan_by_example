@@ -430,6 +430,25 @@ VkPipelineColorBlendStateCreateInfo get_pipeline_color_blend_state_create_info(v
 	return info;
 }
 
+VkPipelineDepthStencilStateCreateInfo get_pipeline_depth_stencil_state_create_info(VkBool32 const depthTestEnable, VkBool32 const depthWriteEnable, VkCompareOp const depthCompareOp, VkBool32 const depthBoundsTestEnable, VkBool32 const stencilTestEnable, VkStencilOpState const front, VkStencilOpState const back, float const minDepthBounds, float const maxDepthBounds)
+{
+	VkPipelineDepthStencilStateCreateInfo info{};
+	info.sType = VK_STRUCTURE_TYPE_PIPELINE_DEPTH_STENCIL_STATE_CREATE_INFO;
+	info.pNext = nullptr;
+	info.flags = 0;
+	info.depthTestEnable = depthTestEnable;
+	info.depthWriteEnable = depthWriteEnable;
+	info.depthCompareOp = depthCompareOp;
+	info.depthBoundsTestEnable = depthBoundsTestEnable;
+	info.stencilTestEnable = stencilTestEnable;
+	info.front = front;
+	info.back = back;
+	info.minDepthBounds = minDepthBounds;
+	info.maxDepthBounds = maxDepthBounds;
+	
+	return info;
+}
+
 VkSwapchainCreateInfoKHR get_swap_chain_create_info(VkSurfaceKHR const surface, uint32_t const imageCount, VkFormat const imageFormat, VkColorSpaceKHR const imageColorSpace, VkExtent2D const imageExtent, VkSurfaceTransformFlagBitsKHR const preTransform, VkPresentModeKHR const presentMode, VkSharingMode const imageSharingMode, vector<uint32_t> const * const queueFamilyIndices, VkImageUsageFlags const imageUsage, uint32_t const imageArrayLayers, VkCompositeAlphaFlagBitsKHR const compositeAlpha, VkBool32 const clipped, VkSwapchainKHR const oldSwapchain)
 {
 	assert(imageUsage);
@@ -734,6 +753,45 @@ VkMappedMemoryRange get_mapped_memory_range(VkDeviceMemory const memory, VkDevic
 	range.size = size;
 	
 	return range;
+}
+
+VkImageCreateInfo get_image_create_info(VkExtent3D const extent, VkFormat const format, VkImageUsageFlags const usage, VkImageType const imageType, VkImageCreateFlags const flags, VkImageLayout const initialLayout, VkImageTiling const tiling, uint32_t const mipLevels, uint32_t const arrayLayers, vector<uint32_t> const * const queueFamilyIndices, VkSampleCountFlagBits const samples, VkSharingMode const sharingMode)
+{
+	VkImageCreateInfo info{};
+	info.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
+	info.pNext = nullptr;
+	info.flags = flags;
+	info.imageType = imageType;
+	info.format = format;
+	info.extent = extent;
+	info.mipLevels = mipLevels;
+	info.arrayLayers = arrayLayers;
+	info.samples = samples;
+	info.tiling = tiling;
+	info.usage = usage;
+	info.sharingMode = sharingMode;
+	info.queueFamilyIndexCount = queueFamilyIndices ? static_cast<uint32_t>(queueFamilyIndices->size()) : 0;
+	info.pQueueFamilyIndices = queueFamilyIndices ? queueFamilyIndices->data() : nullptr;
+	info.initialLayout = initialLayout;
+	
+	return info;
+}
+
+VkImageMemoryBarrier get_image_memory_barrier(VkImage const image, VkAccessFlags const srcAccessMask, VkAccessFlags const dstAccessMask, VkImageLayout const oldLayout, VkImageLayout const newLayout, VkImageSubresourceRange const subresourceRange, uint32_t const srcQueueFamilyIndex, uint32_t const dstQueueFamilyIndex)
+{
+	VkImageMemoryBarrier barrier{};
+	barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
+	barrier.pNext = nullptr;
+	barrier.srcAccessMask = srcAccessMask;
+	barrier.dstAccessMask = dstAccessMask;
+	barrier.oldLayout = oldLayout;
+	barrier.newLayout = newLayout;
+	barrier.srcQueueFamilyIndex = srcQueueFamilyIndex;
+	barrier.dstQueueFamilyIndex = dstQueueFamilyIndex;
+	barrier.image = image;
+	barrier.subresourceRange = subresourceRange;
+	
+	return barrier;
 }
 
 } // namespace app::helpers

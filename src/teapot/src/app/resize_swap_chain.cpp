@@ -20,6 +20,7 @@ MaybeAppData resize_swap_chain(AppData data)
 	                        .map(get_surface_extent)
 	                        .map(destroy_frame_buffers)
 	                        .and_then(create_swap_chain)
+	                        .and_then(create_depth_buffer)
 	                        .and_then(create_frame_buffers)
 	                        .and_then(record_wireframe_command_buffer)
 	                        .and_then(record_solid_command_buffer)};

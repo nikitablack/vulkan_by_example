@@ -37,6 +37,8 @@ MaybeAppData create_pipelines(AppData data)
 	std::vector<VkPipelineColorBlendAttachmentState> const colorBlendAttachments{helpers::get_pipeline_color_blend_attachment_state()};
 	VkPipelineColorBlendStateCreateInfo const colorBlendState{helpers::get_pipeline_color_blend_state_create_info(&colorBlendAttachments)};
 	
+	VkPipelineDepthStencilStateCreateInfo const depthStencilState{helpers::get_pipeline_depth_stencil_state_create_info()};
+	
 	vector<VkViewport> const viewports(1);
 	vector<VkRect2D> const scissors(1);
 	VkPipelineViewportStateCreateInfo const viewportState{helpers::get_pipeline_viewport_state_create_info(&viewports, &scissors)};
@@ -48,7 +50,7 @@ MaybeAppData create_pipelines(AppData data)
 	vector<VkDynamicState> const dynamicStates{VK_DYNAMIC_STATE_VIEWPORT, VK_DYNAMIC_STATE_SCISSOR};
 	VkPipelineDynamicStateCreateInfo const dynamicState{helpers::get_pipeline_dynamic_state_create_info(&dynamicStates)};
 	
-	helpers::MaybePipeline const mbWireframePipeline{helpers::create_pipeline(data.device, data.renderPass, data.pipelineLayout, 0, VK_PIPELINE_CREATE_ALLOW_DERIVATIVES_BIT, &shaderStages, &vertexInputState, &inputAssemblyState, &rasterizationStateWireframe, &colorBlendState, nullptr, &viewportState, &multisampleState, &tesselationState, &dynamicState)};
+	helpers::MaybePipeline const mbWireframePipeline{helpers::create_pipeline(data.device, data.renderPass, data.pipelineLayout, 0, VK_PIPELINE_CREATE_ALLOW_DERIVATIVES_BIT, &shaderStages, &vertexInputState, &inputAssemblyState, &rasterizationStateWireframe, &colorBlendState, &depthStencilState, &viewportState, &multisampleState, &tesselationState, &dynamicState)};
 	if(!mbWireframePipeline)
 		tl::make_unexpected(mbWireframePipeline.error());
 	
@@ -58,7 +60,7 @@ MaybeAppData create_pipelines(AppData data)
 	
 	VkPipelineRasterizationStateCreateInfo const rasterizationStateSolid{helpers::get_pipeline_rasterization_state_create_info(VK_POLYGON_MODE_FILL, VK_CULL_MODE_BACK_BIT, VK_FRONT_FACE_COUNTER_CLOCKWISE)};
 	
-	helpers::MaybePipeline const mbSolidPipeline{helpers::create_pipeline(data.device, data.renderPass, data.pipelineLayout, 0, VK_PIPELINE_CREATE_DERIVATIVE_BIT, &shaderStages, &vertexInputState, &inputAssemblyState, &rasterizationStateSolid, &colorBlendState, nullptr, &viewportState, &multisampleState, &tesselationState, &dynamicState, data.wireframePipeline)};
+	helpers::MaybePipeline const mbSolidPipeline{helpers::create_pipeline(data.device, data.renderPass, data.pipelineLayout, 0, VK_PIPELINE_CREATE_DERIVATIVE_BIT, &shaderStages, &vertexInputState, &inputAssemblyState, &rasterizationStateSolid, &colorBlendState, &depthStencilState, &viewportState, &multisampleState, &tesselationState, &dynamicState, data.wireframePipeline)};
 	if(!mbSolidPipeline)
 		tl::make_unexpected(mbSolidPipeline.error());
 	

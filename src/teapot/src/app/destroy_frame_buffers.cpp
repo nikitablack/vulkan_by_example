@@ -19,6 +19,10 @@ AppData destroy_frame_buffers(AppData data)
 	
 	data.swapChainFramebuffers.clear();
 	
+	vkDestroyImageView(data.device, data.depthImageView, nullptr);
+	vkDestroyImage(data.device, data.depthImage, nullptr);
+	vkFreeMemory(data.device, data.depthImageMemory, nullptr);
+	
 	return data;
 }
 

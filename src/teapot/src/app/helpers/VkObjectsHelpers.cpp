@@ -417,4 +417,15 @@ MaybeFence create_fence(VkDevice const device, VkFenceCreateFlags const flags)
 	return fence;
 }
 
+MaybeImage create_image(VkDevice const device, VkExtent3D const extent, VkFormat const format, VkImageUsageFlags const usage, VkImageType const imageType, VkImageCreateFlags const flags, VkImageLayout const initialLayout, VkImageTiling const tiling, uint32_t const mipLevels, uint32_t const arrayLayers, vector<uint32_t> const * const queueFamilyIndices, VkSampleCountFlagBits const samples, VkSharingMode const sharingMode)
+{
+	VkImageCreateInfo const imageInfo{get_image_create_info(extent, format, usage, imageType, flags, initialLayout, tiling, mipLevels, arrayLayers, queueFamilyIndices, samples, sharingMode)};
+	
+	VkImage image{VK_NULL_HANDLE};
+	if (vkCreateImage(device, &imageInfo, nullptr, &image) != VK_SUCCESS)
+		return tl::make_unexpected("failed to create image");
+	
+	return image;
+}
+
 } // namespace app::helpers

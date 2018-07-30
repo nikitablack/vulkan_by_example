@@ -38,6 +38,7 @@ struct AppData
 	VkExtent2D surfaceExtent{};
 	VkPhysicalDeviceFeatures physicalDeviceFeatures{};
 	VkPhysicalDeviceProperties physicalDeviceProperties{};
+	VkFormat depthFormat{VK_FORMAT_D32_SFLOAT};
 	VkDevice device{VK_NULL_HANDLE};
 	
 	VkShaderModule vertexShaderModule{VK_NULL_HANDLE};
@@ -93,6 +94,10 @@ struct AppData
 	std::vector<VkFence> commandBufferFences{};
 	
 	RenderingStyle currRenderingStyle{RenderingStyle::Wireframe};
+	
+	VkImage depthImage{VK_NULL_HANDLE};
+	VkImageView depthImageView{VK_NULL_HANDLE};
+	VkDeviceMemory depthImageMemory{VK_NULL_HANDLE};
 };
 
 } // namespace app

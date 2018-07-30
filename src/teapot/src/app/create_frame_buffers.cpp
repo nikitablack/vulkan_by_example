@@ -24,6 +24,7 @@ struct SwapChainImagesResourcesData
 	VkSurfaceFormatKHR format{};
 	uint32_t width{0};
 	uint32_t height{0};
+	VkImageView depthImageView{VK_NULL_HANDLE};
 };
 
 using MaybeSwapChainResources = tl::expected<SwapChainImagesResourcesData, std::string>;
@@ -73,12 +74,13 @@ MaybeSwapChainResources create_frame_buffers(SwapChainImagesResourcesData resour
 	
 	assert(resourcesData.device);
 	assert(resourcesData.renderPass);
+	assert(resourcesData.depthImageView);
 	
 	resourcesData.framebuffers.clear();
 	resourcesData.framebuffers.reserve(resourcesData.images.size());
 	for(size_t i{0}; i < resourcesData.images.size(); ++i)
 	{
-		std::vector<VkImageView> const imageViews{resourcesData.imageViews[i].get()};
+		std::vector<VkImageView> const imageViews{resourcesData.imageViews[i].get(), resourcesData.depthImageView};
 		helpers::MaybeFrameBuffer const mbFramebuffer{helpers::create_framebuffer(resourcesData.device, resourcesData.renderPass, resourcesData.width, resourcesData.height, &imageViews)};
 		
 		if(!mbFramebuffer)
@@ -112,6 +114,7 @@ MaybeAppData create_frame_buffers(AppData data)
 	resourcesData.format = data.surfaceFormat;
 	resourcesData.width = data.surfaceExtent.width;
 	resourcesData.height = data.surfaceExtent.height;
+	resourcesData.depthImageView = data.depthImageView;
 	
 	MaybeSwapChainResources mbRes{get_swap_chain_images(std::move(resourcesData))
 	                              .and_then(create_image_views)

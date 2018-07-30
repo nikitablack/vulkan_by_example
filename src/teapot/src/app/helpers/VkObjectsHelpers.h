@@ -32,6 +32,7 @@ using MaybeDescriptorPool = tl::expected<VkDescriptorPool, std::string>;
 using MaybeDescriptorSets = tl::expected<std::vector<VkDescriptorSet>, std::string>;
 using MaybeSemaphore = tl::expected<VkSemaphore, std::string>;
 using MaybeFence = tl::expected<VkFence, std::string>;
+using MaybeImage = tl::expected<VkImage, std::string>;
 
 MaybeInstance create_instance(std::vector<char const *> const * extensions = nullptr, std::vector<char const *> const * layers = nullptr, VkApplicationInfo const * applicationInfo = nullptr);
 MaybePhysicalDevices get_physical_devices(VkInstance instance);
@@ -60,5 +61,6 @@ MaybeDescriptorPool create_descriptor_pool(VkDevice device, uint32_t maxSets, st
 MaybeDescriptorSets allocate_descriptor_sets(VkDevice device, VkDescriptorPool descriptorPool, std::vector<VkDescriptorSetLayout> const * layouts);
 MaybeSemaphore create_semaphore(VkDevice device);
 MaybeFence create_fence(VkDevice device, VkFenceCreateFlags flags = 0);
+MaybeImage create_image(VkDevice device, VkExtent3D extent, VkFormat format, VkImageUsageFlags usage, VkImageType imageType, VkImageCreateFlags flags = 0, VkImageLayout initialLayout = VK_IMAGE_LAYOUT_UNDEFINED, VkImageTiling tiling = VK_IMAGE_TILING_OPTIMAL, uint32_t mipLevels = 1, uint32_t arrayLayers = 1, std::vector<uint32_t> const * queueFamilyIndices = nullptr, VkSampleCountFlagBits samples = VK_SAMPLE_COUNT_1_BIT, VkSharingMode sharingMode = VK_SHARING_MODE_EXCLUSIVE);
 
 } // namespace app::helpers

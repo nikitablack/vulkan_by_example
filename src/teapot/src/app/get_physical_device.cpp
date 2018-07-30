@@ -13,6 +13,7 @@ namespace {
 using MaybeSurfaceFormat = tl::expected<VkSurfaceFormatKHR, string>;
 using MaybePresentMode = tl::expected<VkPresentModeKHR, string>;
 using MaybeQueueFamilies = tl::expected<tuple<uint32_t, uint32_t>, string>;
+using MaybeFormat = tl::expected<VkFormat, string>;
 
 MaybeSurfaceFormat get_device_surface_format(VkPhysicalDevice const physicalDevice, VkSurfaceKHR const surface)
 {
@@ -67,7 +68,7 @@ bool check_required_device_extensions(VkPhysicalDevice const physicalDevice, vec
 	return true;
 }
 
-bool check_device_suitability(VkPhysicalDevice const physicalDevice, vector<char const *> const & requiredExtensions)
+bool check_device_suitability(VkPhysicalDevice const physicalDevice, vector<char const *> const & requiredExtensions, VkFormat const optimalDepthFormat)
 {
 	VkPhysicalDeviceProperties deviceProperties{};
 	vkGetPhysicalDeviceProperties(physicalDevice, &deviceProperties);
@@ -88,6 +89,12 @@ bool check_device_suitability(VkPhysicalDevice const physicalDevice, vector<char
 		return false;
 	
 	if (!check_required_device_extensions(physicalDevice, requiredExtensions))
+		return false;
+	
+	VkFormatProperties formatProperties{};
+	vkGetPhysicalDeviceFormatProperties(physicalDevice, optimalDepthFormat, &formatProperties);
+	
+	if ((formatProperties.optimalTilingFeatures & VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT) != VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT)
 		return false;
 	
 	return true;
@@ -178,7 +185,7 @@ MaybeAppData get_physical_device(AppData data)
 		if(!mbPresentMode)
 			continue;
 		
-		if(!check_device_suitability(d, data.deviceExtensions))
+		if(!check_device_suitability(d, data.deviceExtensions, data.depthFormat))
 			continue;
 		
 		MaybeQueueFamilies const mbQueueFamilies{get_device_graphics_and_present_queue_families(d, data.surface)};

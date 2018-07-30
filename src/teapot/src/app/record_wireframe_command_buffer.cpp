@@ -22,7 +22,7 @@ MaybeAppData record_wireframe_command_buffer(AppData data)
 		if(vkBeginCommandBuffer(commandBuffer, &beginInfo) != VK_SUCCESS)
 			return tl::make_unexpected("failed to begin command buffer");
 		
-		std::vector<VkClearValue> const clearValues{{0.0f, 0.5f, 0.0f, 1.0f}};
+		std::vector<VkClearValue> const clearValues{{0.0f, 0.5f, 0.0f, 1.0f}, {1.0f, 0}};
 		
 		VkRenderPassBeginInfo const renderPassInfo{helpers::get_render_pass_begin_info(data.renderPass, data.swapChainFramebuffers[i], {0, 0, data.surfaceExtent}, &clearValues)};
 		

@@ -22,6 +22,7 @@ target_sources(teapot PRIVATE
         src/app/create_command_buffer_fences.cpp
         src/app/create_command_pools.cpp
         src/app/create_debug_utils_messenger.cpp
+        src/app/create_depth_buffer.cpp
         src/app/create_descriptor_pool.cpp
         src/app/create_descriptor_set_layout.cpp
         src/app/create_frame_buffers.cpp

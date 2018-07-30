@@ -48,6 +48,7 @@ void clear(AppData data);
 MaybeAppData create_command_buffer_fences(AppData data);
 MaybeAppData create_command_pools(AppData appData);
 MaybeAppData create_debug_utils_messenger(AppData data);
+MaybeAppData create_depth_buffer(AppData data);
 MaybeAppData create_descriptor_pool(AppData data);
 MaybeAppData create_descriptor_set_layout(AppData data);
 MaybeAppData create_frame_buffers(AppData data);
