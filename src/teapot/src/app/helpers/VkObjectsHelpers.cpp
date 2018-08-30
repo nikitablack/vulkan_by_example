@@ -68,6 +68,21 @@ MaybePhysicalDevicesSurfacePresentModes get_physical_device_surface_present_mode
 	return presentModes;
 }
 
+MaybeExtensionProperties get_physical_device_device_extension_properties(VkPhysicalDevice const physicalDevice)
+{
+	assert(physicalDevice);
+	
+	uint32_t extensionCount{0};
+	if (vkEnumerateDeviceExtensionProperties(physicalDevice, nullptr, &extensionCount, nullptr) != VK_SUCCESS)
+		return make_unexpected("failed to get physical device extension properties");
+	
+	vector<VkExtensionProperties> extensions(extensionCount);
+	if (vkEnumerateDeviceExtensionProperties(physicalDevice, nullptr, &extensionCount, extensions.data()) != VK_SUCCESS)
+		return make_unexpected("failed to get physical device extension properties");
+	
+	return extensions;
+}
+
 vector<VkQueueFamilyProperties> get_queue_family_properties(VkPhysicalDevice const physicalDevice)
 {
 	uint32_t queueFamilyCount{0};
