@@ -12,13 +12,13 @@ namespace app::helpers
 
 MaybeInstance create_instance(vector<char const *> const * const extensions, std::vector<char const *> const * const layers, VkApplicationInfo const * const applicationInfo)
 {
-VkInstanceCreateInfo const createInfo{get_instance_create_info(extensions, layers, applicationInfo)};
-
-VkInstance instance{VK_NULL_HANDLE};
-if (vkCreateInstance(&createInfo, nullptr, &instance) != VK_SUCCESS)
-return make_unexpected("failed to create instance");
-
-return instance;
+	VkInstanceCreateInfo const createInfo{get_instance_create_info(extensions, layers, applicationInfo)};
+	
+	VkInstance instance{VK_NULL_HANDLE};
+	if (vkCreateInstance(&createInfo, nullptr, &instance) != VK_SUCCESS)
+	return make_unexpected("failed to create instance");
+	
+	return instance;
 }
 
 MaybePhysicalDevices get_physical_devices(VkInstance const instance)
@@ -68,7 +68,7 @@ MaybePhysicalDevicesSurfacePresentModes get_physical_device_surface_present_mode
 	return presentModes;
 }
 
-MaybeExtensionProperties get_physical_device_device_extension_properties(VkPhysicalDevice physicalDevice)
+MaybeExtensionProperties get_physical_device_device_extension_properties(VkPhysicalDevice const physicalDevice)
 {
 	assert(physicalDevice);
 	
