@@ -13,7 +13,6 @@ namespace {
 using MaybeSurfaceFormat = tl::expected<VkSurfaceFormatKHR, string>;
 using MaybePresentMode = tl::expected<VkPresentModeKHR, string>;
 using MaybeQueueFamilies = tl::expected<tuple<uint32_t, uint32_t>, string>;
-using MaybeFormat = tl::expected<VkFormat, string>;
 
 MaybeSurfaceFormat get_device_surface_format(VkPhysicalDevice const physicalDevice, VkSurfaceKHR const surface)
 {
@@ -51,13 +50,11 @@ MaybePresentMode get_device_surface_present_mode(VkPhysicalDevice const physical
 
 bool check_required_device_extensions(VkPhysicalDevice const physicalDevice, vector<char const *> const & requiredExtensions)
 {
-	uint32_t extensionCount{0};
-	if (vkEnumerateDeviceExtensionProperties(physicalDevice, nullptr, &extensionCount, nullptr) != VK_SUCCESS)
+	app::helpers::MaybeExtensionProperties mbExtensions{app::helpers::get_physical_device_device_extension_properties(physicalDevice)};
+	if(!mbExtensions)
 		return false;
 	
-	vector<VkExtensionProperties> availableExtensions(extensionCount);
-	if (vkEnumerateDeviceExtensionProperties(physicalDevice, nullptr, &extensionCount, availableExtensions.data()) != VK_SUCCESS)
-		return false;
+	vector<VkExtensionProperties> const & availableExtensions{*mbExtensions};
 	
 	for (char const * element : requiredExtensions)
 	{
@@ -167,25 +164,23 @@ MaybeAppData get_physical_device(AppData data)
 	assert(data.instance);
 	assert(data.surface);
 	
-	uint32_t deviceCount{0};
-	if(vkEnumeratePhysicalDevices(data.instance, &deviceCount, nullptr) != VK_SUCCESS || deviceCount == 0)
-		return tl::make_unexpected("failed to find GPUs with Vulkan support");
+	helpers::MaybePhysicalDevices const mbPhysicalDevices{helpers::get_physical_devices(data.instance)};
+	if(!mbPhysicalDevices)
+		return tl::make_unexpected(mbPhysicalDevices.error());
 	
-	vector<VkPhysicalDevice> physicalDevices(deviceCount);
-	if(vkEnumeratePhysicalDevices(data.instance, &deviceCount, physicalDevices.data()) != VK_SUCCESS)
-		return tl::make_unexpected("failed to find GPUs with Vulkan support");
+	vector<VkPhysicalDevice> const & physicalDevices{*mbPhysicalDevices};
 	
 	for(VkPhysicalDevice const d : physicalDevices)
 	{
+		if(!check_device_suitability(d, data.deviceExtensions, data.depthFormat))
+			continue;
+		
 		MaybeSurfaceFormat const mbSurfaceFormat{get_device_surface_format(d, data.surface)};
 		if(!mbSurfaceFormat)
 			continue;
 		
 		MaybePresentMode const mbPresentMode{get_device_surface_present_mode(d, data.surface)};
 		if(!mbPresentMode)
-			continue;
-		
-		if(!check_device_suitability(d, data.deviceExtensions, data.depthFormat))
 			continue;
 		
 		MaybeQueueFamilies const mbQueueFamilies{get_device_graphics_and_present_queue_families(d, data.surface)};
