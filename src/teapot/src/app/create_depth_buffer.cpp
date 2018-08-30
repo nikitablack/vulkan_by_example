@@ -182,7 +182,7 @@ MaybeDepthImageData transition_to_layout(DepthImageData data)
 	return std::move(data);
 }
 
-}; // namespace
+} // namespace
 
 namespace app
 {
